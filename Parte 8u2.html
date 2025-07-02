@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparación y Manipulación de Disoluciones</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuración de MathJax para el renderizado de ecuaciones LaTeX
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemáticas en línea
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // Delimitadores para matemáticas en bloque
+                processEscapes: true, // Permite escapar los delimitadores de MathJax
+                processEnvironments: true // Procesa entornos LaTeX como \begin{align}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', // Clases HTML a ignorar por MathJax
+                processHtmlClass: 'tex2jax_process' // Clases HTML a procesar por MathJax
+            },
+            startup: {
+                pageReady: function() {
+                    // Espera a que el DOM esté completamente cargado para procesar MathJax
+                    document.addEventListener('DOMContentLoaded', () => {
+                        MathJax.typeset(); // Inicia el renderizado de MathJax
+                    });
+                }
+            }
+        };
+    </script>
+    <!-- Script de MathJax desde CDN -->
+    <script id="mathjax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+
+    <style>
+        /* --- Reset General y Estilos de Cuerpo --- */
+        body, h1, h2, h3, h4, p, ul, li, section, div { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Merriweather', serif;
+            font-size: 1.18em; /* Aumentar el tamaño de fuente base para mejor legibilidad */
+            line-height: 1.8; /* Aumentar la altura de línea para más espacio entre líneas */
+            color: #333;
+            background-color: #f0f8ff; /* Un azul muy claro para el fondo */
+            padding-top: 180px; /* Ajustado para dar más espacio al encabezado fijo */
+        }
+
+        /* --- Header Fijo --- */
+        header {
+            background-color: #0056b3; /* Azul más oscuro y vibrante */
+            color: #ffffff; /* Blanco puro */
+            padding: 20px 0;
+            text-align: center;
+            position: static; /* Hace que el header se quede fijo */
+            width: 100%; /* Ocupa todo el ancho */
+            top: 0; /* Lo fija en la parte superior */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+            display: flex; /* Usar flexbox para alinear elementos */
+            flex-direction: column; /* Por defecto, en columna para móvil */
+            align-items: center; /* Centrar elementos horizontalmente */
+            justify-content: center;
+        }
+
+        header h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 3em; /* Más grande para el título principal */
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            padding: 0 20px; /* Añadir padding para que no toque los bordes */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            box-sizing: border-box; /* Incluir padding en el ancho */
+        }
+
+        /* Botón de hamburguesa */
+        .hamburger-menu {
+            display: none; /* Ocultar por defecto en pantallas grandes */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            position: absolute; /* Posicionar absolutamente */
+            top: 30px; /* Ajustar posición */
+            right: 20px; /* Ajustar posición */
+            z-index: 1001; /* Asegurar que esté por encima del nav */
+        }
+
+        .hamburger-menu .bar {
+            width: 100%;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Estilos para el menú de navegación */
+        nav {
+            width: 100%;
+            max-height: 0; /* Ocultar el menú por defecto */
+            overflow: hidden; /* Ocultar el contenido desbordado */
+            transition: max-height 0.5s ease-out; /* Transición suave al desplegar */
+        }
+
+        nav.open {
+            max-height: 500px; /* Altura máxima para mostrar el menú (ajustar si es necesario) */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Elementos en columna cuando el menú está abierto */
+            align-items: center; /* Centrar elementos */
+            margin-top: 15px;
+        }
+
+        nav ul li {
+            margin: 10px 0; /* Espacio vertical entre elementos */
+            width: 100%; /* Ocupa todo el ancho disponible */
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2em; /* Tamaño de fuente para los enlaces */
+            padding: 10px 20px; /* Más padding para facilitar el clic */
+            border-radius: 8px; /* Bordes más redondeados */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block; /* Asegura que el padding y el área de clic sean uniformes */
+            text-align: center; /* Centrar texto */
+        }
+
+        nav ul li a:hover {
+            background-color: #004085; /* Azul aún más oscuro al pasar el mouse */
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+        }
+
+        /* Media queries para pantallas grandes (desktop) */
+        @media (min-width: 769px) {
+            header {
+                flex-direction: row; /* Volver a fila en desktop */
+                justify-content: space-between; /* Espaciar título y nav */
+                padding: 20px 40px; /* Ajustar padding */
+            }
+
+            header h1 {
+                width: auto; /* Ancho automático */
+                margin-bottom: 0; /* Eliminar margen inferior */
+            }
+
+            .hamburger-menu {
+                display: none; /* Ocultar el botón de hamburguesa en desktop */
+            }
+
+            nav {
+                max-height: none; /* Asegurar que el menú esté siempre visible */
+                overflow: visible; /* Permitir que el contenido sea visible */
+                width: auto; /* Ancho automático */
+            }
+
+            nav ul {
+                flex-direction: row; /* Volver a fila en desktop */
+                margin-top: 0; /* Eliminar margen superior */
+            }
+
+            nav ul li {
+                margin: 0 15px; /* Espacio horizontal entre elementos */
+            }
+        }
+
+        /* --- Estilos de Contenido General --- */
+        .container {
+            width: 90%; /* Ancho base para adaptarse a la pantalla */
+            max-width: 1100px; /* Ancho máximo para una lectura cómoda en pantallas grandes */
+            margin: 40px auto; /* Centrar el contenedor y añadir margen vertical */
+            background-color: #ffffff;
+            padding: 50px; /* Padding interno para el contenido */
+            border-radius: 12px; /* Bordes redondeados */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra suave */
+        }
+
+        /* Ajustes para pantallas más pequeñas para el contenedor */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px; /* Reducir padding en pantallas pequeñas */
+                margin: 20px auto; /* Reducir margen vertical en pantallas pequeñas */
+            }
+        }
+
+        section {
+            margin-bottom: 60px; /* Más espacio entre secciones */
+            padding-bottom: 40px; /* Más padding inferior */
+            border-bottom: 1px dashed #c0c0c0; /* Línea divisoria más sutil */
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Fjalla One', sans-serif;
+            color: #0056b3; /* Azul principal */
+            margin-bottom: 30px; /* Más espacio */
+            font-size: 2.5em; /* Más grande */
+            border-left: 8px solid #007bff; /* Borde más grueso y vibrante */
+            padding-left: 20px; /* Más padding */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 40px; /* Más espacio */
+            margin-bottom: 25px; /* Más espacio */
+            font-size: 1.9em; /* Más grande */
+            border-bottom: 2px solid #e0e0e0; /* Línea sutil bajo los subtítulos */
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em; /* Tamaño para sub-subtítulos */
+        }
+
+        p {
+            margin-bottom: 25px; /* Más espacio entre párrafos */
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 35px; /* Más margen */
+            margin-bottom: 25px; /* Más margen */
+        }
+
+        ol {
+            margin-left: 35px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 12px; /* Más espacio entre elementos de lista */
+        }
+
+        /* --- Estilos específicos para MathJax --- */
+        .MathJax_Display {
+            margin: 2em 0 !important; /* Mucho más espacio para ecuaciones en bloque */
+            padding: 1em 1.2em; /* Más padding */
+            background-color: #e6f2ff; /* Fondo más claro para ecuaciones */
+            border-left: 6px solid #007bff; /* Borde más grueso y azul */
+            border-radius: 6px;
+            overflow-x: auto; /* Para ecuaciones largas */
+            font-size: 1.1em; /* Asegurar que las ecuaciones también sean grandes */
+        }
+
+        .MathJax_SVG_Display {
+            margin: 2em 0 !important; /* Asegura el espaciado para ecuaciones en bloque */
+        }
+
+        /* --- Estilos para ejemplos y notas --- */
+        .ejemplo-destacado {
+            background-color: #f0faff; /* Un azul muy claro para el fondo del ejemplo */
+            border: 1px solid #a0d8ff; /* Borde azul claro */
+            border-left: 8px solid #007bff; /* Borde azul vibrante distintivo */
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .ejemplo-destacado p {
+            font-weight: bold;
+            color: #0056b3; /* Color azul para el título del ejemplo */
+            margin-bottom: 15px;
+        }
+
+        .ejemplo-destacado ol, .ejemplo-destacado ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .ejemplo-destacado li {
+            margin-bottom: 10px;
+        }
+
+        /* --- Animación de Reacción Química (SVG y CSS) --- */
+        .reaction-animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px; /* Altura del contenedor de la animación */
+            margin: 40px auto;
+            background-color: #e6f7ff; /* Fondo claro para la animación */
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden; /* Asegura que la animación no se desborde */
+            position: relative;
+        }
+
+        .molecule {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .molecule-A {
+            background-color: #e74c3c; /* Rojo */
+            left: 10%;
+            animation: reactA 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-B {
+            background-color: #2ecc71; /* Verde */
+            left: 30%;
+            animation: reactB 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-C {
+            background-color: #3498db; /* Azul */
+            left: 70%;
+            opacity: 0;
+            animation: formC 4s ease-in-out infinite alternate;
+        }
+
+        .arrow {
+            position: absolute;
+            font-size: 3em;
+            color: #555;
+            left: 48%; /* Centrar la flecha */
+            top: 50%;
+            transform: translateY(-50%);
+            animation: fadeArrow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes reactA {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(150px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(150px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes reactB {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(-50px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(-50px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes formC {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0; }
+            60% { opacity: 1; transform: scale(1.1); } /* Aparece y se agranda */
+            70% { transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeArrow {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            55% { opacity: 0; } /* Desaparece durante la formación del producto */
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química Dinámica</h1>
+        <div class="hamburger-menu" id="hamburger-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#mezclas-disoluciones">Mezclas y Disoluciones</a></li>
+                <li><a href="#homogeneas-heterogeneas">Tipos de Mezclas</a></li>
+                <li><a href="#disoluciones-caracteristicas">Disoluciones</a></li>
+                <li><a href="#soluto-solvente">Soluto y Solvente</a></li>
+                <li><a href="#disolucion-dilucion">Disolución vs Dilución</a></li>
+                <li><a href="#preparacion-disoluciones">Preparación Disoluciones</a></li>
+                <li><a href="#unidades-concentracion">Unidades Concentración</a></li> <!-- Nuevo enlace -->
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="mezclas-disoluciones">
+            <h2>Conceptos Básicos de Mezclas y Disoluciones</h2>
+            <p>En química, la mayoría de las sustancias que encontramos en la naturaleza o en el laboratorio no son sustancias puras, sino <strong>mezclas</strong> de dos o más componentes. Una mezcla se forma cuando dos o más sustancias se combinan físicamente sin que ocurra una reacción química entre ellas, lo que significa que cada sustancia conserva su identidad química.</p>
+
+            <h3 id="homogeneas-heterogeneas">Mezclas Homogéneas y Heterogéneas: Distinción entre los tipos de mezclas</h3>
+            <p>Las mezclas se clasifican principalmente en dos categorías según la uniformidad de su composición y propiedades:</p>
+
+            <h4>Mezclas Homogéneas</h4>
+            <p>Una <strong>mezcla homogénea</strong> es aquella en la que los componentes están uniformemente distribuidos a nivel molecular, de modo que la mezcla tiene la misma composición y propiedades en cualquier punto. No se pueden distinguir visualmente sus componentes a simple vista ni con un microscopio óptico.</p>
+            <ul>
+                <li>Composición uniforme.</li>
+                <li>Una sola fase visible.</li>
+                <li>Ejemplos: aire, agua salada, aleaciones metálicas.</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Mezcla Homogénea: Agua con Azúcar</strong></p>
+                <p>Cuando disuelves azúcar en agua, el azúcar se dispersa uniformemente por todo el volumen del agua, formando una solución transparente. No puedes ver las partículas individuales de azúcar.</p>
+                <p><strong>Ejemplo 2 de Mezcla Homogénea: Aire</strong></p>
+                <p>El aire que respiramos es una mezcla de varios gases (nitrógeno, oxígeno, argón, etc.). Aunque está compuesto por diferentes sustancias, no podemos distinguir visualmente cada gas por separado; el aire parece una sola entidad.</p>
+                <p><strong>Ejemplo 3 de Mezcla Homogénea: Latón</strong></p>
+                <p>El latón es una aleación metálica compuesta principalmente por cobre y zinc. A simple vista, parece un metal uniforme, y no se pueden diferenciar las partículas de cobre de las de zinc.</p>
+                <p><strong>Ejemplo 4 de Mezcla Homogénea: Vinagre</strong></p>
+                <p>El vinagre es una mezcla de ácido acético y agua. Es una solución clara donde el ácido acético está completamente disuelto en el agua, sin que se distingan sus componentes.</p>
+            </div>
+
+            <h4>Mezclas Heterogéneas</h4>
+            <p>Una <strong>mezcla heterogénea</strong> es aquella en la que los componentes no están uniformemente distribuidos y se pueden distinguir visualmente, ya sea a simple vista o con la ayuda de un microscopio. Presenta dos o más fases distintas, cada una con sus propias propiedades.</p>
+            <ul>
+                <li>Composición no uniforme.</li>
+                <li>Dos o más fases visibles.</li>
+                <li>Ejemplos: agua y aceite, arena y agua, ensalada.</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Mezcla Heterogénea: Agua y Aceite</strong></p>
+                <p>Cuando mezclas agua y aceite, el aceite flota sobre el agua y se forman dos capas distintas que son claramente visibles. Cada capa representa una fase diferente.</p>
+                <p><strong>Ejemplo 2 de Mezcla Heterogénea: Ensalada de Frutas</strong></p>
+                <p>Una ensalada de frutas contiene diferentes tipos de frutas (manzanas, uvas, plátanos, etc.). Puedes distinguir fácilmente cada tipo de fruta, lo que la convierte en una mezcla heterogénea.</p>
+                <p><strong>Ejemplo 3 de Mezcla Heterogénea: Granito</strong></p>
+                <p>El granito es una roca ígnea compuesta por varios minerales como cuarzo, feldespato y mica. Estos minerales son visibles como cristales de diferentes colores y texturas, lo que lo hace una mezcla heterogénea.</p>
+                <p><strong>Ejemplo 4 de Mezcla Heterogénea: Arena y Agua</strong></p>
+                <p>Si mezclas arena con agua, la arena se asienta en el fondo y puedes ver claramente las partículas de arena separadas del agua. No se disuelve uniformemente.</p>
+            </div>
+
+            <h3 id="disoluciones-caracteristicas">Las disoluciones como mezclas homogéneas en fase líquida: Características principales</h3>
+            <p>Las <strong>disoluciones</strong> (o soluciones) son un tipo específico de mezcla homogénea, generalmente en fase líquida, donde una sustancia se disuelve en otra. Son de suma importancia en química, biología e industria.</p>
+            <ul>
+                <li>Son mezclas homogéneas (una sola fase).</li>
+                <li>Las partículas de soluto son muy pequeñas (tamaño atómico, iónico o molecular), lo que las hace invisibles.</li>
+                <li>Son transparentes (aunque pueden tener color).</li>
+                <li>No se pueden separar por métodos físicos simples como la filtración o la decantación.</li>
+                <li>Sus componentes no reaccionan químicamente entre sí.</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Disolución: Agua Salada</strong></p>
+                <p>Cuando la sal (cloruro de sodio) se disuelve en agua, forma una disolución transparente. La sal se dispersa a nivel iónico en el agua, y no se pueden ver las partículas de sal.</p>
+                <p><strong>Ejemplo 2 de Disolución: Bebidas Gaseosas Sin Burbujas</strong></p>
+                <p>Una bebida gaseosa (antes de abrirla o después de perder el gas) es una disolución de azúcar, saborizantes y otros compuestos en agua. Es transparente y uniforme.</p>
+                <p><strong>Ejemplo 3 de Disolución: Aire (revisitado)</strong></p>
+                <p>Aunque el aire es una mezcla de gases, también puede considerarse una disolución, donde el nitrógeno es el solvente y los demás gases son solutos. Es completamente homogéneo.</p>
+                <p><strong>Ejemplo 4 de Disolución: Alcohol en Agua</strong></p>
+                <p>El alcohol etílico (etanol) se disuelve completamente en agua en cualquier proporción, formando una disolución homogénea utilizada en muchas aplicaciones, como desinfectantes.</p>
+            </div>
+
+            <h3 id="soluto-solvente">Soluto y Solvente: Identificación de los componentes de una disolución</h3>
+            <p>Toda disolución se compone de al menos dos partes:</p>
+            <ul>
+                <li>El <strong>soluto</strong>: Es la sustancia que se disuelve. Generalmente es el componente que se encuentra en menor proporción en la disolución. Puede haber uno o varios solutos.</li>
+                <li>El <strong>solvente</strong> (o disolvente): Es la sustancia en la que se disuelve el soluto. Generalmente es el componente que se encuentra en mayor proporción y determina el estado físico de la disolución. El agua es el solvente más común y se conoce como "solvente universal".</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Soluto y Solvente: Agua Azucarada</strong></p>
+                <ul>
+                    <li><strong>Soluto:</strong> Azúcar</li>
+                    <li><strong>Solvente:</strong> Agua</li>
+                </ul>
+                <p><strong>Ejemplo 2 de Soluto y Solvente: Aire</strong></p>
+                <ul>
+                    <li><strong>Soluto:</strong> Oxígeno, Argón, $\text{CO}_2$, etc.</li>
+                    <li><strong>Solvente:</strong> Nitrógeno (el componente más abundante)</li>
+                </ul>
+                <p><strong>Ejemplo 3 de Soluto y Solvente: Bronce</strong></p>
+                <p>El bronce es una aleación de cobre y estaño.</p>
+                <ul>
+                    <li><strong>Soluto:</strong> Estaño (generalmente en menor proporción)</li>
+                    <li><strong>Solvente:</strong> Cobre (el componente principal)</li>
+                </ul>
+                <p><strong>Ejemplo 4 de Soluto y Solvente: Amalgama Dental</strong></p>
+                <p>Una amalgama dental es una mezcla de mercurio con otros metales como plata, estaño y cobre.</p>
+                <ul>
+                    <li><strong>Soluto:</strong> Plata, Estaño, Cobre (los metales sólidos)</li>
+                    <li><strong>Solvente:</strong> Mercurio (el metal líquido que disuelve a los otros)</li>
+                </ul>
+            </div>
+
+            <h3 id="disolucion-dilucion">Diferencia entre disolución y dilución: Conceptos y procesos</h3>
+            <p>Aunque suenan similares, "disolución" y "dilución" se refieren a conceptos y procesos distintos en química:</p>
+
+            <h4>Disolución (Proceso de Formación de una Solución)</h4>
+            <p>La <strong>disolución</strong> es el proceso físico en el que un soluto se dispersa uniformemente en un solvente para formar una mezcla homogénea (una solución). Implica la interacción entre las partículas de soluto y solvente, rompiendo enlaces en el soluto y formando nuevas interacciones con el solvente.</p>
+            <ul>
+                <li>Es el acto de <strong>formar una solución</strong>.</li>
+                <li>Implica la mezcla de un soluto y un solvente.</li>
+                <li>Ejemplo: Añadir sal al agua y agitar hasta que desaparezca.</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Disolución (Proceso): Disolver Café Instantáneo</strong></p>
+                <p>Cuando añades una cucharada de café instantáneo (soluto) en una taza de agua caliente (solvente) y lo revuelves hasta que el polvo desaparece y el líquido se vuelve uniforme, estás llevando a cabo el proceso de disolución para formar una taza de café.</p>
+                <p><strong>Ejemplo 2 de Disolución (Proceso): Preparar un Jarabe</strong></p>
+                <p>El proceso de disolver una gran cantidad de azúcar en agua caliente para hacer un jarabe simple es un ejemplo de disolución. El azúcar se dispersa y se integra en el agua, formando una solución homogénea y viscosa.</p>
+                <p><strong>Ejemplo 3 de Disolución (Proceso): Disolver un Comprimido Efervescente</strong></p>
+                <p>Cuando un comprimido efervescente (soluto) se coloca en agua (solvente), se disuelve y libera gas, formando una disolución. El proceso de disolución es evidente por la desaparición del sólido.</p>
+                <p><strong>Ejemplo 4 de Disolución (Proceso): Preparar una Solución de Limpieza</strong></p>
+                <p>Mezclar un concentrado de limpiador (soluto) con agua (solvente) hasta obtener una mezcla uniforme y lista para usar es un proceso de disolución.</p>
+            </div>
+
+            <h4>Dilución (Proceso de Reducir la Concentración)</h4>
+            <p>La <strong>dilución</strong> es el proceso de <strong>disminuir la concentración</strong> de una disolución añadiendo más solvente. La cantidad de soluto permanece constante, pero el volumen total de la disolución aumenta, lo que reduce la cantidad de soluto por unidad de volumen.</p>
+            <ul>
+                <li>Es el acto de <strong>reducir la concentración</strong> de una solución existente.</li>
+                <li>Implica añadir más solvente a una solución ya formada.</li>
+                <li>Ejemplo: Añadir más agua a un jugo concentrado.</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Dilución: Añadir Agua a un Jugo Concentrado</strong></p>
+                <p>Si tienes un jugo de naranja muy concentrado y le añades agua para hacerlo menos fuerte y más bebible, estás realizando una dilución. La cantidad de jugo de naranja puro no cambia, pero su concentración en el volumen total disminuye.</p>
+                <p><strong>Ejemplo 2 de Dilución: Diluir un Ácido Fuerte en el Laboratorio</strong></p>
+                <p>En el laboratorio, es común diluir ácidos concentrados añadiendo cuidadosamente agua. Esto reduce la peligrosidad del ácido al disminuir su concentración, haciendo que sea más seguro de manejar.</p>
+                <p><strong>Ejemplo 3 de Dilución: Preparar un Café Menos Fuerte</strong></p>
+                <p>Si tu café está demasiado fuerte, puedes añadirle más agua (o leche, que actúa como solvente adicional) para diluirlo y reducir su intensidad de sabor. La cantidad de café disuelto es la misma, pero el sabor es menos concentrado.</p>
+                <p><strong>Ejemplo 4 de Dilución: Rellenar el Anticongelante del Coche</strong></p>
+                <p>El anticongelante de los coches a menudo se vende como un concentrado. Antes de usarlo, se diluye con agua destilada para alcanzar la concentración adecuada que proteja el motor a diferentes temperaturas. Este es un proceso de dilución.</p>
+            </div>
+        </section>
+
+        <section id="preparacion-disoluciones">
+            <h2>Preparación y Manipulación de Disoluciones</h2>
+            <p>La preparación de disoluciones con una concentración específica y su manipulación adecuada son habilidades fundamentales en cualquier laboratorio de química. Requieren precisión y el uso correcto del material de vidrio volumétrico.</p>
+
+            <h3 id="preparacion-experimental">Preparación Experimental de Disoluciones y Diluciones: Pasos Prácticos</h3>
+            <p>La preparación de una disolución a partir de un sólido y la dilución de una disolución concentrada son procedimientos comunes que siguen pasos específicos para asegurar la exactitud de la concentración final.</p>
+
+            <h4>Preparación de una Disolución a partir de un Sólido</h4>
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1: Preparación de 100 mL de una disolución 0.1 M de $\text{NaCl}$</strong></p>
+                <p><em>Materiales:</em> Balanza analítica, espátula, vaso de precipitados, varilla de vidrio, matraz aforado de 100 mL, frasco lavador con agua destilada.</p>
+                <p><em>Procedimiento:</em></p>
+                <ol>
+                    <li><strong>Calcular la masa de soluto:</strong> Para 0.1 M de $\text{NaCl}$ en 100 mL (0.1 L), la masa molar de $\text{NaCl}$ es 58.44 g/mol.
+                        $$ \text{Masa NaCl} = 0.1 \text{ mol/L} \times 0.1 \text{ L} \times 58.44 \text{ g/mol} = 0.5844 \text{ g} $$
+                    </li>
+                    <li><strong>Pesar el soluto:</strong> Pesar con precisión 0.5844 g de $\text{NaCl}$ en la balanza analítica.</li>
+                    <li><strong>Disolver el soluto:</strong> Transferir el $\text{NaCl}$ pesado a un vaso de precipitados. Añadir una pequeña cantidad de agua destilada (aproximadamente 20-30 mL) y agitar con una varilla de vidrio hasta que el $\text{NaCl}$ se disuelva completamente.</li>
+                    <li><strong>Transferir a matraz aforado:</strong> Transferir la disolución del vaso de precipitados a un matraz aforado de 100 mL, usando un embudo si es necesario. Enjuagar el vaso de precipitados y la varilla con pequeñas porciones de agua destilada y añadir los enjuagues al matraz aforado para asegurar la transferencia completa del soluto.</li>
+                    <li><strong>Aforar:</strong> Añadir agua destilada al matraz aforado hasta cerca de la marca de aforo. Con una pipeta Pasteur o cuentagotas, añadir agua gota a gota hasta que la parte inferior del menisco coincida exactamente con la marca de aforo.</li>
+                    <li><strong>Homogeneizar:</strong> Tapar el matraz aforado y invertirlo varias veces para asegurar una mezcla homogénea.</li>
+                </ol>
+            </div>
+
+            <h4>Preparación de una Dilución a partir de una Disolución Concentrada</h4>
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2: Preparación de 50 mL de una disolución 0.01 M de $\text{HCl}$ a partir de una disolución 0.1 M de $\text{HCl}$</strong></p>
+                <p><em>Materiales:</em> Pipeta volumétrica de 5 mL, propipeta, matraz aforado de 50 mL, vaso de precipitados, frasco lavador con agua destilada.</p>
+                <p><em>Procedimiento:</em></p>
+                <ol>
+                    <li><strong>Calcular el volumen de la disolución concentrada ($\text{V}_1$):</strong> Utilizar la fórmula de dilución $ \text{C}_1\text{V}_1 = \text{C}_2\text{V}_2 $.
+                        $$ (0.1 \text{ M}) \times \text{V}_1 = (0.01 \text{ M}) \times (50 \text{ mL}) $$
+                        $$ \text{V}_1 = \frac{0.01 \text{ M} \times 50 \text{ mL}}{0.1 \text{ M}} = 5 \text{ mL} $$
+                    </li>
+                    <li><strong>Medir la disolución concentrada:</strong> Con una pipeta volumétrica de 5 mL y una propipeta, medir exactamente 5 mL de la disolución 0.1 M de $\text{HCl}$.</li>
+                    <li><strong>Transferir a matraz aforado:</strong> Transferir los 5 mL de la disolución concentrada a un matraz aforado de 50 mL.</li>
+                    <li><strong>Aforar:</strong> Añadir agua destilada al matraz aforado hasta cerca de la marca de aforo. Con una pipeta Pasteur o cuentagotas, añadir agua gota a gota hasta que la parte inferior del menisco coincida exactamente con la marca de aforo.</li>
+                    <li><strong>Homogeneizar:</strong> Tapar el matraz aforado y invertirlo varias veces para asegurar una mezcla homogénea.</li>
+                </ol>
+            </div>
+
+            <h3 id="material-vidrio">Explicación de Material de Vidrio: Uso Adecuado</h3>
+            <p>El material de vidrio en el laboratorio se selecciona en función de la precisión requerida para la medición de volúmenes. Es crucial conocer su uso adecuado para obtener resultados fiables.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1: Balón Aforado (Matraz Volumétrico)</strong></p>
+                <p></p>
+                <ul>
+                    <li><strong>Función:</strong> Preparar disoluciones con un volumen y concentración exactos. Son muy precisos para contener un volumen específico a una temperatura dada.</li>
+                    <li><strong>Uso:</strong> Se utiliza para disolver un soluto y luego enrasar con el solvente hasta la marca de aforo. No se usa para medir volúmenes variables ni para calentar.</li>
+                    <li><strong>Precisión:</strong> Alta (clase A para mayor precisión).</li>
+                    <li><strong>Ejemplo de uso:</strong> Preparar una disolución estándar de 1.000 M de $\text{NaOH}$.</li>
+                </ul>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2: Pipeta Volumétrica (Pipeta de Doble Aforo)</strong></p>
+                <p></p>
+                <ul>
+                    <li><strong>Función:</strong> Transferir un volumen exacto de líquido de un recipiente a otro. Tienen una única marca de aforo (o dos para volúmenes específicos).</li>
+                    <li><strong>Uso:</strong> Se llena hasta la marca de aforo y se vacía por gravedad (sin soplar, a menos que sea una pipeta de Mohr). Requiere el uso de una propipeta para aspirar el líquido.</li>
+                    <li><strong>Precisión:</strong> Muy alta.</li>
+                    <li><strong>Ejemplo de uso:</strong> Medir exactamente 25.00 mL de una disolución para una titulación.</li>
+                </ul>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3: Bureta</strong></p>
+                <p></p>
+                <ul>
+                    <li><strong>Función:</strong> Medir y dispensar volúmenes variables de líquido con alta precisión, especialmente en titulaciones. Tiene una llave de paso para controlar el flujo.</li>
+                    <li><strong>Uso:</strong> Se llena hasta la marca de cero y se lee el volumen dispensado por diferencia entre la lectura inicial y final. Se lee el menisco inferior.</li>
+                    <li><strong>Precisión:</strong> Alta.</li>
+                    <li><strong>Ejemplo de uso:</strong> Determinar el volumen de un ácido necesario para neutralizar una base en una titulación.</li>
+                </ul>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4: Probeta Graduada (Cilindro Graduado)</strong></p>
+                <p></p>
+                <ul>
+                    <li><strong>Función:</strong> Medir volúmenes aproximados de líquidos. Son menos precisas que los matraces aforados o las pipetas volumétricas.</li>
+                    <li><strong>Uso:</strong> Se utiliza para medir volúmenes cuando no se requiere una alta precisión. Se lee el menisco inferior a la altura de los ojos.</li>
+                    <li><strong>Precisión:</strong> Baja a moderada.</li>
+                    <li><strong>Ejemplo de uso:</strong> Medir 50 mL de agua para un experimento que no requiere gran exactitud, o para disolver inicialmente un sólido antes de aforar en un matraz volumétrico.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="unidades-concentracion">
+            <h2>Unidades de Concentración y su Interconversión</h2>
+            <p>La concentración de una disolución es una medida de la cantidad de soluto presente en una cantidad dada de disolvente o de disolución. Existen diversas unidades de concentración, cada una útil en diferentes contextos.</p>
+
+            <h3>Unidades de Concentración</h3>
+
+            <h4>1. Porcentaje Masa/Masa (%m/m)</h4>
+            <p>El <strong>porcentaje masa/masa (%m/m)</strong>, también conocido como porcentaje en peso, expresa los gramos de soluto por cada 100 gramos de disolución.</p>
+            <div class="MathJax_Display">
+                $$ \% \text{m/m} = \frac{\text{Masa de soluto (g)}}{\text{Masa de disolución (g)}} \times 100\% $$
+            </div>
+            <p>Donde: Masa de disolución = Masa de soluto + Masa de solvente.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de %m/m: Sal en Agua</strong></p>
+                <p>Se disuelven 15 g de $\text{NaCl}$ en 85 g de agua. Calcula el %m/m de la disolución.</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de soluto = 15 g $\text{NaCl}$</p>
+                <p>Masa de solvente = 85 g agua</p>
+                <p>Masa de disolución = 15 g + 85 g = 100 g</p>
+                <div class="MathJax_Display">
+                    $$ \% \text{m/m} = \frac{15 \text{ g NaCl}}{100 \text{ g disolución}} \times 100\% = 15\% \text{m/m} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de %m/m: Azúcar en Café</strong></p>
+                <p>Una taza de café de 200 g contiene 20 g de azúcar. ¿Cuál es el %m/m de azúcar en el café?</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de soluto = 20 g azúcar</p>
+                <p>Masa de disolución = 200 g café</p>
+                <div class="MathJax_Display">
+                    $$ \% \text{m/m} = \frac{20 \text{ g azúcar}}{200 \text{ g café}} \times 100\% = 10\% \text{m/m} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de %m/m: Ácido en Disolución</strong></p>
+                <p>Se preparan 500 g de una disolución de ácido sulfúrico al 25% m/m. ¿Cuántos gramos de ácido sulfúrico puro se necesitan?</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de disolución = 500 g</p>
+                <p>%m/m = 25%</p>
+                <div class="MathJax_Display">
+                    $$ \text{Masa de soluto} = \frac{\% \text{m/m} \times \text{Masa de disolución}}{100\%} = \frac{25 \times 500 \text{ g}}{100} = 125 \text{ g de ácido sulfúrico} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de %m/m: Cálculo de Solvente</strong></p>
+                <p>Se desea preparar 300 g de una disolución de glucosa al 12% m/m. ¿Cuántos gramos de agua se requieren?</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de disolución = 300 g</p>
+                <p>%m/m = 12%</p>
+                <p>Masa de soluto (glucosa) = $ \frac{12 \times 300 \text{ g}}{100} = 36 \text{ g} $</p>
+                <p>Masa de solvente (agua) = Masa de disolución - Masa de soluto = 300 g - 36 g = 264 g de agua</p>
+            </div>
+
+            <h4>2. Porcentaje Masa/Volumen (%m/v)</h4>
+            <p>El <strong>porcentaje masa/volumen (%m/v)</strong> expresa los gramos de soluto por cada 100 mililitros de disolución. Es comúnmente utilizado en química clínica y farmacia.</p>
+            <div class="MathJax_Display">
+                $$ \% \text{m/v} = \frac{\text{Masa de soluto (g)}}{\text{Volumen de disolución (mL)}} \times 100\% $$
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de %m/v: Suero Fisiológico</strong></p>
+                <p>Un suero fisiológico es una disolución de $\text{NaCl}$ al 0.9% m/v. ¿Cuántos gramos de $\text{NaCl}$ hay en 500 mL de suero?</p>
+                <p><em>Solución:</em></p>
+                <p>%m/v = 0.9%</p>
+                <p>Volumen de disolución = 500 mL</p>
+                <div class="MathJax_Display">
+                    $$ \text{Masa de soluto} = \frac{\% \text{m/v} \times \text{Volumen de disolución}}{100\%} = \frac{0.9 \times 500 \text{ mL}}{100} = 4.5 \text{ g NaCl} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de %m/v: Preparación de una Solución de Glucosa</strong></p>
+                <p>Se disuelven 25 g de glucosa en agua hasta completar un volumen de 250 mL de disolución. Calcula el %m/v de glucosa.</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de soluto = 25 g glucosa</p>
+                <p>Volumen de disolución = 250 mL</p>
+                <div class="MathJax_Display">
+                    $$ \% \text{m/v} = \frac{25 \text{ g glucosa}}{250 \text{ mL disolución}} \times 100\% = 10\% \text{m/v} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de %m/v: Concentración de Alcohol en Gel</strong></p>
+                <p>Un frasco de alcohol en gel de 100 mL indica que contiene 70% v/v de alcohol. Si la densidad del alcohol es 0.789 g/mL, ¿cuántos gramos de alcohol hay en el frasco? (Nota: Aunque es %v/v, se puede convertir a %m/v con la densidad)</p>
+                <p><em>Solución:</em></p>
+                <p>Volumen de alcohol = $ 70\% \text{ de } 100 \text{ mL} = 70 \text{ mL} $</p>
+                <p>Masa de alcohol = Volumen $\times$ Densidad = $ 70 \text{ mL} \times 0.789 \text{ g/mL} = 55.23 \text{ g} $</p>
+                <p>%m/v de alcohol = $ \frac{55.23 \text{ g}}{100 \text{ mL}} \times 100\% = 55.23\% \text{m/v} $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de %m/v: Volumen de Disolución</strong></p>
+                <p>¿Qué volumen de una disolución de $\text{KOH}$ al 5% m/v contiene 10 g de $\text{KOH}$?</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de soluto = 10 g $\text{KOH}$</p>
+                <p>%m/v = 5%</p>
+                <div class="MathJax_Display">
+                    $$ \text{Volumen de disolución} = \frac{\text{Masa de soluto} \times 100\%}{\% \text{m/v}} = \frac{10 \text{ g} \times 100}{5} = 200 \text{ mL} $$
+                </div>
+            </div>
+
+            <h4>3. Molaridad (M)</h4>
+            <p>La <strong>Molaridad (M)</strong> es una de las unidades de concentración más utilizadas en química. Se define como el número de moles de soluto por cada litro de disolución.</p>
+            <div class="MathJax_Display">
+                $$ \text{Molaridad (M)} = \frac{\text{Moles de soluto}}{\text{Volumen de disolución (L)}} $$
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Molaridad: Ácido Clorhídrico</strong></p>
+                <p>Se disuelven 73 g de $\text{HCl}$ en agua hasta completar 2.0 L de disolución. Calcula la molaridad. (Masa molar $\text{HCl} = 36.46 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Moles de $\text{HCl} = \frac{73 \text{ g}}{36.46 \text{ g/mol}} \approx 2.002 \text{ mol}$</p>
+                <p>Volumen de disolución = 2.0 L</p>
+                <div class="MathJax_Display">
+                    $$ \text{Molaridad} = \frac{2.002 \text{ mol}}{2.0 \text{ L}} \approx 1.00 \text{ M} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Molaridad: Sulfato de Cobre(II)</strong></p>
+                <p>¿Cuántos gramos de $\text{CuSO}_4$ se necesitan para preparar 500 mL de una disolución 0.5 M? (Masa molar $\text{CuSO}_4 = 159.61 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Volumen de disolución = 500 mL = 0.5 L</p>
+                <p>Molaridad = 0.5 M</p>
+                <p>Moles de $\text{CuSO}_4$ = Molaridad $\times$ Volumen = $ 0.5 \text{ mol/L} \times 0.5 \text{ L} = 0.25 \text{ mol} $</p>
+                <p>Masa de $\text{CuSO}_4$ = Moles $\times$ Masa molar = $ 0.25 \text{ mol} \times 159.61 \text{ g/mol} = 39.90 \text{ g} $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Molaridad: Volumen de Disolución</strong></p>
+                <p>¿Qué volumen (en mL) de una disolución 0.25 M de $\text{NaOH}$ contiene 5.0 g de $\text{NaOH}$? (Masa molar $\text{NaOH} = 40.00 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de $\text{NaOH}$ = 5.0 g</p>
+                <p>Moles de $\text{NaOH} = \frac{5.0 \text{ g}}{40.00 \text{ g/mol}} = 0.125 \text{ mol}$</p>
+                <p>Molaridad = 0.25 M</p>
+                <p>Volumen de disolución (L) = $\frac{\text{Moles de soluto}}{\text{Molaridad}} = \frac{0.125 \text{ mol}}{0.25 \text{ mol/L}} = 0.5 \text{ L}$</p>
+                <p>Volumen de disolución (mL) = $ 0.5 \text{ L} \times 1000 \text{ mL/L} = 500 \text{ mL} $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Molaridad: Ácido Acético en Vinagre</strong></p>
+                <p>Un vinagre comercial tiene una concentración de 0.83 M de ácido acético ($\text{CH}_3\text{COOH}$). ¿Cuántos moles de ácido acético hay en 250 mL de este vinagre?</p>
+                <p><em>Solución:</em></p>
+                <p>Molaridad = 0.83 M</p>
+                <p>Volumen de disolución = 250 mL = 0.25 L</p>
+                <p>Moles de $\text{CH}_3\text{COOH}$ = Molaridad $\times$ Volumen = $ 0.83 \text{ mol/L} \times 0.25 \text{ L} = 0.2075 \text{ mol} $</p>
+            </div>
+
+            <h4>4. Molalidad (m)</h4>
+            <p>La <strong>Molalidad (m)</strong> se define como el número de moles de soluto por cada kilogramo de solvente. A diferencia de la molaridad, la molalidad no varía con la temperatura, ya que se basa en la masa del solvente en lugar del volumen de la disolución.</p>
+            <div class="MathJax_Display">
+                $$ \text{Molalidad (m)} = \frac{\text{Moles de soluto}}{\text{Masa de solvente (kg)}} $$
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Molalidad: Etanol en Agua</strong></p>
+                <p>Se disuelven 23 g de etanol ($\text{C}_2\text{H}_5\text{OH}$) en 500 g de agua. Calcula la molalidad. (Masa molar $\text{C}_2\text{H}_5\text{OH} = 46.07 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Moles de etanol = $ \frac{23 \text{ g}}{46.07 \text{ g/mol}} \approx 0.499 \text{ mol} $</p>
+                <p>Masa de solvente = 500 g = 0.5 kg</p>
+                <div class="MathJax_Display">
+                    $$ \text{Molalidad} = \frac{0.499 \text{ mol}}{0.5 \text{ kg}} \approx 0.998 \text{ m} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Molalidad: Glucosa en Agua</strong></p>
+                <p>¿Cuántos gramos de glucosa ($\text{C}_6\text{H}_{12}\text{O}_6$) se necesitan para preparar una disolución 0.2 m en 1.5 kg de agua? (Masa molar $\text{C}_6\text{H}_{12}\text{O}_6 = 180.16 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Molalidad = 0.2 m</p>
+                <p>Masa de solvente = 1.5 kg</p>
+                <p>Moles de glucosa = Molalidad $\times$ Masa de solvente = $ 0.2 \text{ mol/kg} \times 1.5 \text{ kg} = 0.3 \text{ mol} $</p>
+                <p>Masa de glucosa = Moles $\times$ Masa molar = $ 0.3 \text{ mol} \times 180.16 \text{ g/mol} = 54.05 \text{ g} $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Molalidad: Sal en Benceno</strong></p>
+                <p>Una disolución se prepara disolviendo 10.0 g de un soluto desconocido en 200.0 g de benceno. Si la molalidad es 0.80 m, ¿cuál es la masa molar del soluto?</p>
+                <p><em>Solución:</em></p>
+                <p>Masa de soluto = 10.0 g</p>
+                <p>Masa de solvente = 200.0 g = 0.200 kg</p>
+                <p>Molalidad = 0.80 m</p>
+                <p>Moles de soluto = Molalidad $\times$ Masa de solvente = $ 0.80 \text{ mol/kg} \times 0.200 \text{ kg} = 0.16 \text{ mol} $</p>
+                <p>Masa molar del soluto = $\frac{\text{Masa de soluto}}{\text{Moles de soluto}} = \frac{10.0 \text{ g}}{0.16 \text{ mol}} = 62.5 \text{ g/mol} $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Molalidad: Concentración de Urea en Agua</strong></p>
+                <p>Se disuelven 30 g de urea ($\text{CO}(\text{NH}_2)_2$) en 150 g de agua. Calcula la molalidad de la disolución. (Masa molar $\text{CO}(\text{NH}_2)_2 = 60.06 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Moles de urea = $ \frac{30 \text{ g}}{60.06 \text{ g/mol}} \approx 0.4995 \text{ mol} $</p>
+                <p>Masa de solvente = 150 g = 0.150 kg</p>
+                <div class="MathJax_Display">
+                    $$ \text{Molalidad} = \frac{0.4995 \text{ mol}}{0.150 \text{ kg}} \approx 3.33 \text{ m} $$
+                </div>
+            </div>
+
+            <h4>5. Fracción Molar (X)</h4>
+            <p>La <strong>Fracción Molar (X)</strong> de un componente en una disolución es la relación entre el número de moles de ese componente y el número total de moles de todos los componentes en la disolución. La suma de las fracciones molares de todos los componentes en una disolución siempre es igual a 1.</p>
+            <div class="MathJax_Display">
+                $$ \text{X}_i = \frac{\text{Moles del componente } i}{\text{Moles totales de la disolución}} $$
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Fracción Molar: Etanol y Agua</strong></p>
+                <p>Una disolución contiene 1.5 moles de etanol ($\text{C}_2\text{H}_5\text{OH}$) y 8.5 moles de agua ($\text{H}_2\text{O}$). Calcula la fracción molar de cada componente.</p>
+                <p><em>Solución:</em></p>
+                <p>Moles totales = 1.5 mol (etanol) + 8.5 mol (agua) = 10.0 mol</p>
+                <p>Fracción molar de etanol ($\text{X}_{\text{etanol}}$) = $ \frac{1.5 \text{ mol}}{10.0 \text{ mol}} = 0.15 $</p>
+                <p>Fracción molar de agua ($\text{X}_{\text{agua}}$) = $ \frac{8.5 \text{ mol}}{10.0 \text{ mol}} = 0.85 $</p>
+                <p>Verificación: $ 0.15 + 0.85 = 1.00 $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Fracción Molar: Glucosa en Agua</strong></p>
+                <p>Se disuelven 36 g de glucosa ($\text{C}_6\text{H}_{12}\text{O}_6$) en 100 g de agua. Calcula la fracción molar de glucosa. (Masas molares: $\text{C}_6\text{H}_{12}\text{O}_6 = 180.16 \text{ g/mol}$, $\text{H}_2\text{O} = 18.02 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Moles de glucosa = $ \frac{36 \text{ g}}{180.16 \text{ g/mol}} \approx 0.1998 \text{ mol} $</p>
+                <p>Moles de agua = $ \frac{100 \text{ g}}{18.02 \text{ g/mol}} \approx 5.549 \text{ mol} $</p>
+                <p>Moles totales = $ 0.1998 \text{ mol} + 5.549 \text{ mol} = 5.7488 \text{ mol} $</p>
+                <p>Fracción molar de glucosa ($\text{X}_{\text{glucosa}}$) = $ \frac{0.1998 \text{ mol}}{5.7488 \text{ mol}} \approx 0.03476 $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Fracción Molar: Aire Seco</strong></p>
+                <p>El aire seco contiene aproximadamente 78% molar de $\text{N}_2$, 21% molar de $\text{O}_2$ y 1% molar de $\text{Ar}$. Expresa estas composiciones como fracciones molares.</p>
+                <p><em>Solución:</em></p>
+                <p>Las composiciones molares en porcentaje se pueden convertir directamente a fracción molar dividiendo por 100.</p>
+                <p>Fracción molar de $\text{N}_2$ ($\text{X}_{\text{N}_2}$) = $ \frac{78}{100} = 0.78 $</p>
+                <p>Fracción molar de $\text{O}_2$ ($\text{X}_{\text{O}_2}$) = $ \frac{21}{100} = 0.21 $</p>
+                <p>Fracción molar de $\text{Ar}$ ($\text{X}_{\text{Ar}}$) = $ \frac{1}{100} = 0.01 $</p>
+                <p>Verificación: $ 0.78 + 0.21 + 0.01 = 1.00 $</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Fracción Molar: Disolución de Metanol en Agua</strong></p>
+                <p>Se mezclan 64 g de metanol ($\text{CH}_3\text{OH}$) con 72 g de agua. Calcula la fracción molar de metanol. (Masas molares: $\text{CH}_3\text{OH} = 32.04 \text{ g/mol}$, $\text{H}_2\text{O} = 18.02 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Moles de metanol = $ \frac{64 \text{ g}}{32.04 \text{ g/mol}} \approx 1.9975 \text{ mol} $</p>
+                <p>Moles de agua = $ \frac{72 \text{ g}}{18.02 \text{ g/mol}} \approx 3.9956 \text{ mol} $</p>
+                <p>Moles totales = $ 1.9975 \text{ mol} + 3.9956 \text{ mol} = 5.9931 \text{ mol} $</p>
+                <p>Fracción molar de metanol ($\text{X}_{\text{metanol}}$) = $ \frac{1.9975 \text{ mol}}{5.9931 \text{ mol}} \approx 0.3333 $</p>
+            </div>
+
+            <h3>Interconversión de Unidades de Concentración</h3>
+            <p>Es común necesitar convertir una unidad de concentración a otra. Esto a menudo requiere el uso de la densidad de la disolución y las masas molares de los componentes.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Interconversión: Molaridad a %m/v</strong></p>
+                <p>Una disolución de $\text{NaOH}$ es 0.5 M. Calcula su concentración en %m/v. (Masa molar $\text{NaOH} = 40.00 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Asumimos 1 L de disolución para simplificar el cálculo.</p>
+                <p>En 1 L de disolución hay 0.5 moles de $\text{NaOH}$.</p>
+                <p>Masa de $\text{NaOH}$ = $ 0.5 \text{ mol} \times 40.00 \text{ g/mol} = 20 \text{ g} $</p>
+                <p>Volumen de disolución = 1 L = 1000 mL</p>
+                <div class="MathJax_Display">
+                    $$ \% \text{m/v} = \frac{20 \text{ g NaOH}}{1000 \text{ mL disolución}} \times 100\% = 2\% \text{m/v} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Interconversión: %m/m a Molaridad</strong></p>
+                <p>Una disolución de $\text{HCl}$ tiene una concentración del 37% m/m y una densidad de 1.18 g/mL. Calcula su molaridad. (Masa molar $\text{HCl} = 36.46 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Asumimos 100 g de disolución para simplificar el cálculo.</p>
+                <p>Masa de $\text{HCl}$ puro = $ 37 \text{ g} $</p>
+                <p>Moles de $\text{HCl}$ = $ \frac{37 \text{ g}}{36.46 \text{ g/mol}} \approx 1.0148 \text{ mol} $</p>
+                <p>Volumen de disolución = $\frac{\text{Masa de disolución}}{\text{Densidad}} = \frac{100 \text{ g}}{1.18 \text{ g/mL}} \approx 84.75 \text{ mL} = 0.08475 \text{ L} $</p>
+                <div class="MathJax_Display">
+                    $$ \text{Molaridad} = \frac{1.0148 \text{ mol}}{0.08475 \text{ L}} \approx 11.97 \text{ M} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Interconversión: Molaridad a Molalidad</strong></p>
+                <p>Una disolución 1.0 M de $\text{NaCl}$ tiene una densidad de 1.04 g/mL. Calcula su molalidad. (Masas molares: $\text{NaCl} = 58.44 \text{ g/mol}$, $\text{H}_2\text{O} = 18.02 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Asumimos 1 L (1000 mL) de disolución.</p>
+                <p>Moles de $\text{NaCl}$ = 1.0 mol</p>
+                <p>Masa de $\text{NaCl}$ = $ 1.0 \text{ mol} \times 58.44 \text{ g/mol} = 58.44 \text{ g} $</p>
+                <p>Masa de disolución = Volumen $\times$ Densidad = $ 1000 \text{ mL} \times 1.04 \text{ g/mL} = 1040 \text{ g} $</p>
+                <p>Masa de solvente (agua) = Masa de disolución - Masa de soluto = $ 1040 \text{ g} - 58.44 \text{ g} = 981.56 \text{ g} = 0.98156 \text{ kg} $</p>
+                <div class="MathJax_Display">
+                    $$ \text{Molalidad} = \frac{1.0 \text{ mol}}{0.98156 \text{ kg}} \approx 1.019 \text{ m} $$
+                </div>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Interconversión: Fracción Molar a %m/m</strong></p>
+                <p>Una disolución de etanol en agua tiene una fracción molar de etanol de 0.20. Calcula el %m/m de etanol. (Masas molares: $\text{C}_2\text{H}_5\text{OH} = 46.07 \text{ g/mol}$, $\text{H}_2\text{O} = 18.02 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <p>Asumimos 1 mol total de disolución.</p>
+                <p>Moles de etanol = $ 0.20 \text{ mol} $</p>
+                <p>Moles de agua = $ 1.00 - 0.20 = 0.80 \text{ mol} $</p>
+                <p>Masa de etanol = $ 0.20 \text{ mol} \times 46.07 \text{ g/mol} = 9.214 \text{ g} $</p>
+                <p>Masa de agua = $ 0.80 \text{ mol} \times 18.02 \text{ g/mol} = 14.416 \text{ g} $</p>
+                <p>Masa total de disolución = $ 9.214 \text{ g} + 14.416 \text{ g} = 23.63 \text{ g} $</p>
+                <div class="MathJax_Display">
+                    $$ \% \text{m/m} = \frac{9.214 \text{ g etanol}}{23.63 \text{ g disolución}} \times 100\% \approx 38.99\% \text{m/m} $$
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const mainNav = document.getElementById('main-nav');
+
+            // Toggle menu visibility on hamburger icon click
+            hamburgerIcon.addEventListener('click', () => {
+                mainNav.classList.toggle('open');
+            });
+
+            // Close menu when a navigation link is clicked (for mobile usability)
+            mainNav.querySelectorAll('a').forEach(anchor => {
+                anchor.addEventListener('click', () => {
+                    // Only close if the menu is currently open (i.e., on mobile)
+                    if (mainNav.classList.contains('open')) {
+                        mainNav.classList.remove('open');
+                    }
+                });
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav ul li a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            window.location.href = targetId;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

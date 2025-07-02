@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Química Integral: Fundamentos y Fórmulas con MathJax</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuración de MathJax para el renderizado de ecuaciones LaTeX
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemáticas en línea
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // Delimitadores para matemáticas en bloque
+                processEscapes: true, // Permite escapar los delimitadores de MathJax
+                processEnvironments: true // Procesa entornos LaTeX como \begin{align}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', // Clases HTML a ignorar por MathJax
+                processHtmlClass: 'tex2jax_process' // Clases HTML a procesar por MathJax
+            },
+            startup: {
+                pageReady: function() {
+                    // Espera a que el DOM esté completamente cargado para procesar MathJax
+                    document.addEventListener('DOMContentLoaded', () => {
+                        MathJax.typeset(); // Inicia el renderizado de MathJax
+                    });
+                }
+            }
+        };
+    </script>
+    <!-- Script de MathJax desde CDN -->
+    <script id="mathjax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+
+    <style>
+        /* --- Reset General y Estilos de Cuerpo --- */
+        body, h1, h2, h3, h4, p, ul, li, section, div { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Merriweather', serif;
+            /* Aumentar el tamaño de fuente base para mejor legibilidad */
+            font-size: 1.15em; /* Originalmente era 1em implícito */
+            line-height: 1.8; /* Aumentar la altura de línea para más espacio entre líneas */
+            color: #333;
+            background-color: #f4f4f4;
+            padding-top: 100px; /* Espacio para el header fijo, ajusta si tu header es más alto */
+        }
+
+        /* --- Header Fijo --- */
+        header {
+            background-color: #283747; /* Azul oscuro */
+            color: #ecf0f1; /* Gris claro */
+            padding: 20px 0;
+            text-align: center;
+            position: static; /* Hace que el header se quede fijo */
+            width: 100%; /* Ocupa todo el ancho */
+            top: 0; /* Lo fija en la parte superior */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sutil sombra */
+        }
+
+        header h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.8em; /* Aumentado */
+            margin-bottom: 8px; /* Ajustado */
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px; /* Ajustado */
+        }
+
+        nav ul li {
+            margin: 0 20px; /* Aumentado */
+        }
+
+        nav ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.25em; /* Aumentado */
+            padding: 8px 15px; /* Aumentado */
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #34495e; /* Azul más oscuro al pasar el mouse */
+        }
+
+        /* --- Estilos de Contenido General --- */
+        .container {
+            width: 85%; /* Ligeramente más ancho para más espacio */
+            max-width: 1300px; /* Aumentado el ancho máximo */
+            margin: 30px auto; /* Aumentado el margen */
+            background-color: #fff;
+            padding: 40px; /* Aumentado el padding */
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        section {
+            margin-bottom: 50px; /* Aumentado */
+            padding-bottom: 30px; /* Aumentado */
+            border-bottom: 1px dashed #ccc;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Fjalla One', sans-serif;
+            color: #2c3e50; /* Azul oscuro */
+            margin-bottom: 25px; /* Aumentado */
+            font-size: 2.2em; /* Aumentado */
+            border-left: 6px solid #2980b9; /* Borde más grueso */
+            padding-left: 15px; /* Aumentado */
+        }
+
+        h3 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 35px; /* Aumentado */
+            margin-bottom: 20px; /* Aumentado */
+            font-size: 1.7em; /* Aumentado */
+        }
+
+        h4 {
+            font-family: 'Merriweather', serif;
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em; /* Aumentado */
+        }
+
+        p {
+            margin-bottom: 20px; /* Aumentado */
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 30px; /* Aumentado */
+            margin-bottom: 20px; /* Aumentado */
+        }
+
+        li {
+            margin-bottom: 10px; /* Aumentado */
+        }
+
+        /* --- Estilos específicos para MathJax (puedes ajustar según sea necesario) --- */
+        .MathJax_Display {
+            margin: 1.5em 0 !important; /* Más espacio para ecuaciones en bloque */
+            padding: 0.8em 1em; /* Más padding */
+            background-color: #eaf2f8; /* Fondo suave para ecuaciones */
+            border-left: 5px solid #5dade2; /* Borde más grueso */
+            border-radius: 4px;
+            overflow-x: auto; /* Para ecuaciones largas */
+        }
+
+        .MathJax_SVG_Display {
+            margin: 1.5em 0 !important; /* Asegura el espaciado para ecuaciones en bloque */
+        }
+
+        /* --- Estilos para ejercicios --- */
+        .ejercicio-experto {
+            background-color: #f9f9f9;
+            border: 1px solid #dcdcdc;
+            border-left: 6px solid #e74c3c; /* Borde rojo distintivo más grueso */
+            padding: 20px; /* Aumentado */
+            margin-top: 30px; /* Aumentado */
+            margin-bottom: 35px; /* Aumentado */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .ejercicio-experto p {
+            font-weight: bold;
+            color: #c0392b; /* Color rojo para el título del ejercicio */
+            margin-bottom: 15px; /* Aumentado */
+        }
+
+        .ejercicio-experto ol, .ejercicio-experto ul {
+            margin-left: 25px; /* Aumentado */
+            margin-top: 15px; /* Aumentado */
+        }
+
+        .ejercicio-experto li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química Integral</h1>
+        <nav>
+            <ul>
+                <li><a href="#fundamentos-masa">Masa Atómica y Molar</a></li>
+                <li><a href="#composicion-formulas">Fórmulas y Composición</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="fundamentos-masa">
+            <h3>I. Fundamentos de la Masa a Nivel Atómico y Molecular: El Arte de Contar lo Invisible</h3>
+            <p>Aquí, la experticia reside en comprender cómo pasamos de la ínfima masa de un átomo a las cantidades que podemos pesar en una balanza.</p>
+
+            <h4>Masa Atómica: La Huella Dactilar Cuantitativa de un Elemento</h4>
+            <p>La masa atómica es más que un número en la tabla periódica; es el <strong>promedio ponderado de las masas de los isótopos naturales</strong> de un elemento, considerando su abundancia. No es la masa de un solo átomo, sino un valor representativo que nos permite trabajar con el elemento en su estado natural. La unidad, la <strong>UMA (Unidad de Masa Atómica)</strong>, es crucial: define la doceava parte de la masa de un átomo de carbono-12, estableciendo un estándar universal. Un experto no solo sabe qué es la UMA, sino por qué se definió así y su importancia histórica para unificar las mediciones atómicas. Entender la diferencia entre la masa de un isótopo específico y la masa atómica promedio de un elemento es clave.</p>
+
+            <div class="ejercicio-experto">
+                <p><strong>Ejercicio de Experto: Masa Atómica Ponderada</strong></p>
+                <p>El boro natural tiene dos isótopos: $ ^{10}\text{B} $ (con masa de $ 10.0129 \text{ UMA} $ y abundancia de $ 19.9\% $) y $ ^{11}\text{B} $ (con masa de $ 11.0093 \text{ UMA} $ y abundancia de $ 80.1\% $). Sin mirar la tabla periódica, calcula la masa atómica promedio del boro y explica por qué tu resultado es lógico basándote en las abundancias.</p>
+                <p><em>Solución:</em></p>
+                <p>Masa atómica promedio = $(10.0129 \text{ UMA} \times 0.199) + (11.0093 \text{ UMA} \times 0.801)$</p>
+                <p>$= 1.9925671 \text{ UMA} + 8.8184593 \text{ UMA} = 10.8110264 \text{ UMA}$</p>
+                <p>Redondeando a dos decimales, la masa atómica promedio del boro es $10.81 \text{ UMA}$. Este resultado es lógico porque está más cerca de $11 \text{ UMA}$ que de $10 \text{ UMA}$, lo cual concuerda con que el isótopo $^{11}\text{B}$ tiene una abundancia significativamente mayor ($80.1\%$) que el isótopo $^{10}\text{B}$ ($19.9\%$).</p>
+            </div>
+
+            <h4>Número de Avogadro: El Puente Cuantitativo entre Dos Mundos</h4>
+            <p>Aquí está el corazón de la estequiometría. El <strong>número de Avogadro ($6.022 \times 10^{23}$ entidades/mol)</strong> no es solo una constante, sino el <strong>factor de conversión definitivo</strong> que conecta la escala microscópica (átomos, moléculas) con la escala macroscópica (gramos, moles). Ser un experto significa entender que un <strong>mol</strong> de cualquier sustancia contiene exactamente esa cantidad de partículas. Esto permite afirmar con confianza que $12.01 \text{ g}$ de carbono (su masa atómica) contienen un mol de átomos de carbono, al igual que $18.02 \text{ g}$ de agua contienen un mol de moléculas de agua. Es la base para poder "contar" átomos y moléculas sin verlos.</p>
+
+            <div class="ejercicio-experto">
+                <p><strong>Ejercicio de Experto: Átomos en una Muestra</strong></p>
+                <p>Si tienes una muestra de $50.0 \text{ g}$ de glucosa ($\text{C}_6\text{H}_{12}\text{O}_6$), ¿cuántos átomos de hidrógeno hay en la muestra? Explica cada paso de tu razonamiento, enfatizando el papel del número de Avogadro y la masa molar.</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular la masa molar de la glucosa ($\text{C}_6\text{H}_{12}\text{O}_6$):</strong><br>
+                        $\text{C}: 6 \times 12.01 \text{ g/mol} = 72.06 \text{ g/mol}$<br>
+                        $\text{H}: 12 \times 1.008 \text{ g/mol} = 12.096 \text{ g/mol}$<br>
+                        $\text{O}: 6 \times 16.00 \text{ g/mol} = 96.00 \text{ g/mol}$<br>
+                        Masa molar de $\text{C}_6\text{H}_{12}\text{O}_6 = 72.06 + 12.096 + 96.00 = 180.156 \text{ g/mol}$</li>
+                    <li><strong>Convertir gramos de glucosa a moles de glucosa:</strong><br>
+                        Moles de $\text{C}_6\text{H}_{12}\text{O}_6 = \frac{50.0 \text{ g}}{180.156 \text{ g/mol}} \approx 0.2775 \text{ mol C}_6\text{H}_{12}\text{O}_6$</li>
+                    <li><strong>Calcular moles de átomos de hidrógeno:</strong><br>
+                        Por cada mol de $\text{C}_6\text{H}_{12}\text{O}_6$, hay $12$ moles de átomos de $\text{H}$ (según la fórmula).<br>
+                        Moles de $\text{H}$ átomos $= 0.2775 \text{ mol C}_6\text{H}_{12}\text{O}_6 \times \frac{12 \text{ mol H}}{1 \text{ mol C}_6\text{H}_{12}\text{O}_6} = 3.33 \text{ mol H}$</li>
+                    <li><strong>Convertir moles de átomos de hidrógeno a número de átomos de hidrógeno (usando el número de Avogadro):</strong><br>
+                        Número de átomos de $\text{H} = 3.33 \text{ mol H} \times 6.022 \times 10^{23} \text{ átomos/mol} \approx 2.00 \times 10^{24} \text{ átomos de H}$</li>
+                    <p>El número de Avogadro ($6.022 \times 10^{23} \text{ átomos/mol}$) es esencial en el último paso porque nos permite escalar desde la cantidad macroscópica (moles) a la cantidad discreta de partículas (átomos), que son invisibles individualmente. Sin él, no podríamos contar los átomos.</p>
+                </ol>
+            </div>
+
+            <h4>Masa Molecular (o Masa Molar): La Suma de las Partes, el Valor de un Mol</h4>
+            <p>La masa molecular (también conocida como peso molecular o, más precisamente, <strong>masa molar</strong> cuando nos referimos a un mol de la sustancia) es simplemente la <strong>suma de las masas atómicas de todos los átomos presentes en una fórmula química</strong>, expresada en UMA para una molécula o en gramos/mol para un mol de la sustancia. La experticia aquí radica en la precisión: conocer las masas atómicas exactas y aplicarlas correctamente, especialmente en compuestos con subíndices, y comprender que la masa molar es numéricamente igual a la masa molecular, pero expresada en unidades diferentes ($\text{g/mol}$ en lugar de $\text{UMA}$), lo que facilita los cálculos en el laboratorio.</p>
+
+            <div class="ejercicio-experto">
+                <p><strong>Ejercicio de Experto: Cálculo de Masa Molar</strong></p>
+                <p>Calcula la masa molar de las siguientes sustancias, mostrando tus cálculos y explicando por qué las unidades son importantes en cada caso:</p>
+                <ol>
+                    <li>Sulfato de amonio ($\text{(NH}_4\text{)}_2\text{SO}_4$)</li>
+                    <li>Ácido fosfórico ($\text{H}_3\text{PO}_4$)</li>
+                    <li>Urea ($\text{CO(NH}_2\text{)}_2$)</li>
+                </ol>
+                <p>(Usa las masas atómicas de la tabla periódica con al menos dos decimales: $\text{N}=14.01$, $\text{H}=1.01$, $\text{S}=32.07$, $\text{O}=16.00$, $\text{C}=12.01$, $\text{P}=30.97$).</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Sulfato de amonio ($\text{(NH}_4\text{)}_2\text{SO}_4$):</strong><br>
+                        Hay $2 \times \text{N}$, $2 \times 4 = 8 \times \text{H}$, $1 \times \text{S}$, $4 \times \text{O}$.<br>
+                        Masa Molar $= (2 \times 14.01) + (8 \times 1.01) + (1 \times 32.07) + (4 \times 16.00)$<br>
+                        $= 28.02 + 8.08 + 32.07 + 64.00 = 132.17 \text{ g/mol}$<br>
+                        Las unidades $\text{g/mol}$ son cruciales porque nos indican la masa en gramos que contiene $6.022 \times 10^{23}$ entidades de sulfato de amonio, una cantidad medible en el laboratorio.</li>
+                    <li><strong>Ácido fosfórico ($\text{H}_3\text{PO}_4$):</strong><br>
+                        Hay $3 \times \text{H}$, $1 \times \text{P}$, $4 \times \text{O}$.<br>
+                        Masa Molar $= (3 \times 1.01) + (1 \times 30.97) + (4 \times 16.00)$<br>
+                        $= 3.03 + 30.97 + 64.00 = 98.00 \text{ g/mol}$<br>
+                        Las unidades $\text{g/mol}$ nos permiten convertir directamente entre la masa que medimos en la balanza y la cantidad de moles que reaccionará estequiométricamente.</li>
+                    <li><strong>Urea ($\text{CO(NH}_2\text{)}_2$):</strong><br>
+                        Contando todos los átomos: $1 \times \text{C}$, $1 \times \text{O}$, $2 \times \text{N}$, $2 \times 2 = 4 \times \text{H}$.<br>
+                        Masa Molar $= (1 \times 12.01) + (1 \times 16.00) + (2 \times 14.01) + (4 \times 1.01)$<br>
+                        $= 12.01 + 16.00 + 28.02 + 4.04 = 60.07 \text{ g/mol}$<br>
+                        Las unidades $\text{g/mol}$ son esenciales para la comunicación y reproducibilidad en la química, asegurando que todos los científicos se refieran a la misma cantidad de sustancia.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="composicion-formulas">
+            <h3>II. Composición y Fórmulas de los Compuestos: Desvelando la Identidad de la Sustancia</h3>
+            <p>Esta sección es donde se aplica la teoría para determinar qué está hecho un compuesto y en qué proporciones.</p>
+
+            <h4>Composición Porcentual: La Receta Química en Proporciones</h4>
+            <p>La composición porcentual es la <strong>proporción en masa de cada elemento en un compuesto</strong>, expresada como un porcentaje. Para un experto, no es solo aplicar una fórmula ($\frac{\text{masa del elemento}}{\text{masa total del compuesto}} \times 100\%$), sino entender que este porcentaje es <strong>constante para un compuesto puro</strong>, independientemente de la cantidad de muestra. Es la herramienta inicial para verificar la pureza de una muestra o para determinar la fórmula empírica a partir de datos experimentales.</p>
+
+            <div class="ejercicio-experto">
+                <p><strong>Ejercicio de Experto: Composición de Fertilizantes</strong></p>
+                <p>Un fertilizante común es el nitrato de amonio ($\text{NH}_4\text{NO}_3$). Determina la composición porcentual de cada elemento en este compuesto. Luego, explica cómo un agricultor podría usar esta información para estimar la cantidad de nitrógeno que está aplicando a sus cultivos.</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular la masa molar de $\text{NH}_4\text{NO}_3$:</strong><br>
+                        Elementos: $\text{N}$ (2 átomos), $\text{H}$ (4 átomos), $\text{O}$ (3 átomos).<br>
+                        Masa Molar $= (2 \times 14.01) + (4 \times 1.01) + (3 \times 16.00)$<br>
+                        $= 28.02 + 4.04 + 48.00 = 80.06 \text{ g/mol}$</li>
+                    <li><strong>Calcular el porcentaje de cada elemento:</strong><br>
+                        $\% \text{N} = \frac{(2 \times 14.01)\text{ g/mol}}{80.06 \text{ g/mol}} \times 100\% = \frac{28.02}{80.06} \times 100\% \approx 35.00\%$<br>
+                        $\% \text{H} = \frac{(4 \times 1.01)\text{ g/mol}}{80.06 \text{ g/mol}} \times 100\% = \frac{4.04}{80.06} \times 100\% \approx 5.05\%$<br>
+                        $\% \text{O} = \frac{(3 \times 16.00)\text{ g/mol}}{80.06 \text{ g/mol}} \times 100\% = \frac{48.00}{80.06} \times 100\% \approx 59.96\%$<br>
+                        (La suma puede no dar exactamente $100\%$ debido al redondeo).</li>
+                    <li><strong>Uso por un agricultor:</strong><br>
+                        Un agricultor que compra nitrato de amonio ($35.00\%$ N) sabe que por cada $100 \text{ kg}$ de fertilizante que aplica, $35.00 \text{ kg}$ son de nitrógeno puro. Si su cultivo requiere, por ejemplo, $100 \text{ kg}$ de nitrógeno por hectárea, puede calcular cuántos kilogramos de nitrato de amonio debe aplicar: $\frac{100 \text{ kg N}}{0.3500 \text{ (fracción de N)}} \approx 285.7 \text{ kg de nitrato de amonio}$. Esto le permite aplicar la cantidad precisa de nutrientes.</li>
+                </ol>
+            </div>
+
+            <h4>Fórmula Empírica: La Proporción Más Simple, el Esqueleto del Compuesto</h4>
+            <p>La fórmula empírica representa la <strong>relación de números enteros más simple entre los átomos de cada elemento en un compuesto</strong>. Un experto sabe que se obtiene a partir de la composición porcentual o las masas experimentales de los elementos. El proceso implica convertir masas a moles y luego dividir por la menor cantidad de moles para encontrar la proporción entera más pequeña. La clave es reconocer que, aunque dos compuestos puedan tener la misma fórmula empírica (ej. $\text{CH}_2\text{O}$ para formaldehído y glucosa), sus propiedades son radicalmente distintas, lo que nos lleva a la fórmula molecular.</p>
+
+            <div class="ejercicio-experto">
+                <p><strong>Ejercicio de Experto: Determinación de Fórmulas</strong></p>
+                <p>Se analiza un compuesto desconocido y se encuentra que contiene $40.0\%$ de carbono, $6.7\%$ de hidrógeno y $53.3\%$ de oxígeno en masa.</p>
+                <ol>
+                    <li>Determina la fórmula empírica de este compuesto.</li>
+                    <li>Si la masa molar experimental del compuesto es aproximadamente $180 \text{ g/mol}$, ¿cuál es la fórmula molecular? Describe tu metodología y justificación para cada paso.</p>
+                </ol>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Determinar la Fórmula Empírica:</strong><br>
+                        Asumimos una muestra de $100 \text{ g}$ para convertir porcentajes a gramos:<br>
+                        $\text{C}: 40.0 \text{ g}$, $\text{H}: 6.7 \text{ g}$, $\text{O}: 53.3 \text{ g}$.<br><br>
+                        Convertir gramos a moles (usando masas atómicas $\text{C}=12.01$, $\text{H}=1.01$, $\text{O}=16.00$):<br>
+                        Moles de $\text{C} = \frac{40.0 \text{ g}}{12.01 \text{ g/mol}} \approx 3.33 \text{ mol}$<br>
+                        Moles de $\text{H} = \frac{6.7 \text{ g}}{1.01 \text{ g/mol}} \approx 6.63 \text{ mol}$<br>
+                        Moles de $\text{O} = \frac{53.3 \text{ g}}{16.00 \text{ g/mol}} \approx 3.33 \text{ mol}$<br><br>
+                        Dividir por el menor número de moles (que es $3.33$):<br>
+                        $\text{C}: \frac{3.33}{3.33} \approx 1$<br>
+                        $\text{H}: \frac{6.63}{3.33} \approx 1.99 \approx 2$<br>
+                        $\text{O}: \frac{3.33}{3.33} \approx 1$<br><br>
+                        La fórmula empírica es $\text{CH}_2\text{O}$.</li>
+                    <li><strong>Determinar la Fórmula Molecular:</strong><br>
+                        Primero, calculamos la masa de la fórmula empírica ($\text{CH}_2\text{O}$):<br>
+                        Masa de $\text{CH}_2\text{O} = (1 \times 12.01) + (2 \times 1.01) + (1 \times 16.00) = 12.01 + 2.02 + 16.00 = 30.03 \text{ g/mol}$.<br><br>
+                        Ahora, encontramos el factor $n$ que relaciona la masa molar experimental con la masa de la fórmula empírica:<br>
+                        $n = \frac{\text{Masa Molar Real}}{\text{Masa de la Fórmula Empírica}} = \frac{180 \text{ g/mol}}{30.03 \text{ g/mol}} \approx 5.99 \approx 6$.<br><br>
+                        Finalmente, multiplicamos los subíndices de la fórmula empírica por $n$:<br>
+                        Fórmula Molecular = $(\text{CH}_2\text{O})_6 = \text{C}_{1 \times 6}\text{H}_{2 \times 6}\text{O}_{1 \times 6} = \text{C}_6\text{H}_{12}\text{O}_6$.<br>
+                        La fórmula molecular es $\text{C}_6\text{H}_{12}\text{O}_6$ (glucosa). La justificación es que la fórmula empírica nos da la proporción más simple, pero la masa molar real del compuesto es un múltiplo exacto de la masa de esa proporción, lo que nos permite escalar a la verdadera cantidad de átomos en la molécula.</li>
+                </ol>
+            </div>
+
+            <h4>Fórmula Molecular: La Identidad Completa, la Realidad de la Molécula</h4>
+            <p>La fórmula molecular indica la <strong>cantidad exacta de átomos de cada elemento en una sola molécula de un compuesto</strong>. Para un experto, la fórmula molecular es la "verdadera" representación de la molécula. Se deriva de la fórmula empírica y requiere el conocimiento de la masa molar (o peso molecular) real del compuesto. La relación es siempre un múltiplo entero: $ \text{Fórmula Molecular} = n \times \text{Fórmula Empírica} $, donde $n = \frac{\text{Masa Molar Real}}{\text{Masa de la Fórmula Empírica}}$. Dominar esto significa poder determinar la estructura y la reactividad real de un compuesto a partir de sus componentes y su masa.</p>
+
+            <div class="ejercicio-experto">
+                <p><strong>Ejercicio de Experto: Isomería y Fórmula Molecular</strong></p>
+                <p>Un compuesto tiene una fórmula empírica $\text{CH}_2\text{Cl}$. Si se determina que la masa molar de este compuesto es de aproximadamente $99.0 \text{ g/mol}$:</p>
+                <ol>
+                    <li>Calcula el valor de $n$.</li>
+                    <li>Determina la fórmula molecular del compuesto.</li>
+                    <li>¿Podría este compuesto tener isómeros? Justifica tu respuesta brevemente.</li>
+                </ol>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular la masa de la fórmula empírica ($\text{CH}_2\text{Cl}$):</strong><br>
+                        Masa de $\text{CH}_2\text{Cl} = (1 \times 12.01) + (2 \times 1.01) + (1 \times 35.45) = 12.01 + 2.02 + 35.45 = 49.48 \text{ g/mol}$.<br><br>
+                        <strong>Calcular el valor de $n$:</strong><br>
+                        $n = \frac{\text{Masa Molar Real}}{\text{Masa de la Fórmula Empírica}} = \frac{99.0 \text{ g/mol}}{49.48 \text{ g/mol}} \approx 2.00 \approx 2$.</li>
+                    <li><strong>Determinar la Fórmula Molecular:</strong><br>
+                        Fórmula Molecular = $(\text{CH}_2\text{Cl})_2 = \text{C}_{1 \times 2}\text{H}_{2 \times 2}\text{Cl}_{1 \times 2} = \text{C}_2\text{H}_4\text{Cl}_2$.</li>
+                    <li><strong>¿Podría este compuesto tener isómeros?</strong><br>
+                        Sí, este compuesto podría tener isómeros. La fórmula molecular $\text{C}_2\text{H}_4\text{Cl}_2$ indica que hay dos átomos de carbono, cuatro de hidrógeno y dos de cloro. Es posible organizar estos átomos de diferentes maneras para formar distintas estructuras moleculares con la misma fórmula molecular pero diferentes propiedades físicas y químicas. Por ejemplo, el 1,1-dicloroetano ($\text{CH}_3\text{CHCl}_2$) y el 1,2-dicloroetano ($\text{CH}_2\text{ClCH}_2\text{Cl}$) son dos isómeros estructurales posibles con esta fórmula molecular. La experticia aquí es la capacidad de pensar más allá de la simple aritmética y conectar los conceptos con la estructura molecular y sus implicaciones.</li>
+                </ol>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- Inicialización de la página y Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM completamente cargado. Inicializando scripts de página...");
+
+            // --- Smooth scrolling para la navegación ---
+            document.querySelectorAll('nav ul li a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            // Si el target no existe, comportarse como un enlace normal
+                            window.location.href = targetId;
+                        }
+                    }
+                });
+            });
+            console.log("Scripts de inicialización de página completados.");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reacciones de Oxidación-Reducción (Redox)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuración de MathJax para el renderizado de ecuaciones LaTeX
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemáticas en línea
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // Delimitadores para matemáticas en bloque
+                processEscapes: true, // Permite escapar los delimitadores de MathJax
+                processEnvironments: true // Procesa entornos LaTeX como \begin{align}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', // Clases HTML a ignorar por MathJax
+                processHtmlClass: 'tex2jax_process' // Clases HTML a procesar por MathJax
+            },
+            startup: {
+                pageReady: function() {
+                    // Espera a que el DOM esté completamente cargado para procesar MathJax
+                    document.addEventListener('DOMContentLoaded', () => {
+                        MathJax.typeset(); // Inicia el renderizado de MathJax
+                    });
+                }
+            }
+        };
+    </script>
+    <!-- Script de MathJax desde CDN -->
+    <script id="mathjax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+
+    <style>
+        /* --- Reset General y Estilos de Cuerpo --- */
+        body, h1, h2, h3, h4, p, ul, li, section, div { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Merriweather', serif;
+            font-size: 1.18em; /* Aumentar el tamaño de fuente base para mejor legibilidad */
+            line-height: 1.8; /* Aumentar la altura de línea para más espacio entre líneas */
+            color: #333;
+            background-color: #f0f8ff; /* Un azul muy claro para el fondo */
+            padding-top: 180px; /* Ajustado para dar más espacio al encabezado fijo */
+        }
+
+        /* --- Header Fijo --- */
+        header {
+            background-color: #0056b3; /* Azul más oscuro y vibrante */
+            color: #ffffff; /* Blanco puro */
+            padding: 20px 0;
+            text-align: center;
+            position: static; /* Hace que el header se quede fijo */
+            width: 100%; /* Ocupa todo el ancho */
+            top: 0; /* Lo fija en la parte superior */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+            display: flex; /* Usar flexbox para alinear elementos */
+            flex-direction: column; /* Por defecto, en columna para móvil */
+            align-items: center; /* Centrar elementos horizontalmente */
+            justify-content: center;
+        }
+
+        header h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 3em; /* Más grande para el título principal */
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            padding: 0 20px; /* Añadir padding para que no toque los bordes */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            box-sizing: border-box; /* Incluir padding en el ancho */
+        }
+
+        /* Botón de hamburguesa */
+        .hamburger-menu {
+            display: none; /* Ocultar por defecto en pantallas grandes */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            position: absolute; /* Posicionar absolutamente */
+            top: 30px; /* Ajustar posición */
+            right: 20px; /* Ajustar posición */
+            z-index: 1001; /* Asegurar que esté por encima del nav */
+        }
+
+        .hamburger-menu .bar {
+            width: 100%;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Estilos para el menú de navegación */
+        nav {
+            width: 100%;
+            max-height: 0; /* Ocultar el menú por defecto */
+            overflow: hidden; /* Ocultar el contenido desbordado */
+            transition: max-height 0.5s ease-out; /* Transición suave al desplegar */
+        }
+
+        nav.open {
+            max-height: 500px; /* Altura máxima para mostrar el menú (ajustar si es necesario) */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Elementos en columna cuando el menú está abierto */
+            align-items: center; /* Centrar elementos */
+            margin-top: 15px;
+        }
+
+        nav ul li {
+            margin: 10px 0; /* Espacio vertical entre elementos */
+            width: 100%; /* Ocupa todo el ancho disponible */
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2em; /* Tamaño de fuente para los enlaces */
+            padding: 10px 20px; /* Más padding para facilitar el clic */
+            border-radius: 8px; /* Bordes más redondeados */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block; /* Asegura que el padding y el área de clic sean uniformes */
+            text-align: center; /* Centrar texto */
+        }
+
+        nav ul li a:hover {
+            background-color: #004085; /* Azul aún más oscuro al pasar el mouse */
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+        }
+
+        /* Media queries para pantallas grandes (desktop) */
+        @media (min-width: 769px) {
+            header {
+                flex-direction: row; /* Volver a fila en desktop */
+                justify-content: space-between; /* Espaciar título y nav */
+                padding: 20px 40px; /* Ajustar padding */
+            }
+
+            header h1 {
+                width: auto; /* Ancho automático */
+                margin-bottom: 0; /* Eliminar margen inferior */
+            }
+
+            .hamburger-menu {
+                display: none; /* Ocultar el botón de hamburguesa en desktop */
+            }
+
+            nav {
+                max-height: none; /* Asegurar que el menú esté siempre visible */
+                overflow: visible; /* Permitir que el contenido sea visible */
+                width: auto; /* Ancho automático */
+            }
+
+            nav ul {
+                flex-direction: row; /* Volver a fila en desktop */
+                margin-top: 0; /* Eliminar margen superior */
+            }
+
+            nav ul li {
+                margin: 0 15px; /* Espacio horizontal entre elementos */
+            }
+        }
+
+        /* --- Estilos de Contenido General --- */
+        .container {
+            width: 90%; /* Ancho base para adaptarse a la pantalla */
+            max-width: 1100px; /* Ancho máximo para una lectura cómoda en pantallas grandes */
+            margin: 40px auto; /* Centrar el contenedor y añadir margen vertical */
+            background-color: #ffffff;
+            padding: 50px; /* Padding interno para el contenido */
+            border-radius: 12px; /* Bordes redondeados */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra suave */
+        }
+
+        /* Ajustes para pantallas más pequeñas para el contenedor */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px; /* Reducir padding en pantallas pequeñas */
+                margin: 20px auto; /* Reducir margen vertical en pantallas pequeñas */
+            }
+        }
+
+        section {
+            margin-bottom: 60px; /* Más espacio entre secciones */
+            padding-bottom: 40px; /* Más padding inferior */
+            border-bottom: 1px dashed #c0c0c0; /* Línea divisoria más sutil */
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Fjalla One', sans-serif;
+            color: #0056b3; /* Azul principal */
+            margin-bottom: 30px; /* Más espacio */
+            font-size: 2.5em; /* Más grande */
+            border-left: 8px solid #007bff; /* Borde más grueso y vibrante */
+            padding-left: 20px; /* Más padding */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 40px; /* Más espacio */
+            margin-bottom: 25px; /* Más espacio */
+            font-size: 1.9em; /* Más grande */
+            border-bottom: 2px solid #e0e0e0; /* Línea sutil bajo los subtítulos */
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em; /* Tamaño para sub-subtítulos */
+        }
+
+        p {
+            margin-bottom: 25px; /* Más espacio entre párrafos */
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 35px; /* Más margen */
+            margin-bottom: 25px; /* Más margen */
+        }
+
+        ol {
+            margin-left: 35px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 12px; /* Más espacio entre elementos de lista */
+        }
+
+        /* --- Estilos específicos para MathJax --- */
+        .MathJax_Display {
+            margin: 2em 0 !important; /* Mucho más espacio para ecuaciones en bloque */
+            padding: 1em 1.2em; /* Más padding */
+            background-color: #e6f2ff; /* Fondo más claro para ecuaciones */
+            border-left: 6px solid #007bff; /* Borde más grueso y azul */
+            border-radius: 6px;
+            overflow-x: auto; /* Para ecuaciones largas */
+            font-size: 1.1em; /* Asegurar que las ecuaciones también sean grandes */
+        }
+
+        .MathJax_SVG_Display {
+            margin: 2em 0 !important; /* Asegura el espaciado para ecuaciones en bloque */
+        }
+
+        /* --- Estilos para ejemplos y notas --- */
+        .ejemplo-destacado {
+            background-color: #f0faff; /* Un azul muy claro para el fondo del ejemplo */
+            border: 1px solid #a0d8ff; /* Borde azul claro */
+            border-left: 8px solid #007bff; /* Borde azul vibrante distintivo */
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .ejemplo-destacado p {
+            font-weight: bold;
+            color: #0056b3; /* Color azul para el título del ejemplo */
+            margin-bottom: 15px;
+        }
+
+        .ejemplo-destacado ol, .ejemplo-destacado ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .ejemplo-destacado li {
+            margin-bottom: 10px;
+        }
+
+        /* --- Animación de Reacción Química (SVG y CSS) --- */
+        .reaction-animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px; /* Altura del contenedor de la animación */
+            margin: 40px auto;
+            background-color: #e6f7ff; /* Fondo claro para la animación */
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden; /* Asegura que la animación no se desborde */
+            position: relative;
+        }
+
+        .molecule {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .molecule-A {
+            background-color: #e74c3c; /* Rojo */
+            left: 10%;
+            animation: reactA 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-B {
+            background-color: #2ecc71; /* Verde */
+            left: 30%;
+            animation: reactB 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-C {
+            background-color: #3498db; /* Azul */
+            left: 70%;
+            opacity: 0;
+            animation: formC 4s ease-in-out infinite alternate;
+        }
+
+        .arrow {
+            position: absolute;
+            font-size: 3em;
+            color: #555;
+            left: 48%; /* Centrar la flecha */
+            top: 50%;
+            transform: translateY(-50%);
+            animation: fadeArrow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes reactA {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(150px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(150px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes reactB {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(-50px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(-50px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes formC {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0; }
+            60% { opacity: 1; transform: scale(1.1); } /* Aparece y se agranda */
+            70% { transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeArrow {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            55% { opacity: 0; } /* Desaparece durante la formación del producto */
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química Dinámica</h1>
+        <div class="hamburger-menu" id="hamburger-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#redox">Reacciones Redox</a></li>
+                <li><a href="#oxidacion">Oxidación</a></li>
+                <li><a href="#reduccion">Reducción</a></li>
+                <li><a href="#agente-oxidante">Agente Oxidante</a></li>
+                <li><a href="#agente-reductor">Agente Reductor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="redox">
+            <h2>Reacciones de Oxidación-Reducción (Redox)</h2>
+            <p>Las reacciones de oxidación-reducción, comúnmente conocidas como reacciones redox, son un tipo fundamental de reacciones químicas que implican la transferencia de electrones entre especies químicas. Son omnipresentes en la naturaleza y en la tecnología, desde la respiración celular y la fotosíntesis hasta la corrosión de metales y la generación de energía en baterías.</p>
+
+            <h3>Conceptos Básicos de Oxidación y Reducción</h3>
+            <p>La clave para entender las reacciones redox radica en la transferencia de electrones. Originalmente, los términos "oxidación" y "reducción" se referían a la ganancia de oxígeno y la pérdida de oxígeno, respectivamente. Sin embargo, las definiciones modernas son mucho más amplias y se centran en el movimiento de electrones.</p>
+
+            <h4 id="oxidacion">Oxidación: Pérdida de Electrones</h4>
+            <p>La <strong>oxidación</strong> se define como la <strong>pérdida de uno o más electrones</strong> por parte de un átomo, ion o molécula. Cuando una especie se oxida, su número de oxidación (o estado de oxidación) aumenta. Es importante recordar que la oxidación y la reducción siempre ocurren simultáneamente; no puede haber una sin la otra.</p>
+            <ul>
+                <li><strong>Incremento en el número de oxidación.</strong></li>
+                <li><strong>Pérdida de electrones ($\text{e}^-$).</strong></li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Oxidación: Oxidación del Sodio</strong></p>
+                <p>El sodio metálico pierde un electrón para formar un ion sodio:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Na}(s) \rightarrow \text{Na}^+(aq) + \text{e}^- $$
+                </div>
+                <p>El número de oxidación del Na cambia de 0 a +1. Por lo tanto, el sodio se oxida.</p>
+
+                <p><strong>Ejemplo 2 de Oxidación: Oxidación del Hierro(II) a Hierro(III)</strong></p>
+                <p>Un ion hierro(II) pierde un electrón para convertirse en un ion hierro(III):</p>
+                <div class="MathJax_Display">
+                    $$ \text{Fe}^{2+}(aq) \rightarrow \text{Fe}^{3+}(aq) + \text{e}^- $$
+                </div>
+                <p>El número de oxidación del Fe cambia de +2 a +3. El hierro(II) se oxida.</p>
+
+                <p><strong>Ejemplo 3 de Oxidación: Oxidación del Cloruro a Cloro</strong></p>
+                <p>Dos iones cloruro pierden dos electrones para formar una molécula de cloro gaseoso:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{Cl}^-(aq) \rightarrow \text{Cl}_2(g) + 2\text{e}^- $$
+                </div>
+                <p>El número de oxidación del Cl cambia de -1 a 0. El cloruro se oxida.</p>
+
+                <p><strong>Ejemplo 4 de Oxidación: Oxidación del Sulfuro a Azufre</strong></p>
+                <p>Un ion sulfuro pierde dos electrones para formar azufre elemental:</p>
+                <div class="MathJax_Display">
+                    $$ \text{S}^{2-}(aq) \rightarrow \text{S}(s) + 2\text{e}^- $$
+                </div>
+                <p>El número de oxidación del S cambia de -2 a 0. El sulfuro se oxida.</p>
+            </div>
+
+            <h4 id="reduccion">Reducción: Ganancia de Electrones</h4>
+            <p>La <strong>reducción</strong> se define como la <strong>ganancia de uno o más electrones</strong> por parte de un átomo, ion o molécula. Cuando una especie se reduce, su número de oxidación disminuye. Es el proceso opuesto a la oxidación.</p>
+            <ul>
+                <li><strong>Disminución en el número de oxidación.</strong></li>
+                <li><strong>Ganancia de electrones ($\text{e}^-$).</strong></li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Reducción: Reducción del Cloro</strong></p>
+                <p>Una molécula de cloro gaseoso gana dos electrones para formar dos iones cloruro:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Cl}_2(g) + 2\text{e}^- \rightarrow 2\text{Cl}^-(aq) $$
+                </div>
+                <p>El número de oxidación del Cl cambia de 0 a -1. Por lo tanto, el cloro se reduce.</p>
+
+                <p><strong>Ejemplo 2 de Reducción: Reducción del Cobre(II) a Cobre</strong></p>
+                <p>Un ion cobre(II) gana dos electrones para convertirse en cobre metálico:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Cu}^{2+}(aq) + 2\text{e}^- \rightarrow \text{Cu}(s) $$
+                </div>
+                <p>El número de oxidación del Cu cambia de +2 a 0. El cobre(II) se reduce.</p>
+
+                <p><strong>Ejemplo 3 de Reducción: Reducción del Permanganato a Manganeso(II)</strong></p>
+                <p>El ion permanganato gana electrones para formar un ion manganeso(II) (en medio ácido):</p>
+                <div class="MathJax_Display">
+                    $$ \text{MnO}_4^-(aq) + 8\text{H}^+(aq) + 5\text{e}^- \rightarrow \text{Mn}^{2+}(aq) + 4\text{H}_2\text{O}(l) $$
+                </div>
+                <p>El número de oxidación del Mn cambia de +7 a +2. El permanganato se reduce.</p>
+
+                <p><strong>Ejemplo 4 de Reducción: Reducción del Nitrato a Óxido Nítrico</strong></p>
+                <p>El ion nitrato gana electrones para formar óxido nítrico (en medio ácido):</p>
+                <div class="MathJax_Display">
+                    $$ \text{NO}_3^-(aq) + 4\text{H}^+(aq) + 3\text{e}^- \rightarrow \text{NO}(g) + 2\text{H}_2\text{O}(l) $$
+                </div>
+                <p>El número de oxidación del N cambia de +5 a +2. El nitrato se reduce.</p>
+            </div>
+
+            <h3>Agente Oxidante y Agente Reductor</h3>
+            <p>En una reacción redox, la sustancia que se oxida (pierde electrones) causa que otra sustancia se reduzca. Por otro lado, la sustancia que se reduce (gana electrones) causa que otra sustancia se oxide. Esto lleva a las definiciones de agentes:</p>
+
+            <h4 id="agente-oxidante">Agente Oxidante: La Sustancia que Causa la Oxidación (y se Reduce a sí Misma)</h4>
+            <p>El <strong>agente oxidante</strong> es la especie química que <strong>gana electrones</strong> en una reacción redox. Al ganar electrones, el agente oxidante hace que otra sustancia pierda electrones (se oxide). Por lo tanto, el agente oxidante es la sustancia que <strong>se reduce</strong> a sí misma.</p>
+            <ul>
+                <li><strong>Gana electrones.</strong></li>
+                <li><strong>Su número de oxidación disminuye.</strong></li>
+                <li><strong>Causa la oxidación de otra especie.</strong></li>
+                <li><strong>Es la especie que se reduce.</strong></li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Agente Oxidante: Reacción de Zinc con Ácido Clorhídrico</strong></p>
+                <div class="MathJax_Display">
+                    $$ \text{Zn}(s) + 2\text{HCl}(aq) \rightarrow \text{ZnCl}_2(aq) + \text{H}_2(g) $$
+                </div>
+                <ul>
+                    <li>El Zn pasa de 0 a +2 (se oxida).</li>
+                    <li>El H en HCl pasa de +1 a 0 (se reduce).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{HCl}$ (o más específicamente, el $\text{H}^+$) es el agente oxidante</strong> porque gana electrones (se reduce) y causa la oxidación del Zn.</p>
+
+                <p><strong>Ejemplo 2 de Agente Oxidante: Reacción de Yodo con Tiosulfato</strong></p>
+                <div class="MathJax_Display">
+                    $$ \text{I}_2(aq) + 2\text{S}_2\text{O}_3^{2-}(aq) \rightarrow 2\text{I}^-(aq) + \text{S}_4\text{O}_6^{2-}(aq) $$
+                </div>
+                <ul>
+                    <li>El I en $\text{I}_2$ pasa de 0 a -1 (se reduce).</li>
+                    <li>El S en $\text{S}_2\text{O}_3^{2-}$ pasa de +2 a +2.5 (se oxida).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{I}_2$ es el agente oxidante</strong> porque gana electrones (se reduce) y causa la oxidación del $\text{S}_2\text{O}_3^{2-}$.</p>
+
+                <p><strong>Ejemplo 3 de Agente Oxidante: Reacción de Permanganato con Bromuro</strong></p>
+                <div class="MathJax_Display">
+                    $$ 2\text{MnO}_4^-(aq) + 10\text{Br}^-(aq) + 16\text{H}^+(aq) \rightarrow 2\text{Mn}^{2+}(aq) + 5\text{Br}_2(l) + 8\text{H}_2\text{O}(l) $$
+                </div>
+                <ul>
+                    <li>El Mn en $\text{MnO}_4^-$ pasa de +7 a +2 (se reduce).</li>
+                    <li>El Br en $\text{Br}^-$ pasa de -1 a 0 (se oxida).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{MnO}_4^-$ es el agente oxidante</strong> porque gana electrones (se reduce) y causa la oxidación del $\text{Br}^-$.</p>
+
+                <p><strong>Ejemplo 4 de Agente Oxidante: Reacción de Cloro con Ión Sulfito</strong></p>
+                <div class="MathJax_Display">
+                    $$ \text{Cl}_2(g) + \text{SO}_3^{2-}(aq) + \text{H}_2\text{O}(l) \rightarrow 2\text{Cl}^-(aq) + \text{SO}_4^{2-}(aq) + 2\text{H}^+(aq) $$
+                </div>
+                <ul>
+                    <li>El Cl en $\text{Cl}_2$ pasa de 0 a -1 (se reduce).</li>
+                    <li>El S en $\text{SO}_3^{2-}$ pasa de +4 a +6 (se oxida).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{Cl}_2$ es el agente oxidante</strong> porque gana electrones (se reduce) y causa la oxidación del $\text{SO}_3^{2-}$.</p>
+            </div>
+
+            <h4 id="agente-reductor">Agente Reductor: La Sustancia que Causa la Reducción (y se Oxida a sí Misma)</h4>
+            <p>El <strong>agente reductor</strong> es la especie química que <strong>pierde electrones</strong> en una reacción redox. Al perder electrones, el agente reductor hace que otra sustancia gane electrones (se reduzca). Por lo tanto, el agente reductor es la sustancia que <strong>se oxida</strong> a sí misma.</p>
+            <ul>
+                <li><strong>Pierde electrones.</strong></li>
+                <li><strong>Su número de oxidación aumenta.</strong></li>
+                <li><strong>Causa la reducción de otra especie.</strong></li>
+                <li><strong>Es la especie que se oxida.</strong></li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Agente Reductor: Reacción de Zinc con Ácido Clorhídrico</strong></p>
+                <div class="MathJax_Display">
+                    $$ \text{Zn}(s) + 2\text{HCl}(aq) \rightarrow \text{ZnCl}_2(aq) + \text{H}_2(g) $$
+                </div>
+                <ul>
+                    <li>El Zn pasa de 0 a +2 (se oxida).</li>
+                    <li>El H en HCl pasa de +1 a 0 (se reduce).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{Zn}$ es el agente reductor</strong> porque pierde electrones (se oxida) y causa la reducción del $\text{HCl}$.</p>
+
+                <p><strong>Ejemplo 2 de Agente Reductor: Reacción de Yodo con Tiosulfato</strong></p>
+                <div class="MathJax_Display">
+                    $$ \text{I}_2(aq) + 2\text{S}_2\text{O}_3^{2-}(aq) \rightarrow 2\text{I}^-(aq) + \text{S}_4\text{O}_6^{2-}(aq) $$
+                </div>
+                <ul>
+                    <li>El I en $\text{I}_2$ pasa de 0 a -1 (se reduce).</li>
+                    <li>El S en $\text{S}_2\text{O}_3^{2-}$ pasa de +2 a +2.5 (se oxida).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{S}_2\text{O}_3^{2-}$ es el agente reductor</strong> porque pierde electrones (se oxida) y causa la reducción del $\text{I}_2$.</p>
+
+                <p><strong>Ejemplo 3 de Agente Reductor: Reacción de Permanganato con Bromuro</strong></p>
+                <div class="MathJax_Display">
+                    $$ 2\text{MnO}_4^-(aq) + 10\text{Br}^-(aq) + 16\text{H}^+(aq) \rightarrow 2\text{Mn}^{2+}(aq) + 5\text{Br}_2(l) + 8\text{H}_2\text{O}(l) $$
+                </div>
+                <ul>
+                    <li>El Mn en $\text{MnO}_4^-$ pasa de +7 a +2 (se reduce).</li>
+                    <li>El Br en $\text{Br}^-$ pasa de -1 a 0 (se oxida).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{Br}^-$ es el agente reductor</strong> porque pierde electrones (se oxida) y causa la reducción del $\text{MnO}_4^-$.</p>
+
+                <p><strong>Ejemplo 4 de Agente Reductor: Reacción de Cloro con Ión Sulfito</strong></p>
+                <div class="MathJax_Display">
+                    $$ \text{Cl}_2(g) + \text{SO}_3^{2-}(aq) + \text{H}_2\text{O}(l) \rightarrow 2\text{Cl}^-(aq) + \text{SO}_4^{2-}(aq) + 2\text{H}^+(aq) $$
+                </div>
+                <ul>
+                    <li>El Cl en $\text{Cl}_2$ pasa de 0 a -1 (se reduce).</li>
+                    <li>El S en $\text{SO}_3^{2-}$ pasa de +4 a +6 (se oxida).</li>
+                </ul>
+                <p>Aquí, el <strong>$\text{SO}_3^{2-}$ es el agente reductor</strong> porque pierde electrones (se oxida) y causa la reducción del $\text{Cl}_2$.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const mainNav = document.getElementById('main-nav');
+
+            // Toggle menu visibility on hamburger icon click
+            hamburgerIcon.addEventListener('click', () => {
+                mainNav.classList.toggle('open');
+            });
+
+            // Close menu when a navigation link is clicked (for mobile usability)
+            mainNav.querySelectorAll('a').forEach(anchor => {
+                anchor.addEventListener('click', () => {
+                    // Only close if the menu is currently open (i.e., on mobile)
+                    if (mainNav.classList.contains('open')) {
+                        mainNav.classList.remove('open');
+                    }
+                });
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav ul li a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            window.location.href = targetId;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

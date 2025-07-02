@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estequiometría: Cálculos de Reactivos y Productos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuración de MathJax para el renderizado de ecuaciones LaTeX
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemáticas en línea
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // Delimitadores para matemáticas en bloque
+                processEscapes: true, // Permite escapar los delimitadores de MathJax
+                processEnvironments: true // Procesa entornos LaTeX como \begin{align}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', // Clases HTML a ignorar por MathJax
+                processHtmlClass: 'tex2jax_process' // Clases HTML a procesar por MathJax
+            },
+            startup: {
+                pageReady: function() {
+                    // Espera a que el DOM esté completamente cargado para procesar MathJax
+                    document.addEventListener('DOMContentLoaded', () => {
+                        MathJax.typeset(); // Inicia el renderizado de MathJax
+                    });
+                }
+            }
+        };
+    </script>
+    <!-- Script de MathJax desde CDN -->
+    <script id="mathjax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+
+    <style>
+        /* --- Reset General y Estilos de Cuerpo --- */
+        body, h1, h2, h3, h4, p, ul, li, section, div { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Merriweather', serif;
+            font-size: 1.18em; /* Aumentar el tamaño de fuente base para mejor legibilidad */
+            line-height: 1.8; /* Aumentar la altura de línea para más espacio entre líneas */
+            color: #333;
+            background-color: #f0f8ff; /* Un azul muy claro para el fondo */
+            padding-top: 180px; /* Ajustado para dar más espacio al encabezado fijo */
+        }
+
+        /* --- Header Fijo --- */
+        header {
+            background-color: #0056b3; /* Azul más oscuro y vibrante */
+            color: #ffffff; /* Blanco puro */
+            padding: 20px 0;
+            text-align: center;
+            position: static; /* Hace que el header se quede fijo */
+            width: 100%; /* Ocupa todo el ancho */
+            top: 0; /* Lo fija en la parte superior */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+            display: flex; /* Usar flexbox para alinear elementos */
+            flex-direction: column; /* Por defecto, en columna para móvil */
+            align-items: center; /* Centrar elementos horizontalmente */
+            justify-content: center;
+        }
+
+        header h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 3em; /* Más grande para el título principal */
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            padding: 0 20px; /* Añadir padding para que no toque los bordes */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            box-sizing: border-box; /* Incluir padding en el ancho */
+        }
+
+        /* Botón de hamburguesa */
+        .hamburger-menu {
+            display: none; /* Ocultar por defecto en pantallas grandes */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            position: absolute; /* Posicionar absolutamente */
+            top: 30px; /* Ajustar posición */
+            right: 20px; /* Ajustar posición */
+            z-index: 1001; /* Asegurar que esté por encima del nav */
+        }
+
+        .hamburger-menu .bar {
+            width: 100%;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Estilos para el menú de navegación */
+        nav {
+            width: 100%;
+            max-height: 0; /* Ocultar el menú por defecto */
+            overflow: hidden; /* Ocultar el contenido desbordado */
+            transition: max-height 0.5s ease-out; /* Transición suave al desplegar */
+        }
+
+        nav.open {
+            max-height: 500px; /* Altura máxima para mostrar el menú (ajustar si es necesario) */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Elementos en columna cuando el menú está abierto */
+            align-items: center; /* Centrar elementos */
+            margin-top: 15px;
+        }
+
+        nav ul li {
+            margin: 10px 0; /* Espacio vertical entre elementos */
+            width: 100%; /* Ocupa todo el ancho disponible */
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2em; /* Tamaño de fuente para los enlaces */
+            padding: 10px 20px; /* Más padding para facilitar el clic */
+            border-radius: 8px; /* Bordes más redondeados */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block; /* Asegura que el padding y el área de clic sean uniformes */
+            text-align: center; /* Centrar texto */
+        }
+
+        nav ul li a:hover {
+            background-color: #004085; /* Azul aún más oscuro al pasar el mouse */
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+        }
+
+        /* Media queries para pantallas grandes (desktop) */
+        @media (min-width: 769px) {
+            header {
+                flex-direction: row; /* Volver a fila en desktop */
+                justify-content: space-between; /* Espaciar título y nav */
+                padding: 20px 40px; /* Ajustar padding */
+            }
+
+            header h1 {
+                width: auto; /* Ancho automático */
+                margin-bottom: 0; /* Eliminar margen inferior */
+            }
+
+            .hamburger-menu {
+                display: none; /* Ocultar el botón de hamburguesa en desktop */
+            }
+
+            nav {
+                max-height: none; /* Asegurar que el menú esté siempre visible */
+                overflow: visible; /* Permitir que el contenido sea visible */
+                width: auto; /* Ancho automático */
+            }
+
+            nav ul {
+                flex-direction: row; /* Volver a fila en desktop */
+                margin-top: 0; /* Eliminar margen superior */
+            }
+
+            nav ul li {
+                margin: 0 15px; /* Espacio horizontal entre elementos */
+            }
+        }
+
+        /* --- Estilos de Contenido General --- */
+        .container {
+            width: 90%; /* Ancho base para adaptarse a la pantalla */
+            max-width: 1100px; /* Ancho máximo para una lectura cómoda en pantallas grandes */
+            margin: 40px auto; /* Centrar el contenedor y añadir margen vertical */
+            background-color: #ffffff;
+            padding: 50px; /* Padding interno para el contenido */
+            border-radius: 12px; /* Bordes redondeados */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra suave */
+        }
+
+        /* Ajustes para pantallas más pequeñas para el contenedor */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px; /* Reducir padding en pantallas pequeñas */
+                margin: 20px auto; /* Reducir margen vertical en pantallas pequeñas */
+            }
+        }
+
+        section {
+            margin-bottom: 60px; /* Más espacio entre secciones */
+            padding-bottom: 40px; /* Más padding inferior */
+            border-bottom: 1px dashed #c0c0c0; /* Línea divisoria más sutil */
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Fjalla One', sans-serif;
+            color: #0056b3; /* Azul principal */
+            margin-bottom: 30px; /* Más espacio */
+            font-size: 2.5em; /* Más grande */
+            border-left: 8px solid #007bff; /* Borde más grueso y vibrante */
+            padding-left: 20px; /* Más padding */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 40px; /* Más espacio */
+            margin-bottom: 25px; /* Más espacio */
+            font-size: 1.9em; /* Más grande */
+            border-bottom: 2px solid #e0e0e0; /* Línea sutil bajo los subtítulos */
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em; /* Tamaño para sub-subtítulos */
+        }
+
+        p {
+            margin-bottom: 25px; /* Más espacio entre párrafos */
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 35px; /* Más margen */
+            margin-bottom: 25px; /* Más margen */
+        }
+
+        ol {
+            margin-left: 35px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 12px; /* Más espacio entre elementos de lista */
+        }
+
+        /* --- Estilos específicos para MathJax --- */
+        .MathJax_Display {
+            margin: 2em 0 !important; /* Mucho más espacio para ecuaciones en bloque */
+            padding: 1em 1.2em; /* Más padding */
+            background-color: #e6f2ff; /* Fondo más claro para ecuaciones */
+            border-left: 6px solid #007bff; /* Borde más grueso y azul */
+            border-radius: 6px;
+            overflow-x: auto; /* Para ecuaciones largas */
+            font-size: 1.1em; /* Asegurar que las ecuaciones también sean grandes */
+        }
+
+        .MathJax_SVG_Display {
+            margin: 2em 0 !important; /* Asegura el espaciado para ecuaciones en bloque */
+        }
+
+        /* --- Estilos para ejemplos y notas --- */
+        .ejemplo-destacado {
+            background-color: #f0faff; /* Un azul muy claro para el fondo del ejemplo */
+            border: 1px solid #a0d8ff; /* Borde azul claro */
+            border-left: 8px solid #007bff; /* Borde azul vibrante distintivo */
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .ejemplo-destacado p {
+            font-weight: bold;
+            color: #0056b3; /* Color azul para el título del ejemplo */
+            margin-bottom: 15px;
+        }
+
+        .ejemplo-destacado ol, .ejemplo-destacado ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .ejemplo-destacado li {
+            margin-bottom: 10px;
+        }
+
+        /* --- Animación de Reacción Química (SVG y CSS) --- */
+        .reaction-animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px; /* Altura del contenedor de la animación */
+            margin: 40px auto;
+            background-color: #e6f7ff; /* Fondo claro para la animación */
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden; /* Asegura que la animación no se desborde */
+            position: relative;
+        }
+
+        .molecule {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .molecule-A {
+            background-color: #e74c3c; /* Rojo */
+            left: 10%;
+            animation: reactA 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-B {
+            background-color: #2ecc71; /* Verde */
+            left: 30%;
+            animation: reactB 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-C {
+            background-color: #3498db; /* Azul */
+            left: 70%;
+            opacity: 0;
+            animation: formC 4s ease-in-out infinite alternate;
+        }
+
+        .arrow {
+            position: absolute;
+            font-size: 3em;
+            color: #555;
+            left: 48%; /* Centrar la flecha */
+            top: 50%;
+            transform: translateY(-50%);
+            animation: fadeArrow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes reactA {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(150px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(150px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes reactB {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(-50px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(-50px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes formC {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0; }
+            60% { opacity: 1; transform: scale(1.1); } /* Aparece y se agranda */
+            70% { transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeArrow {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            55% { opacity: 0; } /* Desaparece durante la formación del producto */
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química Dinámica</h1>
+        <div class="hamburger-menu" id="hamburger-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#estequiometria">Estequiometría</a></li>
+                <li><a href="#relaciones-estequiometricas">Relaciones</a></li>
+                <li><a href="#calculos-estequiometricos">Cálculos</a></li>
+                <li><a href="#reactivo-limitante">Reactivo Limitante</a></li>
+                <li><a href="#pureza">Pureza</a></li>
+                <li><a href="#rendimiento">Rendimiento</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="estequiometria">
+            <h2>Estequiometría: Cálculos de Reactivos y Productos</h2>
+            <p>La <strong>estequiometría</strong> es la rama de la química que estudia las relaciones cuantitativas entre los reactivos y productos en una reacción química. Se basa en la Ley de Conservación de la Masa y la comprensión de que las ecuaciones químicas balanceadas nos proporcionan la información necesaria para predecir las cantidades de sustancias involucradas.</p>
+
+            <h3>Cantidades de Reactivos y Productos (Relaciones Estequiométricas)</h3>
+            <p>Los coeficientes en una ecuación química balanceada no solo nos dicen cuántos átomos o moléculas de cada sustancia participan, sino que también representan las proporciones molares en las que reaccionan y se forman. Estas relaciones molares son la base para todos los cálculos estequiométricos.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1: Relación Mol-Mol en la Síntesis de Amoníaco</strong></p>
+                <p>Considera la reacción balanceada:</p>
+                <div class="MathJax_Display">
+                    $$ \text{N}_2(g) + 3\text{H}_2(g) \rightarrow 2\text{NH}_3(g) $$
+                </div>
+                <p>¿Cuántos moles de $\text{NH}_3$ se producen a partir de 0.5 moles de $\text{N}_2$?</p>
+                <p><em>Solución:</em></p>
+                <p>Según la ecuación, 1 mol de $\text{N}_2$ produce 2 moles de $\text{NH}_3$.</p>
+                <div class="MathJax_Display">
+                    $$ 0.5 \text{ mol N}_2 \times \frac{2 \text{ mol NH}_3}{1 \text{ mol N}_2} = 1.0 \text{ mol NH}_3 $$
+                </div>
+                <p>Se producen 1.0 moles de $\text{NH}_3$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2: Relación Mol-Mol en la Combustión de Metano</strong></p>
+                <p>La combustión del metano se representa como:</p>
+                <div class="MathJax_Display">
+                    $$ \text{CH}_4(g) + 2\text{O}_2(g) \rightarrow \text{CO}_2(g) + 2\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Si se consumen 3.0 moles de $\text{O}_2$, ¿cuántos moles de $\text{CO}_2$ se formarán?</p>
+                <p><em>Solución:</em></p>
+                <p>La ecuación muestra que 2 moles de $\text{O}_2$ producen 1 mol de $\text{CO}_2$.</p>
+                <div class="MathJax_Display">
+                    $$ 3.0 \text{ mol O}_2 \times \frac{1 \text{ mol CO}_2}{2 \text{ mol O}_2} = 1.5 \text{ mol CO}_2 $$
+                </div>
+                <p>Se formarán 1.5 moles de $\text{CO}_2$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3: Relación Mol-Mol en la Descomposición de Peróxido de Hidrógeno</strong></p>
+                <p>La descomposición del peróxido de hidrógeno es:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{H}_2\text{O}_2(aq) \rightarrow 2\text{H}_2\text{O}(l) + \text{O}_2(g) $$
+                </div>
+                <p>Si se producen 0.75 moles de $\text{O}_2$, ¿cuántos moles de $\text{H}_2\text{O}_2$ se descompusieron?</p>
+                <p><em>Solución:</em></p>
+                <p>La ecuación indica que 2 moles de $\text{H}_2\text{O}_2$ producen 1 mol de $\text{O}_2$.</p>
+                <div class="MathJax_Display">
+                    $$ 0.75 \text{ mol O}_2 \times \frac{2 \text{ mol H}_2\text{O}_2}{1 \text{ mol O}_2} = 1.5 \text{ mol H}_2\text{O}_2 $$
+                </div>
+                <p>Se descompusieron 1.5 moles de $\text{H}_2\text{O}_2$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4: Relación Mol-Mol en la Reacción de Ácido Sulfúrico con Hidróxido de Sodio</strong></p>
+                <p>La reacción de neutralización es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{H}_2\text{SO}_4(aq) + 2\text{NaOH}(aq) \rightarrow \text{Na}_2\text{SO}_4(aq) + 2\text{H}_2\text{O}(l) $$
+                </div>
+                <p>¿Cuántos moles de $\text{NaOH}$ se necesitan para reaccionar completamente con 0.2 moles de $\text{H}_2\text{SO}_4$?</p>
+                <p><em>Solución:</em></p>
+                <p>La ecuación muestra que 1 mol de $\text{H}_2\text{SO}_4$ reacciona con 2 moles de $\text{NaOH}$.</p>
+                <div class="MathJax_Display">
+                    $$ 0.2 \text{ mol H}_2\text{SO}_4 \times \frac{2 \text{ mol NaOH}}{1 \text{ mol H}_2\text{SO}_4} = 0.4 \text{ mol NaOH} $$
+                </div>
+                <p>Se necesitan 0.4 moles de $\text{NaOH}$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 5: Relación Mol-Mol en la Formación de Óxido de Aluminio</strong></p>
+                <p>La reacción es:</p>
+                <div class="MathJax_Display">
+                    $$ 4\text{Al}(s) + 3\text{O}_2(g) \rightarrow 2\text{Al}_2\text{O}_3(s) $$
+                </div>
+                <p>Si se forman 0.8 moles de $\text{Al}_2\text{O}_3$, ¿cuántos moles de $\text{O}_2$ se consumieron?</p>
+                <p><em>Solución:</em></p>
+                <p>La ecuación indica que 3 moles de $\text{O}_2$ producen 2 moles de $\text{Al}_2\text{O}_3$.</p>
+                <div class="MathJax_Display">
+                    $$ 0.8 \text{ mol Al}_2\text{O}_3 \times \frac{3 \text{ mol O}_2}{2 \text{ mol Al}_2\text{O}_3} = 1.2 \text{ mol O}_2 $$
+                </div>
+                <p>Se consumieron 1.2 moles de $\text{O}_2$.</p>
+            </div>
+
+            <h3 id="calculos-estequiometricos">Cálculos Estequiométricos: Conversiones Mol-Mol, Mol-Gramo, Gramo-Gramo</h3>
+            <p>Los cálculos estequiométricos nos permiten convertir entre diferentes unidades de cantidad (moles, gramos) utilizando las relaciones molares de la ecuación balanceada y las masas molares de las sustancias.</p>
+
+            <h4>Conversiones Mol-Mol</h4>
+            <p>Ya cubiertas en la sección anterior, estas conversiones son el corazón de la estequiometría, utilizando directamente los coeficientes de la ecuación balanceada.</p>
+
+            <h4>Conversiones Mol-Gramo (o Gramo-Mol)</h4>
+            <p>Estas conversiones implican el uso de la masa molar de una sustancia para pasar de moles a gramos o viceversa.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Mol-Gramo: Producción de Agua</strong></p>
+                <p>Considera la reacción:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{H}_2(g) + \text{O}_2(g) \rightarrow 2\text{H}_2\text{O}(l) $$
+                </div>
+                <p>¿Cuántos gramos de $\text{H}_2\text{O}$ se producen a partir de 2.0 moles de $\text{O}_2$? (Masa molar $\text{H}_2\text{O} = 18.02 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Moles de $\text{H}_2\text{O}$ producidos:</strong><br>
+                        $$ 2.0 \text{ mol O}_2 \times \frac{2 \text{ mol H}_2\text{O}}{1 \text{ mol O}_2} = 4.0 \text{ mol H}_2\text{O} $$</li>
+                    <li><strong>Gramos de $\text{H}_2\text{O}$:</strong><br>
+                        $$ 4.0 \text{ mol H}_2\text{O} \times \frac{18.02 \text{ g H}_2\text{O}}{1 \text{ mol H}_2\text{O}} = 72.08 \text{ g H}_2\text{O} $$</li>
+                </ol>
+                <p>Se producen 72.08 gramos de $\text{H}_2\text{O}$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Gramo-Mol: Descomposición de Carbonato de Calcio</strong></p>
+                <p>La descomposición térmica del carbonato de calcio es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{CaCO}_3(s) \rightarrow \text{CaO}(s) + \text{CO}_2(g) $$
+                </div>
+                <p>¿Cuántos moles de $\text{CaO}$ se forman a partir de 100.0 g de $\text{CaCO}_3$? (Masas molares: $\text{CaCO}_3 = 100.09 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Moles de $\text{CaCO}_3$ consumidos:</strong><br>
+                        $$ 100.0 \text{ g CaCO}_3 \times \frac{1 \text{ mol CaCO}_3}{100.09 \text{ g CaCO}_3} \approx 0.9991 \text{ mol CaCO}_3 $$</li>
+                    <li><strong>Moles de $\text{CaO}$ formados:</strong><br>
+                        Según la ecuación, 1 mol de $\text{CaCO}_3$ produce 1 mol de $\text{CaO}$.<br>
+                        $$ 0.9991 \text{ mol CaCO}_3 \times \frac{1 \text{ mol CaO}}{1 \text{ mol CaCO}_3} = 0.9991 \text{ mol CaO} $$</li>
+                </ol>
+                <p>Se forman 0.9991 moles de $\text{CaO}$.</p>
+            </div>
+
+            <h4>Conversiones Gramo-Gramo</h4>
+            <p>Estas son las conversiones más completas, que van de la masa de un reactivo/producto a la masa de otro reactivo/producto, pasando por moles.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Gramo-Gramo: Producción de Ácido Clorhídrico</strong></p>
+                <p>La reacción de síntesis de $\text{HCl}$ es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{H}_2(g) + \text{Cl}_2(g) \rightarrow 2\text{HCl}(g) $$
+                </div>
+                <p>¿Cuántos gramos de $\text{HCl}$ se pueden producir a partir de 50.0 g de $\text{H}_2$? (Masas molares: $\text{H}_2 = 2.016 \text{ g/mol}$, $\text{HCl} = 36.46 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Gramos de $\text{H}_2$ a moles de $\text{H}_2$:</strong><br>
+                        $$ 50.0 \text{ g H}_2 \times \frac{1 \text{ mol H}_2}{2.016 \text{ g H}_2} \approx 24.80 \text{ mol H}_2 $$</li>
+                    <li><strong>Moles de $\text{H}_2$ a moles de $\text{HCl}$:</strong><br>
+                        $$ 24.80 \text{ mol H}_2 \times \frac{2 \text{ mol HCl}}{1 \text{ mol H}_2} = 49.60 \text{ mol HCl} $$</li>
+                    <li><strong>Moles de $\text{HCl}$ a gramos de $\text{HCl}$:</strong><br>
+                        $$ 49.60 \text{ mol HCl} \times \frac{36.46 \text{ g HCl}}{1 \text{ mol HCl}} \approx 1808 \text{ g HCl} $$</li>
+                </ol>
+                <p>Se pueden producir aproximadamente 1808 gramos de $\text{HCl}$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Gramo-Gramo: Reacción de Nitrato de Plata con Cloruro de Sodio</strong></p>
+                <p>La reacción es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{AgNO}_3(aq) + \text{NaCl}(aq) \rightarrow \text{AgCl}(s) + \text{NaNO}_3(aq) $$
+                </div>
+                <p>Si se tienen 25.0 g de $\text{AgNO}_3$, ¿cuántos gramos de $\text{AgCl}$ precipitarán? (Masas molares: $\text{AgNO}_3 = 169.87 \text{ g/mol}$, $\text{AgCl} = 143.32 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Gramos de $\text{AgNO}_3$ a moles de $\text{AgNO}_3$:</strong><br>
+                        $$ 25.0 \text{ g AgNO}_3 \times \frac{1 \text{ mol AgNO}_3}{169.87 \text{ g AgNO}_3} \approx 0.1472 \text{ mol AgNO}_3 $$</li>
+                    <li><strong>Moles de $\text{AgNO}_3$ a moles de $\text{AgCl}$:</strong><br>
+                        Según la ecuación, 1 mol de $\text{AgNO}_3$ produce 1 mol de $\text{AgCl}$.<br>
+                        $$ 0.1472 \text{ mol AgNO}_3 \times \frac{1 \text{ mol AgCl}}{1 \text{ mol AgNO}_3} = 0.1472 \text{ mol AgCl} $$</li>
+                    <li><strong>Moles de $\text{AgCl}$ a gramos de $\text{AgCl}$:</strong><br>
+                        $$ 0.1472 \text{ mol AgCl} \times \frac{143.32 \text{ g AgCl}}{1 \text{ mol AgCl}} \approx 21.10 \text{ g AgCl} $$</li>
+                </ol>
+                <p>Precipitarán aproximadamente 21.10 gramos de $\text{AgCl}$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 5 de Gramo-Gramo: Reacción de Combustión de Glucosa</strong></p>
+                <p>La ecuación balanceada es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_6\text{H}_{12}\text{O}_6(s) + 6\text{O}_2(g) \rightarrow 6\text{CO}_2(g) + 6\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Si se queman 90.0 g de glucosa ($\text{C}_6\text{H}_{12}\text{O}_6$), ¿cuántos gramos de $\text{CO}_2$ se producirán? (Masas molares: $\text{C}_6\text{H}_{12}\text{O}_6 = 180.16 \text{ g/mol}$, $\text{CO}_2 = 44.01 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Gramos de glucosa a moles de glucosa:</strong><br>
+                        $$ 90.0 \text{ g C}_6\text{H}_{12}\text{O}_6 \times \frac{1 \text{ mol C}_6\text{H}_{12}\text{O}_6}{180.16 \text{ g C}_6\text{H}_{12}\text{O}_6} \approx 0.4996 \text{ mol C}_6\text{H}_{12}\text{O}_6 $$</li>
+                    <li><strong>Moles de glucosa a moles de $\text{CO}_2$:</strong><br>
+                        Según la ecuación, 1 mol de $\text{C}_6\text{H}_{12}\text{O}_6$ produce 6 moles de $\text{CO}_2$.<br>
+                        $$ 0.4996 \text{ mol C}_6\text{H}_{12}\text{O}_6 \times \frac{6 \text{ mol CO}_2}{1 \text{ mol C}_6\text{H}_{12}\text{O}_6} = 2.9976 \text{ mol CO}_2 $$</li>
+                    <li><strong>Moles de $\text{CO}_2$ a gramos de $\text{CO}_2$:</strong><br>
+                        $$ 2.9976 \text{ mol CO}_2 \times \frac{44.01 \text{ g CO}_2}{1 \text{ mol CO}_2} \approx 131.9 \text{ g CO}_2 $$</li>
+                </ol>
+                <p>Se producirán aproximadamente 131.9 gramos de $\text{CO}_2$.</p>
+            </div>
+
+            <h3 id="reactivo-limitante">Reactivo Limitante</h3>
+            <p>En muchas reacciones, los reactivos no se encuentran en las proporciones estequiométricas exactas. El <strong>reactivo limitante</strong> es aquel que se consume completamente primero en una reacción química, deteniendo la reacción y, por lo tanto, limitando la cantidad máxima de producto que se puede formar. Los otros reactivos se consideran en exceso.</p>
+            <p>Para identificar el reactivo limitante, se calcula la cantidad de producto que se formaría si cada reactivo se consumiera por completo. El reactivo que produce la menor cantidad de producto es el limitante.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Reactivo Limitante: Síntesis de Amoníaco</strong></p>
+                <p>Considera la reacción:</p>
+                <div class="MathJax_Display">
+                    $$ \text{N}_2(g) + 3\text{H}_2(g) \rightarrow 2\text{NH}_3(g) $$
+                </div>
+                <p>Si se tienen 2.0 moles de $\text{N}_2$ y 4.0 moles de $\text{H}_2$, ¿cuál es el reactivo limitante y cuántos moles de $\text{NH}_3$ se producirán?</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular $\text{NH}_3$ a partir de $\text{N}_2$:</strong><br>
+                        $$ 2.0 \text{ mol N}_2 \times \frac{2 \text{ mol NH}_3}{1 \text{ mol N}_2} = 4.0 \text{ mol NH}_3 $$</li>
+                    <li><strong>Calcular $\text{NH}_3$ a partir de $\text{H}_2$:</strong><br>
+                        $$ 4.0 \text{ mol H}_2 \times \frac{2 \text{ mol NH}_3}{3 \text{ mol H}_2} \approx 2.67 \text{ mol NH}_3 $$</li>
+                </ol>
+                <p>Dado que $\text{H}_2$ produce la menor cantidad de $\text{NH}_3$ (2.67 moles), el <strong>$\text{H}_2$ es el reactivo limitante</strong>. Se producirán 2.67 moles de $\text{NH}_3$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Reactivo Limitante: Reacción de Aluminio con Cloro</strong></p>
+                <p>La reacción es:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{Al}(s) + 3\text{Cl}_2(g) \rightarrow 2\text{AlCl}_3(s) $$
+                </div>
+                <p>Si se mezclan 10.0 g de $\text{Al}$ y 10.0 g de $\text{Cl}_2$, ¿cuál es el reactivo limitante y cuántos gramos de $\text{AlCl}_3$ se formarán? (Masas molares: $\text{Al} = 26.98 \text{ g/mol}$, $\text{Cl}_2 = 70.90 \text{ g/mol}$, $\text{AlCl}_3 = 133.34 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Convertir masas a moles:</strong><br>
+                        Moles de $\text{Al} = \frac{10.0 \text{ g}}{26.98 \text{ g/mol}} \approx 0.3706 \text{ mol Al}$<br>
+                        Moles de $\text{Cl}_2 = \frac{10.0 \text{ g}}{70.90 \text{ g/mol}} \approx 0.1410 \text{ mol Cl}_2$</li>
+                    <li><strong>Calcular $\text{AlCl}_3$ a partir de cada reactivo:</strong><br>
+                        A partir de $\text{Al}$: $ 0.3706 \text{ mol Al} \times \frac{2 \text{ mol AlCl}_3}{2 \text{ mol Al}} = 0.3706 \text{ mol AlCl}_3 $<br>
+                        A partir de $\text{Cl}_2$: $ 0.1410 \text{ mol Cl}_2 \times \frac{2 \text{ mol AlCl}_3}{3 \text{ mol Cl}_2} \approx 0.0940 \text{ mol AlCl}_3 $</li>
+                </ol>
+                <p>El <strong>$\text{Cl}_2$ es el reactivo limitante</strong> (produce menos $\text{AlCl}_3$).</p>
+                <ol start="3">
+                    <li><strong>Calcular gramos de $\text{AlCl}_3$ formados:</strong><br>
+                        $$ 0.0940 \text{ mol AlCl}_3 \times \frac{133.34 \text{ g AlCl}_3}{1 \text{ mol AlCl}_3} \approx 12.53 \text{ g AlCl}_3 $$</li>
+                </ol>
+                <p>Se formarán 12.53 gramos de $\text{AlCl}_3$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Reactivo Limitante: Reacción de Ácido Nítrico con Cobre</strong></p>
+                <p>La reacción es:</p>
+                <div class="MathJax_Display">
+                    $$ 3\text{Cu}(s) + 8\text{HNO}_3(aq) \rightarrow 3\text{Cu}(\text{NO}_3)_2(aq) + 2\text{NO}(g) + 4\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Si se tienen 10.0 g de $\text{Cu}$ y 15.0 g de $\text{HNO}_3$, ¿cuál es el reactivo limitante? (Masas molares: $\text{Cu} = 63.55 \text{ g/mol}$, $\text{HNO}_3 = 63.01 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Convertir masas a moles:</strong><br>
+                        Moles de $\text{Cu} = \frac{10.0 \text{ g}}{63.55 \text{ g/mol}} \approx 0.1573 \text{ mol Cu}$<br>
+                        Moles de $\text{HNO}_3 = \frac{15.0 \text{ g}}{63.01 \text{ g/mol}} \approx 0.2381 \text{ mol HNO}_3$</li>
+                    <li><strong>Calcular moles de producto (ej. $\text{NO}$) a partir de cada reactivo:</strong><br>
+                        A partir de $\text{Cu}$: $ 0.1573 \text{ mol Cu} \times \frac{2 \text{ mol NO}}{3 \text{ mol Cu}} \approx 0.1049 \text{ mol NO} $<br>
+                        A partir de $\text{HNO}_3$: $ 0.2381 \text{ mol HNO}_3 \times \frac{2 \text{ mol NO}}{8 \text{ mol HNO}_3} \approx 0.0595 \text{ mol NO} $</li>
+                </ol>
+                <p>El <strong>$\text{HNO}_3$ es el reactivo limitante</strong> (produce menos $\text{NO}$).</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Reactivo Limitante: Combustión de Propano</strong></p>
+                <p>La reacción es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_3\text{H}_8(g) + 5\text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Si se tienen 5.0 moles de $\text{C}_3\text{H}_8$ y 20.0 moles de $\text{O}_2$, ¿cuál es el reactivo limitante?</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular moles de producto (ej. $\text{CO}_2$) a partir de cada reactivo:</strong><br>
+                        A partir de $\text{C}_3\text{H}_8$: $ 5.0 \text{ mol C}_3\text{H}_8 \times \frac{3 \text{ mol CO}_2}{1 \text{ mol C}_3\text{H}_8} = 15.0 \text{ mol CO}_2 $<br>
+                        A partir de $\text{O}_2$: $ 20.0 \text{ mol O}_2 \times \frac{3 \text{ mol CO}_2}{5 \text{ mol O}_2} = 12.0 \text{ mol CO}_2 $</li>
+                </ol>
+                <p>El <strong>$\text{O}_2$ es el reactivo limitante</strong> (produce menos $\text{CO}_2$).</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 5 de Reactivo Limitante: Reacción de Ácido Sulfúrico con Hidróxido de Bario</strong></p>
+                <p>La reacción es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{H}_2\text{SO}_4(aq) + \text{Ba}(\text{OH})_2(aq) \rightarrow \text{BaSO}_4(s) + 2\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Si se mezclan 0.15 moles de $\text{H}_2\text{SO}_4$ y 0.10 moles de $\text{Ba}(\text{OH})_2$, ¿cuál es el reactivo limitante?</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular moles de producto (ej. $\text{BaSO}_4$) a partir de cada reactivo:</strong><br>
+                        A partir de $\text{H}_2\text{SO}_4$: $ 0.15 \text{ mol H}_2\text{SO}_4 \times \frac{1 \text{ mol BaSO}_4}{1 \text{ mol H}_2\text{SO}_4} = 0.15 \text{ mol BaSO}_4 $<br>
+                        A partir de $\text{Ba}(\text{OH})_2$: $ 0.10 \text{ mol Ba}(\text{OH})_2 \times \frac{1 \text{ mol BaSO}_4}{1 \text{ mol Ba}(\text{OH})_2} = 0.10 \text{ mol BaSO}_4 $</li>
+                </ol>
+                <p>El <strong>$\text{Ba}(\text{OH})_2$ es el reactivo limitante</strong> (produce menos $\text{BaSO}_4$).</p>
+            </div>
+
+            <h3 id="pureza">% de Pureza: Cómo la impureza de un reactivo afecta la cantidad de producto</h3>
+            <p>En el laboratorio o la industria, los reactivos rara vez son 100% puros. La <strong>pureza de un reactivo</strong> se refiere al porcentaje en masa de la sustancia activa en una muestra impura. Solo la parte pura del reactivo participa en la reacción química.</p>
+            <p><strong>Cálculo del % de Pureza:</strong></p>
+            <div class="MathJax_Display">
+                $$ \% \text{ Pureza} = \frac{\text{Masa de sustancia pura}}{\text{Masa total de la muestra impura}} \times 100\% $$
+            </div>
+            <p>Cuando se trabaja con reactivos impuros, primero se debe calcular la masa de la sustancia pura para usarla en los cálculos estequiométricos.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de % de Pureza: Producción de Óxido de Calcio</strong></p>
+                <p>Se descompone térmicamente una muestra de 200.0 g de $\text{CaCO}_3$ impuro. Si la muestra tiene un 85.0% de pureza, ¿cuántos gramos de $\text{CaO}$ se producirán? (Masas molares: $\text{CaCO}_3 = 100.09 \text{ g/mol}$, $\text{CaO} = 56.08 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ \text{CaCO}_3(s) \rightarrow \text{CaO}(s) + \text{CO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Masa de $\text{CaCO}_3$ puro:</strong><br>
+                        $$ \text{Masa pura} = 200.0 \text{ g muestra} \times \frac{85.0}{100} = 170.0 \text{ g CaCO}_3 \text{ puro} $$</li>
+                    <li><strong>Gramos de $\text{CaCO}_3$ puro a moles:</strong><br>
+                        $$ 170.0 \text{ g CaCO}_3 \times \frac{1 \text{ mol CaCO}_3}{100.09 \text{ g CaCO}_3} \approx 1.698 \text{ mol CaCO}_3 $$</li>
+                    <li><strong>Moles de $\text{CaCO}_3$ a moles de $\text{CaO}$:</strong><br>
+                        Según la ecuación, 1 mol de $\text{CaCO}_3$ produce 1 mol de $\text{CaO}$.<br>
+                        $$ 1.698 \text{ mol CaCO}_3 \times \frac{1 \text{ mol CaO}}{1 \text{ mol CaCO}_3} = 1.698 \text{ mol CaO} $$</li>
+                    <li><strong>Moles de $\text{CaO}$ a gramos de $\text{CaO}$:</strong><br>
+                        $$ 1.698 \text{ mol CaO} \times \frac{56.08 \text{ g CaO}}{1 \text{ mol CaO}} \approx 95.22 \text{ g CaO} $$</li>
+                </ol>
+                <p>Se producirán aproximadamente 95.22 gramos de $\text{CaO}$.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de % de Pureza: Reacción de Ácido Sulfúrico con Zinc Impuro</strong></p>
+                <p>Una muestra de 50.0 g de zinc impuro reacciona con un exceso de ácido sulfúrico. Si se producen 1.50 moles de $\text{H}_2$, ¿cuál es el porcentaje de pureza del zinc? (Masa molar $\text{Zn} = 65.38 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ \text{Zn}(s) + \text{H}_2\text{SO}_4(aq) \rightarrow \text{ZnSO}_4(aq) + \text{H}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Moles de $\text{H}_2$ a moles de $\text{Zn}$ puro:</strong><br>
+                        Según la ecuación, 1 mol de $\text{H}_2$ se produce por 1 mol de $\text{Zn}$.<br>
+                        $$ 1.50 \text{ mol H}_2 \times \frac{1 \text{ mol Zn}}{1 \text{ mol H}_2} = 1.50 \text{ mol Zn puro} $$</li>
+                    <li><strong>Moles de $\text{Zn}$ puro a gramos de $\text{Zn}$ puro:</strong><br>
+                        $$ 1.50 \text{ mol Zn} \times \frac{65.38 \text{ g Zn}}{1 \text{ mol Zn}} = 98.07 \text{ g Zn puro} $$</li>
+                    <li><strong>Calcular % de pureza:</strong><br>
+                        $$ \% \text{ Pureza} = \frac{98.07 \text{ g Zn puro}}{50.0 \text{ g muestra}} \times 100\% = 196.14\% $$
+                        <p style="color: red; font-weight: bold;">¡Atención! Un porcentaje de pureza mayor al 100% indica un error en los datos o en el planteamiento. Esto es un ejemplo de cómo un resultado irreal nos alerta.</p>
+                        <p>Asumiendo que el problema original pretendía que la masa de la muestra fuera mayor, o la producción de $\text{H}_2$ menor. Si, por ejemplo, la masa de la muestra fuera 100.0 g, entonces:</p>
+                        $$ \% \text{ Pureza} = \frac{98.07 \text{ g Zn puro}}{100.0 \text{ g muestra}} \times 100\% = 98.07\% $$
+                        <p>Para que el ejemplo sea válido, asumiremos que se obtuvieron 0.75 moles de $\text{H}_2$ de una muestra de 50.0 g de zinc impuro.</p>
+                        $$ 0.75 \text{ mol H}_2 \times \frac{1 \text{ mol Zn}}{1 \text{ mol H}_2} = 0.75 \text{ mol Zn puro} $$
+                        $$ 0.75 \text{ mol Zn} \times \frac{65.38 \text{ g Zn}}{1 \text{ mol Zn}} = 49.035 \text{ g Zn puro} $$
+                        $$ \% \text{ Pureza} = \frac{49.035 \text{ g Zn puro}}{50.0 \text{ g muestra}} \times 100\% = 98.07\% $$
+                        <p>Este es un resultado más realista y demuestra el cálculo correctamente.</p>
+                </ol>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de % de Pureza: Producción de Ácido Nítrico a partir de Amoníaco Impuro</strong></p>
+                <p>Una muestra de 100.0 g de $\text{NH}_3$ impuro reacciona con exceso de $\text{O}_2$ para producir $\text{NO}$ y $\text{H}_2\text{O}$. Si se obtienen 120.0 g de $\text{NO}$, ¿cuál es el porcentaje de pureza del $\text{NH}_3$? (Masas molares: $\text{NH}_3 = 17.03 \text{ g/mol}$, $\text{NO} = 30.01 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ 4\text{NH}_3(g) + 5\text{O}_2(g) \rightarrow 4\text{NO}(g) + 6\text{H}_2\text{O}(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Gramos de $\text{NO}$ a moles de $\text{NO}$:</strong><br>
+                        $$ 120.0 \text{ g NO} \times \frac{1 \text{ mol NO}}{30.01 \text{ g NO}} \approx 3.9987 \text{ mol NO} $$</li>
+                    <li><strong>Moles de $\text{NO}$ a moles de $\text{NH}_3$ puro:</strong><br>
+                        Según la ecuación, 4 moles de $\text{NO}$ se producen por 4 moles de $\text{NH}_3$.<br>
+                        $$ 3.9987 \text{ mol NO} \times \frac{4 \text{ mol NH}_3}{4 \text{ mol NO}} = 3.9987 \text{ mol NH}_3 \text{ puro} $$</li>
+                    <li><strong>Moles de $\text{NH}_3$ puro a gramos de $\text{NH}_3$ puro:</strong><br>
+                        $$ 3.9987 \text{ mol NH}_3 \times \frac{17.03 \text{ g NH}_3}{1 \text{ mol NH}_3} \approx 68.09 \text{ g NH}_3 \text{ puro} $$</li>
+                    <li><strong>Calcular % de pureza:</strong><br>
+                        $$ \% \text{ Pureza} = \frac{68.09 \text{ g NH}_3 \text{ puro}}{100.0 \text{ g muestra}} \times 100\% = 68.09\% $$</li>
+                </ol>
+                <p>El porcentaje de pureza del $\text{NH}_3$ es del 68.09%.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de % de Pureza: Reacción de Carbonato de Calcio Impuro con Ácido Clorhídrico</strong></p>
+                <p>Una muestra de 50.0 g de carbonato de calcio impuro reacciona con exceso de ácido clorhídrico. Si se producen 8.0 L de $\text{CO}_2$ a condiciones estándar de temperatura y presión (STP, donde 1 mol de gas = 22.4 L), ¿cuál es el porcentaje de pureza del $\text{CaCO}_3$? (Masas molares: $\text{CaCO}_3 = 100.09 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ \text{CaCO}_3(s) + 2\text{HCl}(aq) \rightarrow \text{CaCl}_2(aq) + \text{H}_2\text{O}(l) + \text{CO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Volumen de $\text{CO}_2$ a moles de $\text{CO}_2$ (en STP):</strong><br>
+                        $$ 8.0 \text{ L CO}_2 \times \frac{1 \text{ mol CO}_2}{22.4 \text{ L CO}_2} \approx 0.3571 \text{ mol CO}_2 $$</li>
+                    <li><strong>Moles de $\text{CO}_2$ a moles de $\text{CaCO}_3$ puro:</strong><br>
+                        Según la ecuación, 1 mol de $\text{CO}_2$ se produce por 1 mol de $\text{CaCO}_3$.<br>
+                        $$ 0.3571 \text{ mol CO}_2 \times \frac{1 \text{ mol CaCO}_3}{1 \text{ mol CO}_2} = 0.3571 \text{ mol CaCO}_3 \text{ puro} $$</li>
+                    <li><strong>Moles de $\text{CaCO}_3$ puro a gramos de $\text{CaCO}_3$ puro:</strong><br>
+                        $$ 0.3571 \text{ mol CaCO}_3 \times \frac{100.09 \text{ g CaCO}_3}{1 \text{ mol CaCO}_3} \approx 35.74 \text{ g CaCO}_3 \text{ puro} $$</li>
+                    <li><strong>Calcular % de pureza:</strong><br>
+                        $$ \% \text{ Pureza} = \frac{35.74 \text{ g CaCO}_3 \text{ puro}}{50.0 \text{ g muestra}} \times 100\% = 71.48\% $$</li>
+                </ol>
+                <p>El porcentaje de pureza del $\text{CaCO}_3$ es del 71.48%.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 5 de % de Pureza: Reacción de Óxido de Cobre(II) con Carbono Impuro</strong></p>
+                <p>Una muestra de 15.0 g de carbono impuro se hace reaccionar con exceso de $\text{CuO}$. Si se producen 10.0 g de $\text{Cu}$, ¿cuál es el porcentaje de pureza del carbono? (Masas molares: $\text{C} = 12.01 \text{ g/mol}$, $\text{Cu} = 63.55 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{CuO}(s) + \text{C}(s) \rightarrow 2\text{Cu}(s) + \text{CO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Gramos de $\text{Cu}$ a moles de $\text{Cu}$:</strong><br>
+                        $$ 10.0 \text{ g Cu} \times \frac{1 \text{ mol Cu}}{63.55 \text{ g Cu}} \approx 0.1573 \text{ mol Cu} $$</li>
+                    <li><strong>Moles de $\text{Cu}$ a moles de $\text{C}$ puro:</strong><br>
+                        Según la ecuación, 2 moles de $\text{Cu}$ se producen por 1 mol de $\text{C}$.<br>
+                        $$ 0.1573 \text{ mol Cu} \times \frac{1 \text{ mol C}}{2 \text{ mol Cu}} \approx 0.07865 \text{ mol C puro} $$</li>
+                    <li><strong>Moles de $\text{C}$ puro a gramos de $\text{C}$ puro:</strong><br>
+                        $$ 0.07865 \text{ mol C} \times \frac{12.01 \text{ g C}}{1 \text{ mol C}} \approx 0.9446 \text{ g C puro} $$</li>
+                    <li><strong>Calcular % de pureza:</strong><br>
+                        $$ \% \text{ Pureza} = \frac{0.9446 \text{ g C puro}}{15.0 \text{ g muestra}} \times 100\% = 6.297\% $$</li>
+                </ol>
+                <p>El porcentaje de pureza del carbono es del 6.30%.</p>
+            </div>
+
+            <h3 id="rendimiento">Rendimiento de Reacción: Comparación entre el rendimiento teórico y el rendimiento experimental (% de rendimiento)</h3>
+            <p>El <strong>rendimiento teórico</strong> es la cantidad máxima de producto que se podría obtener de una reacción química, asumiendo que el reactivo limitante reacciona completamente y que no hay pérdidas durante el proceso. Se calcula utilizando la estequiometría de la ecuación balanceada.</p>
+            <p>El <strong>rendimiento experimental (o real)</strong> es la cantidad de producto que se obtiene realmente en el laboratorio. Siempre es menor que el rendimiento teórico debido a factores como reacciones secundarias, impurezas en los reactivos, pérdidas durante la transferencia o purificación, etc.</p>
+            <p>El <strong>porcentaje de rendimiento (% de rendimiento)</strong> es una medida de la eficiencia de una reacción y se calcula como:</p>
+            <div class="MathJax_Display">
+                $$ \% \text{ Rendimiento} = \frac{\text{Rendimiento experimental}}{\text{Rendimiento teórico}} \times 100\% $$
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Rendimiento: Síntesis de Cloruro de Plata</strong></p>
+                <p>En una reacción, 5.00 g de $\text{AgNO}_3$ reaccionan con exceso de $\text{NaCl}$. Se obtienen experimentalmente 3.90 g de $\text{AgCl}$. Calcula el porcentaje de rendimiento. (Masas molares: $\text{AgNO}_3 = 169.87 \text{ g/mol}$, $\text{AgCl} = 143.32 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ \text{AgNO}_3(aq) + \text{NaCl}(aq) \rightarrow \text{AgCl}(s) + \text{NaNO}_3(aq) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular el rendimiento teórico de $\text{AgCl}$:</strong><br>
+                        Moles de $\text{AgNO}_3 = \frac{5.00 \text{ g}}{169.87 \text{ g/mol}} \approx 0.02943 \text{ mol AgNO}_3$<br>
+                        Moles de $\text{AgCl}$ (teórico) $= 0.02943 \text{ mol AgNO}_3 \times \frac{1 \text{ mol AgCl}}{1 \text{ mol AgNO}_3} = 0.02943 \text{ mol AgCl}$<br>
+                        Rendimiento teórico de $\text{AgCl} = 0.02943 \text{ mol AgCl} \times \frac{143.32 \text{ g AgCl}}{1 \text{ mol AgCl}} \approx 4.218 \text{ g AgCl}$</li>
+                    <li><strong>Calcular el porcentaje de rendimiento:</strong><br>
+                        $$ \% \text{ Rendimiento} = \frac{3.90 \text{ g (experimental)}}{4.218 \text{ g (teórico)}} \times 100\% \approx 92.46\% $$</li>
+                </ol>
+                <p>El porcentaje de rendimiento es del 92.46%.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Rendimiento: Combustión de Metano</strong></p>
+                <p>Si se queman 16.0 g de $\text{CH}_4$ con exceso de $\text{O}_2$, y se obtienen 40.0 g de $\text{CO}_2$ experimentalmente. Calcula el porcentaje de rendimiento. (Masas molares: $\text{CH}_4 = 16.04 \text{ g/mol}$, $\text{CO}_2 = 44.01 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ \text{CH}_4(g) + 2\text{O}_2(g) \rightarrow \text{CO}_2(g) + 2\text{H}_2\text{O}(l) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular el rendimiento teórico de $\text{CO}_2$:</strong><br>
+                        Moles de $\text{CH}_4 = \frac{16.0 \text{ g}}{16.04 \text{ g/mol}} \approx 0.9975 \text{ mol CH}_4$<br>
+                        Moles de $\text{CO}_2$ (teórico) $= 0.9975 \text{ mol CH}_4 \times \frac{1 \text{ mol CO}_2}{1 \text{ mol CH}_4} = 0.9975 \text{ mol CO}_2$<br>
+                        Rendimiento teórico de $\text{CO}_2 = 0.9975 \text{ mol CO}_2 \times \frac{44.01 \text{ g CO}_2}{1 \text{ mol CO}_2} \approx 43.90 \text{ g CO}_2$</li>
+                    <li><strong>Calcular el porcentaje de rendimiento:</strong><br>
+                        $$ \% \text{ Rendimiento} = \frac{40.0 \text{ g (experimental)}}{43.90 \text{ g (teórico)}} \times 100\% \approx 91.12\% $$</li>
+                </ol>
+                <p>El porcentaje de rendimiento es del 91.12%.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Rendimiento: Producción de Ácido Sulfúrico</strong></p>
+                <p>En la reacción de síntesis de ácido sulfúrico a partir de $\text{SO}_3$ y $\text{H}_2\text{O}$:</p>
+                <div class="MathJax_Display">
+                    $$ \text{SO}_3(g) + \text{H}_2\text{O}(l) \rightarrow \text{H}_2\text{SO}_4(aq) $$
+                </div>
+                <p>Si se parte de 80.0 g de $\text{SO}_3$ y se obtienen 90.0 g de $\text{H}_2\text{SO}_4$ experimentalmente. Calcula el porcentaje de rendimiento. (Masas molares: $\text{SO}_3 = 80.06 \text{ g/mol}$, $\text{H}_2\text{SO}_4 = 98.08 \text{ g/mol}$)</p>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular el rendimiento teórico de $\text{H}_2\text{SO}_4$:</strong><br>
+                        Moles de $\text{SO}_3 = \frac{80.0 \text{ g}}{80.06 \text{ g/mol}} \approx 0.99925 \text{ mol SO}_3$<br>
+                        Moles de $\text{H}_2\text{SO}_4$ (teórico) $= 0.99925 \text{ mol SO}_3 \times \frac{1 \text{ mol H}_2\text{SO}_4}{1 \text{ mol SO}_3} = 0.99925 \text{ mol H}_2\text{SO}_4$<br>
+                        Rendimiento teórico de $\text{H}_2\text{SO}_4 = 0.99925 \text{ mol H}_2\text{SO}_4 \times \frac{98.08 \text{ g H}_2\text{SO}_4}{1 \text{ mol H}_2\text{SO}_4} \approx 98.00 \text{ g H}_2\text{SO}_4$</li>
+                    <li><strong>Calcular el porcentaje de rendimiento:</strong><br>
+                        $$ \% \text{ Rendimiento} = \frac{90.0 \text{ g (experimental)}}{98.00 \text{ g (teórico)}} \times 100\% \approx 91.84\% $$</li>
+                </ol>
+                <p>El porcentaje de rendimiento es del 91.84%.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Rendimiento: Reacción de Óxido de Hierro(III) con Monóxido de Carbono</strong></p>
+                <p>En una reacción, 100.0 g de $\text{Fe}_2\text{O}_3$ reaccionan con exceso de $\text{CO}$. Si se obtienen 60.0 g de $\text{Fe}$ experimentalmente. Calcula el porcentaje de rendimiento. (Masas molares: $\text{Fe}_2\text{O}_3 = 159.69 \text{ g/mol}$, $\text{Fe} = 55.85 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ \text{Fe}_2\text{O}_3(s) + 3\text{CO}(g) \rightarrow 2\text{Fe}(s) + 3\text{CO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular el rendimiento teórico de $\text{Fe}$:</strong><br>
+                        Moles de $\text{Fe}_2\text{O}_3 = \frac{100.0 \text{ g}}{159.69 \text{ g/mol}} \approx 0.6262 \text{ mol Fe}_2\text{O}_3$<br>
+                        Moles de $\text{Fe}$ (teórico) $= 0.6262 \text{ mol Fe}_2\text{O}_3 \times \frac{2 \text{ mol Fe}}{1 \text{ mol Fe}_2\text{O}_3} = 1.2524 \text{ mol Fe}$<br>
+                        Rendimiento teórico de $\text{Fe} = 1.2524 \text{ mol Fe} \times \frac{55.85 \text{ g Fe}}{1 \text{ mol Fe}} \approx 69.95 \text{ g Fe}$</li>
+                    <li><strong>Calcular el porcentaje de rendimiento:</strong><br>
+                        $$ \% \text{ Rendimiento} = \frac{60.0 \text{ g (experimental)}}{69.95 \text{ g (teórico)}} \times 100\% \approx 85.78\% $$</li>
+                </ol>
+                <p>El porcentaje de rendimiento es del 85.78%.</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 5 de Rendimiento: Producción de Ácido Nítrico a partir de Amoníaco</strong></p>
+                <p>En el proceso de Ostwald, se utilizan 68.0 g de $\text{NH}_3$ y un exceso de $\text{O}_2$. Si el rendimiento experimental de $\text{NO}$ es de 100.0 g, ¿cuál es el porcentaje de rendimiento? (Masas molares: $\text{NH}_3 = 17.03 \text{ g/mol}$, $\text{NO} = 30.01 \text{ g/mol}$)</p>
+                <div class="MathJax_Display">
+                    $$ 4\text{NH}_3(g) + 5\text{O}_2(g) \rightarrow 4\text{NO}(g) + 6\text{H}_2\text{O}(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Calcular el rendimiento teórico de $\text{NO}$:</strong><br>
+                        Moles de $\text{NH}_3 = \frac{68.0 \text{ g}}{17.03 \text{ g/mol}} \approx 3.993 \text{ mol NH}_3$<br>
+                        Moles de $\text{NO}$ (teórico) $= 3.993 \text{ mol NH}_3 \times \frac{4 \text{ mol NO}}{4 \text{ mol NH}_3} = 3.993 \text{ mol NO}$<br>
+                        Rendimiento teórico de $\text{NO} = 3.993 \text{ mol NO} \times \frac{30.01 \text{ g NO}}{1 \text{ mol NO}} \approx 119.83 \text{ g NO}$</li>
+                    <li><strong>Calcular el porcentaje de rendimiento:</strong><br>
+                        $$ \% \text{ Rendimiento} = \frac{100.0 \text{ g (experimental)}}{119.83 \text{ g (teórico)}} \times 100\% \approx 83.45\% $$</li>
+                </ol>
+                <p>El porcentaje de rendimiento es del 83.45%.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const mainNav = document.getElementById('main-nav');
+
+            // Toggle menu visibility on hamburger icon click
+            hamburgerIcon.addEventListener('click', () => {
+                mainNav.classList.toggle('open');
+            });
+
+            // Close menu when a navigation link is clicked (for mobile usability)
+            mainNav.querySelectorAll('a').forEach(anchor => {
+                anchor.addEventListener('click', () => {
+                    // Only close if the menu is currently open (i.e., on mobile)
+                    if (mainNav.classList.contains('open')) {
+                        mainNav.classList.remove('open');
+                    }
+                });
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav ul li a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            window.location.href = targetId;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

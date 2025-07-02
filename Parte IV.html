@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Fascinante Mundo de las Reacciones Químicas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuración de MathJax para el renderizado de ecuaciones LaTeX
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemáticas en línea
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // Delimitadores para matemáticas en bloque
+                processEscapes: true, // Permite escapar los delimitadores de MathJax
+                processEnvironments: true // Procesa entornos LaTeX como \begin{align}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', // Clases HTML a ignorar por MathJax
+                processHtmlClass: 'tex2jax_process' // Clases HTML a procesar por MathJax
+            },
+            startup: {
+                pageReady: function() {
+                    // Espera a que el DOM esté completamente cargado para procesar MathJax
+                    document.addEventListener('DOMContentLoaded', () => {
+                        MathJax.typeset(); // Inicia el renderizado de MathJax
+                    });
+                }
+            }
+        };
+    </script>
+    <!-- Script de MathJax desde CDN -->
+    <script id="mathjax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+
+    <style>
+        /* --- Reset General y Estilos de Cuerpo --- */
+        body, h1, h2, h3, h4, p, ul, li, section, div { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Merriweather', serif;
+            font-size: 1.18em; /* Aumentar el tamaño de fuente base para mejor legibilidad */
+            line-height: 1.8; /* Aumentar la altura de línea para más espacio entre líneas */
+            color: #333;
+            background-color: #f0f8ff; /* Un azul muy claro para el fondo */
+            padding-top: 180px; /* Ajustado para dar más espacio al encabezado fijo */
+        }
+
+        /* --- Header Fijo --- */
+        header {
+            background-color: #0056b3; /* Azul más oscuro y vibrante */
+            color: #ffffff; /* Blanco puro */
+            padding: 20px 0;
+            text-align: center;
+            position: static; /* Hace que el header se quede fijo */
+            width: 100%; /* Ocupa todo el ancho */
+            top: 0; /* Lo fija en la parte superior */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+            display: flex; /* Usar flexbox para alinear elementos */
+            flex-direction: column; /* Por defecto, en columna para móvil */
+            align-items: center; /* Centrar elementos horizontalmente */
+            justify-content: center;
+        }
+
+        header h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 3em; /* Más grande para el título principal */
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            padding: 0 20px; /* Añadir padding para que no toque los bordes */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            box-sizing: border-box; /* Incluir padding en el ancho */
+        }
+
+        /* Botón de hamburguesa */
+        .hamburger-menu {
+            display: none; /* Ocultar por defecto en pantallas grandes */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            position: absolute; /* Posicionar absolutamente */
+            top: 30px; /* Ajustar posición */
+            right: 20px; /* Ajustar posición */
+            z-index: 1001; /* Asegurar que esté por encima del nav */
+        }
+
+        .hamburger-menu .bar {
+            width: 100%;
+            height: 3px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Estilos para el menú de navegación */
+        nav {
+            width: 100%;
+            max-height: 0; /* Ocultar el menú por defecto */
+            overflow: hidden; /* Ocultar el contenido desbordado */
+            transition: max-height 0.5s ease-out; /* Transición suave al desplegar */
+        }
+
+        nav.open {
+            max-height: 500px; /* Altura máxima para mostrar el menú (ajustar si es necesario) */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Elementos en columna cuando el menú está abierto */
+            align-items: center; /* Centrar elementos */
+            margin-top: 15px;
+        }
+
+        nav ul li {
+            margin: 10px 0; /* Espacio vertical entre elementos */
+            width: 100%; /* Ocupa todo el ancho disponible */
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.2em; /* Tamaño de fuente para los enlaces */
+            padding: 10px 20px; /* Más padding para facilitar el clic */
+            border-radius: 8px; /* Bordes más redondeados */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block; /* Asegura que el padding y el área de clic sean uniformes */
+            text-align: center; /* Centrar texto */
+        }
+
+        nav ul li a:hover {
+            background-color: #004085; /* Azul aún más oscuro al pasar el mouse */
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+        }
+
+        /* Media queries para pantallas grandes (desktop) */
+        @media (min-width: 769px) {
+            header {
+                flex-direction: row; /* Volver a fila en desktop */
+                justify-content: space-between; /* Espaciar título y nav */
+                padding: 20px 40px; /* Ajustar padding */
+            }
+
+            header h1 {
+                width: auto; /* Ancho automático */
+                margin-bottom: 0; /* Eliminar margen inferior */
+            }
+
+            .hamburger-menu {
+                display: none; /* Ocultar el botón de hamburguesa en desktop */
+            }
+
+            nav {
+                max-height: none; /* Asegurar que el menú esté siempre visible */
+                overflow: visible; /* Permitir que el contenido sea visible */
+                width: auto; /* Ancho automático */
+            }
+
+            nav ul {
+                flex-direction: row; /* Volver a fila en desktop */
+                margin-top: 0; /* Eliminar margen superior */
+            }
+
+            nav ul li {
+                margin: 0 15px; /* Espacio horizontal entre elementos */
+            }
+        }
+
+        /* --- Estilos de Contenido General --- */
+        .container {
+            width: 90%; /* Más ancho para aprovechar el espacio */
+            max-width: 1400px; /* Ancho máximo aumentado */
+            margin: 40px auto; /* Más margen */
+            background-color: #ffffff;
+            padding: 50px; /* Más padding */
+            border-radius: 12px; /* Bordes más redondeados */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra más suave y extendida */
+        }
+
+        section {
+            margin-bottom: 60px; /* Más espacio entre secciones */
+            padding-bottom: 40px; /* Más padding inferior */
+            border-bottom: 1px dashed #c0c0c0; /* Línea divisoria más sutil */
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Fjalla One', sans-serif;
+            color: #0056b3; /* Azul principal */
+            margin-bottom: 30px; /* Más espacio */
+            font-size: 2.5em; /* Más grande */
+            border-left: 8px solid #007bff; /* Borde más grueso y vibrante */
+            padding-left: 20px; /* Más padding */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 40px; /* Más espacio */
+            margin-bottom: 25px; /* Más espacio */
+            font-size: 1.9em; /* Más grande */
+            border-bottom: 2px solid #e0e0e0; /* Línea sutil bajo los subtítulos */
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em; /* Tamaño para sub-subtítulos */
+        }
+
+        p {
+            margin-bottom: 25px; /* Más espacio entre párrafos */
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 35px; /* Más margen */
+            margin-bottom: 25px; /* Más margen */
+        }
+
+        ol {
+            margin-left: 35px;
+            margin-bottom: 25px;
+        }
+
+        li {
+            margin-bottom: 12px; /* Más espacio entre elementos de lista */
+        }
+
+        /* --- Estilos específicos para MathJax --- */
+        .MathJax_Display {
+            margin: 2em 0 !important; /* Mucho más espacio para ecuaciones en bloque */
+            padding: 1em 1.2em; /* Más padding */
+            background-color: #e6f2ff; /* Fondo más claro para ecuaciones */
+            border-left: 6px solid #007bff; /* Borde más grueso y azul */
+            border-radius: 6px;
+            overflow-x: auto; /* Para ecuaciones largas */
+            font-size: 1.1em; /* Asegurar que las ecuaciones también sean grandes */
+        }
+
+        .MathJax_SVG_Display {
+            margin: 2em 0 !important; /* Asegura el espaciado para ecuaciones en bloque */
+        }
+
+        /* --- Estilos para ejemplos y notas --- */
+        .ejemplo-destacado {
+            background-color: #f0faff; /* Un azul muy claro para el fondo del ejemplo */
+            border: 1px solid #a0d8ff; /* Borde azul claro */
+            border-left: 8px solid #007bff; /* Borde azul vibrante distintivo */
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .ejemplo-destacado p {
+            font-weight: bold;
+            color: #0056b3; /* Color azul para el título del ejemplo */
+            margin-bottom: 15px;
+        }
+
+        .ejemplo-destacado ol, .ejemplo-destacado ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .ejemplo-destacado li {
+            margin-bottom: 10px;
+        }
+
+        /* --- Animación de Reacción Química (SVG y CSS) --- */
+        .reaction-animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px; /* Altura del contenedor de la animación */
+            margin: 40px auto;
+            background-color: #e6f7ff; /* Fondo claro para la animación */
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden; /* Asegura que la animación no se desborde */
+            position: relative;
+        }
+
+        .molecule {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .molecule-A {
+            background-color: #e74c3c; /* Rojo */
+            left: 10%;
+            animation: reactA 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-B {
+            background-color: #2ecc71; /* Verde */
+            left: 30%;
+            animation: reactB 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-C {
+            background-color: #3498db; /* Azul */
+            left: 70%;
+            opacity: 0;
+            animation: formC 4s ease-in-out infinite alternate;
+        }
+
+        .arrow {
+            position: absolute;
+            font-size: 3em;
+            color: #555;
+            left: 48%; /* Centrar la flecha */
+            top: 50%;
+            transform: translateY(-50%);
+            animation: fadeArrow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes reactA {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(150px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(150px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes reactB {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(-50px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(-50px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes formC {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0; }
+            60% { opacity: 1; transform: scale(1.1); } /* Aparece y se agranda */
+            70% { transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeArrow {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            55% { opacity: 0; } /* Desaparece durante la formación del producto */
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química Dinámica</h1>
+        <div class="hamburger-menu" id="hamburger-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#reacciones">Reacciones Químicas</a></li>
+                <li><a href="#ecuaciones">Ecuaciones Químicas</a></li>
+                <li><a href="#balanceo">Balanceo de Ecuaciones</a></li>
+                <li><a href="#tanteo">Método de Tanteo</a></li>
+                <li><a href="#algebraico">Método Algebraico</a></li>
+                <li><a href="#lcm">Método Mínimo Común Múltiplo</a></li>
+                <li><a href="#ion-electron">Método Ión-Electrón</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="reacciones">
+            <h2>Reacciones Químicas: La Transformación de la Materia</h2>
+            <p>Una <strong>reacción química</strong> es un proceso en el cual una o más sustancias, llamadas <strong>reactivos</strong>, se transforman en una o más sustancias nuevas y diferentes, llamadas <strong>productos</strong>. Esencialmente, es una reorganización de átomos: los enlaces químicos se rompen en los reactivos y se forman nuevos enlaces en los productos. Este proceso es fundamental para la vida, la industria y la naturaleza que nos rodea.</p>
+
+            <h3>Características Clave de las Reacciones Químicas:</h3>
+            <ul>
+                <li><strong>Cambio de Identidad:</strong> Los productos tienen propiedades químicas y físicas distintas a las de los reactivos. Por ejemplo, el hidrógeno ($\text{H}_2$) y el oxígeno ($\text{O}_2$) son gases incoloros, pero cuando reaccionan, forman agua ($\text{H}_2\text{O}$), un líquido con propiedades completamente diferentes.</li>
+                <li><strong>Conservación de la Masa:</strong> Según la Ley de Conservación de la Masa (postulada por Antoine Lavoisier), la masa total de los reactivos que participan en una reacción química es siempre igual a la masa total de los productos formados. Esto significa que los átomos no se crean ni se destruyen, solo se reorganizan en nuevas combinaciones.</li>
+                <li><strong>Cambios Energéticos:</strong> Las reacciones químicas siempre implican un cambio en la energía del sistema.
+                    <ul>
+                        <li><strong>Reacciones Exotérmicas:</strong> Liberan energía al entorno, generalmente en forma de calor o luz. Un ejemplo común es la combustión, como la quema de madera o gas natural.</li>
+                        <li><strong>Reacciones Endotérmicas:</strong> Absorben energía del entorno, lo que a menudo resulta en una disminución de la temperatura del sistema. Un ejemplo es la fotosíntesis, donde las plantas absorben energía solar para producir glucosa.</li>
+                    </ul>
+                </li>
+                <li><strong>Evidencias Visuales:</strong> Aunque no todas las reacciones químicas son visibles a simple vista, muchas presentan cambios observables que nos indican que una transformación ha ocurrido:
+                    <ul>
+                        <li><strong>Formación de un Gas:</strong> Aparición de burbujas (ej. $ \text{Na}_2\text{CO}_3(s) + 2\text{HCl}(aq) \rightarrow 2\text{NaCl}(aq) + \text{H}_2\text{O}(l) + \text{CO}_2(g) $).</li>
+                        <li><strong>Formación de un Precipitado:</strong> Aparición de un sólido insoluble en una disolución (ej. $ \text{Pb}(\text{NO}_3)_2(aq) + 2\text{KI}(aq) \rightarrow \text{PbI}_2(s) + 2\text{KNO}_3(aq) $ donde el $ \text{PbI}_2 $ es un sólido amarillo).</li>
+                        <li><strong>Cambio de Color:</strong> La alteración del color de la mezcla (ej. $ \text{Cu}(s) + 2\text{AgNO}_3(aq) \rightarrow \text{Cu}(\text{NO}_3)_2(aq) + 2\text{Ag}(s) $, donde el cobre sólido reacciona con una disolución incolora de nitrato de plata para formar plata sólida y una disolución azul de nitrato de cobre(II)).</li>
+                        <li><strong>Cambio de Temperatura:</strong> Calentamiento o enfriamiento del recipiente.</li>
+                        <li><strong>Emisión de Luz:</strong> Como en las reacciones de combustión o quimioluminiscencia.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo Visual de Reacción: Transformación Molecular</strong></p>
+                <p>Imagina que tienes dos tipos de "piezas" (átomos o moléculas) separadas. Una reacción química es como si estas piezas se desarmaran y luego se volvieran a ensamblar de una manera completamente nueva, formando algo diferente.</p>
+                <p>Aquí, dos moléculas (A y B) se combinan para formar una nueva molécula (C). Observa cómo las moléculas originales desaparecen y aparece el nuevo producto.</p>
+                <div class="reaction-animation-container">
+                    <div class="molecule molecule-A">A</div>
+                    <div class="molecule molecule-B">B</div>
+                    <div class="arrow">→</div>
+                    <div class="molecule molecule-C">C</div>
+                </div>
+                <p style="font-style: italic; text-align: center; margin-top: 15px;">Esta animación simplificada ilustra cómo los reactivos se transforman en productos.</p>
+            </div>
+
+            <h4>Tipos Comunes de Reacciones Químicas:</h4>
+            <ul>
+                <li><strong>Reacciones de Síntesis (o Combinación):</strong> Dos o más sustancias simples se combinan para formar una sustancia más compleja.
+                    <div class="MathJax_Display">
+                        $$ \text{A} + \text{B} \rightarrow \text{AB} $$
+                        Ejemplo: $ \text{N}_2(g) + 3\text{H}_2(g) \rightarrow 2\text{NH}_3(g) $ (Síntesis de amoníaco)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Descomposición:</strong> Una sustancia compleja se divide en dos o más sustancias más simples. Requieren energía (calor, luz, electricidad).
+                    <div class="MathJax_Display">
+                        $$ \text{AB} \rightarrow \text{A} + \text{B} $$
+                        Ejemplo: $ 2\text{H}_2\text{O}(l) \xrightarrow{\text{electricidad}} 2\text{H}_2(g) + \text{O}_2(g) $ (Electrólisis del agua)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Sustitución Simple (o Desplazamiento):</strong> Un elemento reemplaza a otro elemento en un compuesto.
+                    <div class="MathJax_Display">
+                        $$ \text{A} + \text{BC} \rightarrow \text{AC} + \text{B} $$
+                        Ejemplo: $ \text{Zn}(s) + 2\text{HCl}(aq) \rightarrow \text{ZnCl}_2(aq) + \text{H}_2(g) $ (El zinc desplaza al hidrógeno)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Sustitución Doble (o Metátesis):</strong> Los iones de dos compuestos diferentes intercambian lugares, formando dos nuevos compuestos. A menudo resultan en la formación de un precipitado, un gas o agua.
+                    <div class="MathJax_Display">
+                        $$ \text{AB} + \text{CD} \rightarrow \text{AD} + \text{CB} $$
+                        Ejemplo: $ \text{AgNO}_3(aq) + \text{NaCl}(aq) \rightarrow \text{AgCl}(s) + \text{NaNO}_3(aq) $ (Formación de cloruro de plata sólido)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Combustión:</strong> Una sustancia reacciona rápidamente con el oxígeno, produciendo calor y luz. Si el combustible es un hidrocarburo, los productos suelen ser dióxido de carbono y agua.
+                    <div class="MathJax_Display">
+                        $$ \text{Combustible} + \text{O}_2 \rightarrow \text{Productos} + \text{Energía} $$
+                        Ejemplo: $ \text{CH}_4(g) + 2\text{O}_2(g) \rightarrow \text{CO}_2(g) + 2\text{H}_2\text{O}(l) $ (Combustión del metano)
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section id="ecuaciones">
+            <h2>Ecuaciones Químicas: El Lenguaje de la Transformación</h2>
+            <p>Una <strong>ecuación química</strong> es una representación simbólica concisa de una reacción química. Utiliza fórmulas químicas para los reactivos y productos, y símbolos para indicar el estado físico de las sustancias y las condiciones de la reacción. Son el "idioma" universal de la química, permitiendo a los científicos comunicar reacciones de manera clara y precisa.</p>
+
+            <h3>Componentes Clave de una Ecuación Química:</h3>
+            <ul>
+                <li><strong>Fórmulas Químicas:</strong> Son los símbolos y números que representan las moléculas o unidades de fórmula de los reactivos (a la izquierda de la flecha) y los productos (a la derecha de la flecha). Por ejemplo, $\text{H}_2\text{SO}_4$ para el ácido sulfúrico.</li>
+                <li><strong>Coeficientes Estequiométricos:</strong> Son los números enteros grandes que se colocan delante de las fórmulas químicas. Indican la proporción molar (o la cantidad relativa de moléculas/unidades de fórmula) en la que las sustancias reaccionan o se forman. Son esenciales para balancear la ecuación y asegurar la conservación de la masa. Por ejemplo, en $2\text{H}_2$, el '2' es el coeficiente.</li>
+                <li><strong>Subíndices:</strong> Los números pequeños que aparecen dentro de una fórmula química. Indican la cantidad de átomos de cada elemento dentro de una molécula o unidad de fórmula. Por ejemplo, en $\text{O}_2$, el '2' es un subíndice que indica dos átomos de oxígeno. <strong>¡Es crucial recordar que los subíndices nunca se cambian al balancear una ecuación, ya que cambiarían la identidad de la sustancia!</strong></li>
+                <li><strong>Flecha de Reacción ($\rightarrow$):</strong> Es el símbolo central que separa los reactivos de los productos e indica la dirección en la que procede la reacción. En algunos casos, se usan flechas dobles ($\rightleftharpoons$) para reacciones reversibles.</li>
+                <li><strong>Símbolos de Estado Físico:</strong> Se colocan entre paréntesis después de cada fórmula química para indicar el estado de la sustancia en las condiciones de la reacción:
+                    <ul>
+                        <li>$(s)$ para sólido (del latín <em>solidus</em>)</li>
+                        <li>$(l)$ para líquido (del latín <em>liquidus</em>)</li>
+                        <li>$(g)$ para gas (del inglés <em>gas</em>)</li>
+                        <li>$(aq)$ para disolución acuosa (del latín <em>aqua</em>, disuelto en agua)</li>
+                    </ul>
+                </li>
+                <li><strong>Condiciones de Reacción:</strong> A menudo se indican sobre o debajo de la flecha de reacción para especificar las condiciones necesarias para que la reacción ocurra. Ejemplos incluyen:
+                    <ul>
+                        <li>$\Delta$ (delta): Indica que se aplica calor.</li>
+                        <li>Presión: Se puede indicar un valor numérico (ej., 10 atm).</li>
+                        <li>Catalizador: La fórmula del catalizador (ej., $\text{Pt}$ para platino).</li>
+                        <li>Luz: $h\nu$ o "luz".</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo Desglosado de Ecuación Química: La Formación de Agua</strong></p>
+                <p>Consideremos la reacción de formación de agua a partir de hidrógeno y oxígeno, una de las reacciones más fundamentales:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{H}_2(g) + \text{O}_2(g) \rightarrow 2\text{H}_2\text{O}(l) $$
+                </div>
+                <ul>
+                    <li>$\text{H}_2(g)$ y $\text{O}_2(g)$ son los <strong>reactivos</strong>. Ambos están en estado gaseoso $(g)$.</li>
+                    <li>$\text{H}_2\text{O}(l)$ es el <strong>producto</strong>, en estado líquido $(l)$.</li>
+                    <li>Los '2' grandes delante de $\text{H}_2$ y $\text{H}_2\text{O}$ son <strong>coeficientes estequiométricos</strong>. Nos dicen que dos moléculas de hidrógeno reaccionan con una molécula de oxígeno (el '1' se omite) para producir dos moléculas de agua.</li>
+                    <li>Los '2' pequeños en $\text{H}_2$ y $\text{O}_2$ son <strong>subíndices</strong>. Indican que cada molécula de hidrógeno tiene 2 átomos de H, y cada molécula de oxígeno tiene 2 átomos de O. En $\text{H}_2\text{O}$, el '2' es un subíndice que indica 2 átomos de H y el '1' implícito para O indica 1 átomo de O.</li>
+                    <li>La flecha $\rightarrow$ indica que la reacción procede de izquierda a derecha.</li>
+                </ul>
+                <p>Esta ecuación nos dice que por cada dos moléculas de hidrógeno gaseoso y una molécula de oxígeno gaseoso que reaccionan, se forman dos moléculas de agua líquida. Lo más importante es que esta representación asegura que el número de átomos de cada elemento se conserva antes y después de la reacción.</p>
+            </div>
+        </section>
+
+        <section id="balanceo">
+            <h2>Balanceo de Ecuaciones Químicas: La Ley de Conservación en Acción</h2>
+            <p>El <strong>balanceo de ecuaciones químicas</strong> es un proceso fundamental en química que asegura que la Ley de Conservación de la Masa se cumpla en una reacción. Esta ley establece que la materia no se crea ni se destruye en una reacción química; solo se transforma. Por lo tanto, el número de átomos de cada elemento debe ser el mismo en el lado de los reactivos (izquierda de la flecha) y en el lado de los productos (derecha de la flecha) de una ecuación química.</p>
+            <p>Para balancear una ecuación, solo podemos ajustar los <strong>coeficientes estequiométricos</strong> (los números grandes que preceden a las fórmulas). ¡Nunca debemos cambiar los subíndices dentro de las fórmulas, ya que esto alteraría la identidad de las sustancias!</p>
+
+            <h3>Métodos de Balanceo:</h3>
+
+            <h4 id="tanteo">1. Método de Tanteo (o Inspección)</h4>
+            <p>Este es el método más simple y se utiliza para ecuaciones relativamente sencillas. Consiste en ajustar los coeficientes de forma iterativa, "a ojo", hasta que el número de átomos de cada elemento esté balanceado en ambos lados de la ecuación.</p>
+            <p><strong>Sugerencias para el Tanteo:</strong></p>
+            <ul>
+                <li>Balancea primero los elementos que aparecen en una sola sustancia en cada lado de la ecuación.</li>
+                <li>Balancea los elementos metálicos y no metálicos (excepto H y O) primero.</li>
+                <li>Deja el hidrógeno (H) y el oxígeno (O) para el final, ya que a menudo aparecen en múltiples compuestos.</li>
+                <li>Si tienes grupos poliatómicos (como $\text{SO}_4^{2-}$ o $\text{NO}_3^-$) que permanecen intactos en ambos lados de la ecuación, balancéalos como una unidad.</li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Tanteo: Combustión del propano</strong></p>
+                <p>Balancea la siguiente ecuación química:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow \text{CO}_2(g) + \text{H}_2\text{O}(l) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear Carbono (C):</strong> Hay 3 átomos de C en los reactivos ($\text{C}_3\text{H}_8$). Para tener 3 en los productos, colocamos un coeficiente de '3' delante de $\text{CO}_2$.<br>
+                        $$ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow 3\text{CO}_2(g) + \text{H}_2\text{O}(l) $$
+                        (C: Reactivos = 3, Productos = 3)</li>
+                    <li><strong>Balancear Hidrógeno (H):</strong> Hay 8 átomos de H en los reactivos ($\text{C}_3\text{H}_8$). Para tener 8 en los productos, colocamos un coeficiente de '4' delante de $\text{H}_2\text{O}$ ($4 \times 2 = 8$).<br>
+                        $$ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$
+                        (H: Reactivos = 8, Productos = 8)</li>
+                    <li><strong>Balancear Oxígeno (O):</strong> Contamos los átomos de O en los productos: $3 \times 2 (\text{en CO}_2) + 4 \times 1 (\text{en H}_2\text{O}) = 6 + 4 = 10$ átomos de O. En los reactivos, $\text{O}_2$ tiene 2 átomos de O. Para tener 10 en los reactivos, colocamos un coeficiente de '5' delante de $\text{O}_2$ ($5 \times 2 = 10$).<br>
+                        $$ \text{C}_3\text{H}_8(g) + 5\text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$
+                        (O: Reactivos = 10, Productos = 10)</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_3\text{H}_8(g) + 5\text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Verificación: C: 3 en reactivos, 3 en productos. H: 8 en reactivos, 8 en productos. O: 10 en reactivos, 10 en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Tanteo: Reacción de óxido de hierro(III) con monóxido de carbono</strong></p>
+                <p>Balancea la siguiente ecuación química:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Fe}_2\text{O}_3(s) + \text{CO}(g) \rightarrow \text{Fe}(s) + \text{CO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ul>
+                    <li><strong>Balancear Fe:</strong> Hay 2 átomos de Fe en los reactivos ($\text{Fe}_2\text{O}_3$). Necesitamos 2 átomos de Fe en los productos. Colocamos un '2' delante de $\text{Fe}$.<br>
+                        $$ \text{Fe}_2\text{O}_3(s) + \text{CO}(g) \rightarrow 2\text{Fe}(s) + \text{CO}_2(g) $$</li>
+                    <li><strong>Balancear C:</strong> Hay 1 átomo de C en reactivos y 1 en productos. Por ahora, C está balanceado.</li>
+                    <li><strong>Balancear O:</strong> Contamos O en reactivos: 3 (de $\text{Fe}_2\text{O}_3$) + 1 (de $\text{CO}$) = 4 átomos de O. En productos: 2 (de $\text{CO}_2$). Para balancear, necesitamos más O en los productos. Si ponemos un '3' delante de $\text{CO}$ en los reactivos, tendremos 3 C y 3 O. Para balancear C en productos, ponemos un '3' delante de $\text{CO}_2$.<br>
+                        $$ \text{Fe}_2\text{O}_3(s) + 3\text{CO}(g) \rightarrow 2\text{Fe}(s) + 3\text{CO}_2(g) $$
+                        Ahora, O en reactivos: 3 (de $\text{Fe}_2\text{O}_3$) + 3 (de $3\text{CO}$) = 6. O en productos: $3 \times 2 = 6$. ¡O balanceado! Y C también se balanceó automáticamente.</li>
+                </ul>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Fe}_2\text{O}_3(s) + 3\text{CO}(g) \rightarrow 2\text{Fe}(s) + 3\text{CO}_2(g) $$
+                </div>
+                <p>Verificación: Fe: 2 en reactivos, 2 en productos. C: 3 en reactivos, 3 en productos. O: 6 en reactivos, 6 en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Tanteo: Síntesis de amoníaco</strong></p>
+                <p>Balancea la siguiente ecuación química:</p>
+                <div class="MathJax_Display">
+                    $$ \text{N}_2(g) + \text{H}_2(g) \rightarrow \text{NH}_3(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear N:</strong> Hay 2 átomos de N en los reactivos ($\text{N}_2$). Para tener 2 en los productos, colocamos un '2' delante de $\text{NH}_3$.<br>
+                        $$ \text{N}_2(g) + \text{H}_2(g) \rightarrow 2\text{NH}_3(g) $$</li>
+                    <li><strong>Balancear H:</strong> Ahora hay $2 \times 3 = 6$ átomos de H en los productos. Para tener 6 en los reactivos, colocamos un '3' delante de $\text{H}_2$ ($3 \times 2 = 6$).<br>
+                        $$ \text{N}_2(g) + 3\text{H}_2(g) \rightarrow 2\text{NH}_3(g) $$</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{N}_2(g) + 3\text{H}_2(g) \rightarrow 2\text{NH}_3(g) $$
+                </div>
+                <p>Verificación: N: 2 en reactivos, 2 en productos. H: 6 en reactivos, 6 en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Tanteo: Descomposición del clorato de potasio</strong></p>
+                <p>Balancea la siguiente ecuación química:</p>
+                <div class="MathJax_Display">
+                    $$ \text{KClO}_3(s) \rightarrow \text{KCl}(s) + \text{O}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear K y Cl:</strong> Ambos están balanceados (1 átomo en cada lado).</li>
+                    <li><strong>Balancear O:</strong> Hay 3 átomos de O en los reactivos ($\text{KClO}_3$) y 2 en los productos ($\text{O}_2$). El Mínimo Común Múltiplo de 3 y 2 es 6. Para tener 6 O en ambos lados, multiplicamos $\text{KClO}_3$ por 2 y $\text{O}_2$ por 3.<br>
+                        $$ 2\text{KClO}_3(s) \rightarrow \text{KCl}(s) + 3\text{O}_2(g) $$</li>
+                    <li><strong>Reajustar K y Cl:</strong> Al poner un '2' delante de $\text{KClO}_3$, ahora tenemos 2 K y 2 Cl en los reactivos. Necesitamos 2 K y 2 Cl en los productos, así que ponemos un '2' delante de $\text{KCl}$.<br>
+                        $$ 2\text{KClO}_3(s) \rightarrow 2\text{KCl}(s) + 3\text{O}_2(g) $$</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{KClO}_3(s) \rightarrow 2\text{KCl}(s) + 3\text{O}_2(g) $$
+                </div>
+                <p>Verificación: K: 2 en reactivos, 2 en productos. Cl: 2 en reactivos, 2 en productos. O: 6 en reactivos, 6 en productos. ¡Balanceada!</p>
+            </div>
+
+            <h4 id="algebraico">2. Método Algebraico</h4>
+            <p>Este método es más sistemático y útil para ecuaciones más complejas donde el tanteo puede ser difícil. Implica asignar variables (letras) como coeficientes a cada sustancia y luego resolver un sistema de ecuaciones lineales basado en la conservación de los átomos.</p>
+            <p><strong>Pasos del Método Algebraico:</strong></p>
+            <ol>
+                <li>Asigna una variable (a, b, c, d, etc.) como coeficiente a cada sustancia en la ecuación.</li>
+                <li>Para cada elemento, escribe una ecuación lineal donde el número total de átomos de ese elemento en los reactivos sea igual al número total en los productos.</li>
+                <li>Resuelve el sistema de ecuaciones. Asigna un valor (generalmente 1) a una de las variables para simplificar. Busca el conjunto más pequeño de números enteros para los coeficientes.</li>
+            </ol>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Método Algebraico: Combustión de Etano</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_2\text{H}_6(g) + \text{O}_2(g) \rightarrow \text{CO}_2(g) + \text{H}_2\text{O}(l) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Asignar variables:</strong><br>
+                        $$ a\text{C}_2\text{H}_6(g) + b\text{O}_2(g) \rightarrow c\text{CO}_2(g) + d\text{H}_2\text{O}(l) $$</li>
+                    <li><strong>Escribir ecuaciones para cada elemento:</strong>
+                        <ul>
+                            <li>Para C: $ 2a = c $</li>
+                            <li>Para H: $ 6a = 2d \Rightarrow 3a = d $</li>
+                            <li>Para O: $ 2b = 2c + d $</li>
+                        </ul>
+                    </li>
+                    <li><strong>Resolver el sistema de ecuaciones:</strong>
+                        <p>Asumimos un valor para una de las variables, por ejemplo, $ a = 1 $.</p>
+                        <ul>
+                            <li>Si $ a = 1 $, entonces $ c = 2a = 2(1) = 2 $.</li>
+                            <li>Si $ a = 1 $, entonces $ d = 3a = 3(1) = 3 $.</li>
+                            <li>Sustituimos $c$ y $d$ en la ecuación de O: $ 2b = 2(2) + 3 \Rightarrow 2b = 4 + 3 \Rightarrow 2b = 7 \Rightarrow b = \frac{7}{2} $.</li>
+                        </ul>
+                        <p>Tenemos los coeficientes: $ a=1, b=\frac{7}{2}, c=2, d=3 $. Para obtener números enteros, multiplicamos todos por 2:</p>
+                        <ul>
+                            <li>$ a = 1 \times 2 = 2 $</li>
+                            <li>$ b = \frac{7}{2} \times 2 = 7 $</li>
+                            <li>$ c = 2 \times 2 = 4 $</li>
+                            <li>$ d = 3 \times 2 = 6 $</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{C}_2\text{H}_6(g) + 7\text{O}_2(g) \rightarrow 4\text{CO}_2(g) + 6\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Verificación: C: $2 \times 2 = 4$ en reactivos, 4 en productos. H: $2 \times 6 = 12$ en reactivos, $6 \times 2 = 12$ en productos. O: $7 \times 2 = 14$ en reactivos, $4 \times 2 + 6 \times 1 = 8 + 6 = 14$ en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Método Algebraico: Oxidación del Hierro</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Fe}(s) + \text{O}_2(g) \rightarrow \text{Fe}_2\text{O}_3(s) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Asignar variables:</strong><br>
+                        $$ a\text{Fe}(s) + b\text{O}_2(g) \rightarrow c\text{Fe}_2\text{O}_3(s) $$</li>
+                    <li><strong>Escribir ecuaciones para cada elemento:</strong>
+                        <ul>
+                            <li>Para Fe: $ a = 2c $</li>
+                            <li>Para O: $ 2b = 3c $</li>
+                        </ul>
+                    </li>
+                    <li><strong>Resolver el sistema de ecuaciones:</strong>
+                        <p>Asumimos $ c = 1 $ (el coeficiente más pequeño posible para $\text{Fe}_2\text{O}_3$).</p>
+                        <ul>
+                            <li>Si $ c = 1 $, entonces $ a = 2(1) = 2 $.</li>
+                            <li>Si $ c = 1 $, entonces $ 2b = 3(1) \Rightarrow 2b = 3 \Rightarrow b = \frac{3}{2} $.</li>
+                        </ul>
+                        <p>Tenemos los coeficientes: $ a=2, b=\frac{3}{2}, c=1 $. Para obtener números enteros, multiplicamos todos por 2:</p>
+                        <ul>
+                            <li>$ a = 2 \times 2 = 4 $</li>
+                            <li>$ b = \frac{3}{2} \times 2 = 3 $</li>
+                            <li>$ c = 1 \times 2 = 2 $</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ 4\text{Fe}(s) + 3\text{O}_2(g) \rightarrow 2\text{Fe}_2\text{O}_3(s) $$
+                </div>
+                <p>Verificación: Fe: 4 en reactivos, $2 \times 2 = 4$ en productos. O: $3 \times 2 = 6$ en reactivos, $2 \times 3 = 6$ en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Método Algebraico: Proceso de Ostwald</strong></p>
+                <p>Balancea la siguiente ecuación (formación de óxido nítrico):</p>
+                <div class="MathJax_Display">
+                    $$ \text{NH}_3(g) + \text{O}_2(g) \rightarrow \text{NO}(g) + \text{H}_2\text{O}(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Asignar variables:</strong><br>
+                        $$ a\text{NH}_3(g) + b\text{O}_2(g) \rightarrow c\text{NO}(g) + d\text{H}_2\text{O}(g) $$</li>
+                    <li><strong>Escribir ecuaciones para cada elemento:</strong>
+                        <ul>
+                            <li>Para N: $ a = c $</li>
+                            <li>Para H: $ 3a = 2d $</li>
+                            <li>Para O: $ 2b = c + d $</li>
+                        </ul>
+                    </li>
+                    <li><strong>Resolver el sistema de ecuaciones:</strong>
+                        <p>Asumimos $ a = 2 $ para obtener un número entero para $d$ en $3a = 2d$.</p>
+                        <ul>
+                            <li>Si $ a = 2 $, entonces $ c = 2 $.</li>
+                            <li>If $ a = 2 $, then $ 3(2) = 2d \Rightarrow 6 = 2d \Rightarrow d = 3 $.</li>
+                            <li>Sustituimos $c$ y $d$ en la ecuación de O: $ 2b = 2 + 3 \Rightarrow 2b = 5 \Rightarrow b = \frac{5}{2} $.</li>
+                        </ul>
+                        <p>Tenemos los coeficientes: $ a=2, b=\frac{5}{2}, c=2, d=3 $. Para obtener números enteros, multiplicamos todos por 2:</p>
+                        <ul>
+                            <li>$ a = 2 \times 2 = 4 $</li>
+                            <li>$ b = \frac{5}{2} \times 2 = 5 $</li>
+                            <li>$ c = 2 \times 2 = 4 $</li>
+                            <li>$ d = 3 \times 2 = 6 $</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ 4\text{NH}_3(g) + 5\text{O}_2(g) \rightarrow 4\text{NO}(g) + 6\text{H}_2\text{O}(g) $$
+                </div>
+                <p>Verificación: N: 4 en reactivos, 4 en productos. H: $4 \times 3 = 12$ en reactivos, $6 \times 2 = 12$ en productos. O: $5 \times 2 = 10$ en reactivos, $4 \times 1 + 6 \times 1 = 10$ en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Método Algebraico: Combustión de Glucosa</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_6\text{H}_{12}\text{O}_6(s) + \text{O}_2(g) \rightarrow \text{CO}_2(g) + \text{H}_2\text{O}(l) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Asignar variables:</strong><br>
+                        $$ a\text{C}_6\text{H}_{12}\text{O}_6(s) + b\text{O}_2(g) \rightarrow c\text{CO}_2(g) + d\text{H}_2\text{O}(l) $$</li>
+                    <li><strong>Escribir ecuaciones para cada elemento:</strong>
+                        <ul>
+                            <li>Para C: $ 6a = c $</li>
+                            <li>Para H: $ 12a = 2d \Rightarrow 6a = d $</li>
+                            <li>Para O: $ 6a + 2b = 2c + d $</li>
+                        </ul>
+                    </li>
+                    <li><strong>Resolver el sistema de ecuaciones:</strong>
+                        <p>Asumimos $ a = 1 $.</p>
+                        <ul>
+                            <li>Si $ a = 1 $, entonces $ c = 6(1) = 6 $.</li>
+                            <li>Si $ a = 1 $, entonces $ d = 6(1) = 6 $.</li>
+                            <li>Sustituimos $a, c, d$ en la ecuación de O: $ 6(1) + 2b = 2(6) + 6 \Rightarrow 6 + 2b = 12 + 6 \Rightarrow 6 + 2b = 18 \Rightarrow 2b = 12 \Rightarrow b = 6 $.</li>
+                        </ul>
+                        <p>Tenemos los coeficientes: $ a=1, b=6, c=6, d=6 $.</p>
+                    </li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{C}_6\text{H}_{12}\text{O}_6(s) + 6\text{O}_2(g) \rightarrow 6\text{CO}_2(g) + 6\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Verificación: C: 6 en reactivos, 6 en productos. H: 12 en reactivos, $6 \times 2 = 12$ en productos. O: $6 + 2 \times 6 = 18$ en reactivos, $6 \times 2 + 6 \times 1 = 12 + 6 = 18$ en productos. ¡Balanceada!</p>
+            </div>
+
+            <h4 id="lcm">3. Método del Mínimo Común Múltiplo (LCM)</h4>
+            <p>Este método es una estrategia útil, a menudo aplicada dentro del método de tanteo, especialmente cuando un elemento aparece en solo dos compuestos (uno en reactivos y uno en productos) y sus subíndices son números que requieren encontrar un múltiplo común para balancearlos.</p>
+            <p><strong>Pasos del Método LCM:</strong></p>
+            <ol>
+                <li>Identifica un elemento que aparezca en un solo reactivo y un solo producto.</li>
+                <li>Encuentra el Mínimo Común Múltiplo (LCM) de los subíndices de ese elemento en ambos compuestos.</li>
+                <li>Divide el LCM por cada subíndice para obtener los coeficientes iniciales para esos compuestos.</li>
+                <li>Continúa balanceando el resto de los elementos por tanteo.</li>
+            </ol>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 de Método LCM: Reacción de óxido de aluminio con ácido clorhídrico</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Al}_2\text{O}_3(s) + \text{HCl}(aq) \rightarrow \text{AlCl}_3(aq) + \text{H}_2\text{O}(l) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear Al:</strong> Hay 2 Al en $\text{Al}_2\text{O}_3$ y 1 Al en $\text{AlCl}_3$. LCM(1,2) = 2. Coeficiente para $\text{AlCl}_3$ es $2/1 = 2$.<br>
+                        $$ \text{Al}_2\text{O}_3(s) + \text{HCl}(aq) \rightarrow 2\text{AlCl}_3(aq) + \text{H}_2\text{O}(l) $$</li>
+                    <li><strong>Balancear Cl:</strong> Ahora tenemos $2 \times 3 = 6$ Cl en los productos. Necesitamos 6 Cl en los reactivos. Coeficiente para $\text{HCl}$ es $6/1 = 6$.<br>
+                        $$ \text{Al}_2\text{O}_3(s) + 6\text{HCl}(aq) \rightarrow 2\text{AlCl}_3(aq) + \text{H}_2\text{O}(l) $$</li>
+                    <li><strong>Balancear H:</strong> Ahora tenemos 6 H en los reactivos. Necesitamos 6 H en los productos. Coeficiente para $\text{H}_2\text{O}$ es $6/2 = 3$.<br>
+                        $$ \text{Al}_2\text{O}_3(s) + 6\text{HCl}(aq) \rightarrow 2\text{AlCl}_3(aq) + 3\text{H}_2\text{O}(l) $$</li>
+                    <li><strong>Verificar O:</strong> Hay 3 O en los reactivos ($\text{Al}_2\text{O}_3$) y $3 \times 1 = 3$ O en los productos ($3\text{H}_2\text{O}$). ¡El oxígeno está balanceado!</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Al}_2\text{O}_3(s) + 6\text{HCl}(aq) \rightarrow 2\text{AlCl}_3(aq) + 3\text{H}_2\text{O}(l) $$
+                </div>
+                <p>Verificación: Al: 2 en reactivos, 2 en productos. O: 3 en reactivos, 3 en productos. H: 6 en reactivos, 6 en productos. Cl: 6 en reactivos, 6 en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 de Método LCM: Combustión del Fósforo</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{P}_4(s) + \text{O}_2(g) \rightarrow \text{P}_4\text{O}_{10}(s) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear P:</strong> Hay 4 P en $\text{P}_4$ y 4 P en $\text{P}_4\text{O}_{10}$. El fósforo ya está balanceado.</li>
+                    <li><strong>Balancear O:</strong> Hay 2 O en $\text{O}_2$ y 10 O en $\text{P}_4\text{O}_{10}$. LCM(2,10) = 10. Coeficiente para $\text{O}_2$ es $10/2 = 5$.<br>
+                        $$ \text{P}_4(s) + 5\text{O}_2(g) \rightarrow \text{P}_4\text{O}_{10}(s) $$</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{P}_4(s) + 5\text{O}_2(g) \rightarrow \text{P}_4\text{O}_{10}(s) $$
+                </div>
+                <p>Verificación: P: 4 en reactivos, 4 en productos. O: 10 en reactivos, 10 en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 3 de Método LCM: Reacción de Aluminio con Ácido Sulfúrico</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Al}(s) + \text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear Al:</strong> Hay 1 Al en reactivos y 2 Al en productos. LCM(1,2) = 2. Coeficiente para Al es $2/1 = 2$.<br>
+                        $$ 2\text{Al}(s) + \text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $$</li>
+                    <li><strong>Balancear el grupo poliatómico ($\text{SO}_4$):</strong> Hay 1 grupo $\text{SO}_4$ en reactivos y 3 en productos. LCM(1,3) = 3. Coeficiente para $\text{H}_2\text{SO}_4$ es $3/1 = 3$.<br>
+                        $$ 2\text{Al}(s) + 3\text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $$</li>
+                    <li><strong>Balancear H:</strong> Ahora hay $3 \times 2 = 6$ átomos de H en reactivos. Necesitamos 6 H en los productos. Coeficiente para $\text{H}_2$ es $6/2 = 3$.<br>
+                        $$ 2\text{Al}(s) + 3\text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + 3\text{H}_2(g) $$</li>
+                    <li><strong>Verificar O:</strong> El oxígeno está balanceado dentro del grupo $\text{SO}_4$. $3 \times 4 = 12$ en reactivos, $3 \times 4 = 12$ en productos. ¡Balanceada!</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{Al}(s) + 3\text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + 3\text{H}_2(g) $$
+                </div>
+                <p>Verificación: Al: 2 en reactivos, 2 en productos. H: 6 en reactivos, 6 en productos. S: 3 en reactivos, 3 en productos. O: 12 en reactivos, 12 en productos. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 4 de Método LCM: Combustión de Pirita</strong></p>
+                <p>Balancea la siguiente ecuación:</p>
+                <div class="MathJax_Display">
+                    $$ \text{FeS}_2(s) + \text{O}_2(g) \rightarrow \text{Fe}_2\text{O}_3(s) + \text{SO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear Fe:</strong> Hay 1 Fe en reactivos y 2 Fe en productos. LCM(1,2) = 2. Coeficiente para $\text{FeS}_2$ es $2/1 = 2$.<br>
+                        $$ 2\text{FeS}_2(s) + \text{O}_2(g) \rightarrow \text{Fe}_2\text{O}_3(s) + \text{SO}_2(g) $$</li>
+                    <li><strong>Balancear S:</strong> Ahora hay $2 \times 2 = 4$ S en reactivos. Necesitamos 4 S en productos. Coeficiente para $\text{SO}_2$ es $4/1 = 4$.<br>
+                        $$ 2\text{FeS}_2(s) + \text{O}_2(g) \rightarrow \text{Fe}_2\text{O}_3(s) + 4\text{SO}_2(g) $$</li>
+                    <li><strong>Balancear O:</strong> Contamos O en productos: 3 (de $\text{Fe}_2\text{O}_3$) + $4 \times 2$ (de $\text{SO}_2$) = $3 + 8 = 11$ O. En reactivos, $\text{O}_2$ tiene 2 O. Para tener 11 O, necesitamos $11/2$ moléculas de $\text{O}_2$.<br>
+                        $$ 2\text{FeS}_2(s) + \frac{11}{2}\text{O}_2(g) \rightarrow \text{Fe}_2\text{O}_3(s) + 4\text{SO}_2(g) $$</li>
+                    <li><strong>Eliminar fracciones:</strong> Multiplicar toda la ecuación por 2 para obtener coeficientes enteros.<br>
+                        $$ 4\text{FeS}_2(s) + 11\text{O}_2(g) \rightarrow 2\text{Fe}_2\text{O}_3(s) + 8\text{SO}_2(g) $$</li>
+                </ol>
+                <p>La ecuación balanceada final es:</p>
+                <div class="MathJax_Display">
+                    $$ 4\text{FeS}_2(s) + 11\text{O}_2(g) \rightarrow 2\text{Fe}_2\text{O}_3(s) + 8\text{SO}_2(g) $$
+                </div>
+                <p>Verificación: Fe: 4 en reactivos, 4 en productos. S: 8 en reactivos, 8 en productos. O: 22 en reactivos, $2 \times 3 + 8 \times 2 = 6 + 16 = 22$ en productos. ¡Balanceada!</p>
+            </div>
+
+            <h4 id="ion-electron">4. Método Ión-Electrón (para Reacciones Redox)</h4>
+            <p>Este método es esencial para balancear reacciones de óxido-reducción (redox), donde hay transferencia de electrones. Se basa en separar la reacción en dos "semirreacciones" (una de oxidación y otra de reducción) y balancear los átomos y la carga en cada una, para luego combinarlas.</p>
+
+            <h5>Balanceo en Medio Ácido:</h5>
+            <p><strong>Pasos:</strong></p>
+            <ol>
+                <li><strong>Separar en semirreacciones:</strong> Identifica las especies que se oxidan y las que se reducen.</li>
+                <li><strong>Balancear átomos (excepto O y H):</strong> Balancea los átomos distintos de oxígeno e hidrógeno en cada semirreacción.</li>
+                <li><strong>Balancear oxígeno (O):</strong> Añade moléculas de agua ($\text{H}_2\text{O}$) al lado que necesite oxígeno.</li>
+                <li><strong>Balancear hidrógeno (H):</strong> Añade iones hidrógeno ($\text{H}^+$) al lado que necesite hidrógeno.</li>
+                <li><strong>Balancear carga:</strong> Añade electrones ($\text{e}^-$) al lado más positivo (o menos negativo) para igualar la carga en ambos lados de cada semirreacción.</li>
+                <li><strong>Igualar electrones:</strong> Multiplica cada semirreacción por un factor para que el número de electrones ganados en la reducción sea igual al número de electrones perdidos en la oxidación.</li>
+                <li><strong>Sumar las semirreacciones:</strong> Combina las dos semirreacciones y cancela las especies comunes (electrones, $\text{H}_2\text{O}$, $\text{H}^+$) que aparezcan en ambos lados.</li>
+            </ol>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 Ión-Electrón (Medio Ácido): Reacción de Permanganato con Hierro(II)</strong></p>
+                <p>Balancea la siguiente reacción en medio ácido:</p>
+                <div class="MathJax_Display">
+                    $$ \text{MnO}_4^-(aq) + \text{Fe}^{2+}(aq) \rightarrow \text{Mn}^{2+}(aq) + \text{Fe}^{3+}(aq) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Semirreacciones:</strong><br>
+                        Oxidación: $ \text{Fe}^{2+} \rightarrow \text{Fe}^{3+} $ <br>
+                        Reducción: $ \text{MnO}_4^- \rightarrow \text{Mn}^{2+} $</li>
+                    <li><strong>Balancear átomos (excepto O y H):</strong> Fe y Mn ya están balanceados.</li>
+                    <li><strong>Balancear O (en reducción):</strong> Añadir $4\text{H}_2\text{O}$ a la derecha de la semirreacción de reducción.<br>
+                        $$ \text{MnO}_4^- \rightarrow \text{Mn}^{2+} + 4\text{H}_2\text{O} $$</li>
+                    <li><strong>Balancear H (en reducción):</strong> Añadir $8\text{H}^+$ a la izquierda de la semirreacción de reducción.<br>
+                        $$ 8\text{H}^+ + \text{MnO}_4^- \rightarrow \text{Mn}^{2+} + 4\text{H}_2\text{O} $$</li>
+                    <li><strong>Balancear carga con electrones:</strong><br>
+                        Oxidación: Carga izquierda = +2, Carga derecha = +3. Añadir 1 $\text{e}^-$ a la derecha.<br>
+                        $$ \text{Fe}^{2+} \rightarrow \text{Fe}^{3+} + \text{e}^- $$
+                        Reducción: Carga izquierda = $8(+1) + (-1) = +7$. Carga derecha = +2. Añadir 5 $\text{e}^-$ a la izquierda.<br>
+                        $$ 5\text{e}^- + 8\text{H}^+ + \text{MnO}_4^- \rightarrow \text{Mn}^{2+} + 4\text{H}_2\text{O} $$</li>
+                    <li><strong>Igualar electrones:</strong> Multiplicar la semirreacción de oxidación por 5.<br>
+                        Oxidación: $ 5\text{Fe}^{2+} \rightarrow 5\text{Fe}^{3+} + 5\text{e}^- $ <br>
+                        Reducción: $ 5\text{e}^- + 8\text{H}^+ + \text{MnO}_4^- \rightarrow \text{Mn}^{2+} + 4\text{H}_2\text{O} $</li>
+                    <li><strong>Sumar y cancelar:</strong><br>
+                        $$ 5\text{Fe}^{2+} + 5\text{e}^- + 8\text{H}^+ + \text{MnO}_4^- \rightarrow 5\text{Fe}^{3+} + 5\text{e}^- + \text{Mn}^{2+} + 4\text{H}_2\text{O} $$
+                        Cancelando $5\text{e}^-$ de ambos lados:
+                        $$ 5\text{Fe}^{2+}(aq) + 8\text{H}^+(aq) + \text{MnO}_4^-(aq) \rightarrow 5\text{Fe}^{3+}(aq) + \text{Mn}^{2+}(aq) + 4\text{H}_2\text{O}(l) $$
+                </ol>
+                <p>Verificación: Átomos y cargas balanceados. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 Ión-Electrón (Medio Ácido): Reacción de Dicromato con Oxalato</strong></p>
+                <p>Balancea la siguiente reacción en medio ácido:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Cr}_2\text{O}_7^{2-}(aq) + \text{C}_2\text{O}_4^{2-}(aq) \rightarrow \text{Cr}^{3+}(aq) + \text{CO}_2(g) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Semirreacciones:</strong><br>
+                        Oxidación: $ \text{C}_2\text{O}_4^{2-} \rightarrow \text{CO}_2 $ <br>
+                        Reducción: $ \text{Cr}_2\text{O}_7^{2-} \rightarrow \text{Cr}^{3+} $</li>
+                    <li><strong>Balancear átomos (excepto O y H):</strong><br>
+                        Oxidación: $ \text{C}_2\text{O}_4^{2-} \rightarrow 2\text{CO}_2 $ (Balancear C)<br>
+                        Reducción: $ \text{Cr}_2\text{O}_7^{2-} \rightarrow 2\text{Cr}^{3+} $ (Balancear Cr)</li>
+                    <li><strong>Balancear O:</strong><br>
+                        Oxidación: O ya balanceado (4 en cada lado).<br>
+                        Reducción: Añadir $7\text{H}_2\text{O}$ a la derecha.<br>
+                        $$ \text{Cr}_2\text{O}_7^{2-} \rightarrow 2\text{Cr}^{3+} + 7\text{H}_2\text{O} $$</li>
+                    <li><strong>Balancear H:</strong><br>
+                        Oxidación: H ya balanceado.<br>
+                        Reducción: Añadir $14\text{H}^+$ a la izquierda.<br>
+                        $$ 14\text{H}^+ + \text{Cr}_2\text{O}_7^{2-} \rightarrow 2\text{Cr}^{3+} + 7\text{H}_2\text{O} $$</li>
+                    <li><strong>Balancear carga con electrones:</strong><br>
+                        Oxidación: Carga izquierda = -2, Carga derecha = 0. Añadir 2 $\text{e}^-$ a la derecha.<br>
+                        $$ \text{C}_2\text{O}_4^{2-} \rightarrow 2\text{CO}_2 + 2\text{e}^- $$
+                        Reducción: Carga izquierda = $14(+1) + (-2) = +12$. Carga derecha = $2(+3) = +6$. Añadir 6 $\text{e}^-$ a la izquierda.<br>
+                        $$ 6\text{e}^- + 14\text{H}^+ + \text{Cr}_2\text{O}_7^{2-} \rightarrow 2\text{Cr}^{3+} + 7\text{H}_2\text{O} $$</li>
+                    <li><strong>Igualar electrones:</strong> Multiplicar la semirreacción de oxidación por 3.<br>
+                        Oxidación: $ 3\text{C}_2\text{O}_4^{2-} \rightarrow 6\text{CO}_2 + 6\text{e}^- $ <br>
+                        Reducción: $ 6\text{e}^- + 14\text{H}^+ + \text{Cr}_2\text{O}_7^{2-} \rightarrow 2\text{Cr}^{3+} + 7\text{H}_2\text{O} $</li>
+                    <li><strong>Sumar y cancelar:</strong><br>
+                        $$ 3\text{C}_2\text{O}_4^{2-} + 6\text{e}^- + 14\text{H}^+ + \text{Cr}_2\text{O}_7^{2-} \rightarrow 6\text{CO}_2 + 6\text{e}^- + 2\text{Cr}^{3+} + 7\text{H}_2\text{O} $$
+                        Cancelando $6\text{e}^-$ de ambos lados:
+                        $$ \text{Cr}_2\text{O}_7^{2-}(aq) + 3\text{C}_2\text{O}_4^{2-}(aq) + 14\text{H}^+(aq) \rightarrow 2\text{Cr}^{3+}(aq) + 6\text{CO}_2(g) + 7\text{H}_2\text{O}(l) $$
+                </ol>
+                <p>Verificación: Átomos y cargas balanceados. ¡Balanceada!</p>
+            </div>
+
+            <h5>Balanceo en Medio Básico:</h5>
+            <p><strong>Pasos:</strong></p>
+            <ol>
+                <li><strong>Balancear como si fuera en medio ácido:</strong> Sigue los pasos 1-6 del balanceo en medio ácido.</li>
+                <li><strong>Neutralizar $\text{H}^+$:</strong> Por cada $\text{H}^+$ presente, añade una molécula de $\text{OH}^-$ a <strong>ambos lados</strong> de la ecuación.</li>
+                <li><strong>Combinar $\text{H}^+$ y $\text{OH}^-$:</strong> Donde $\text{H}^+$ y $\text{OH}^-$ se encuentren en el mismo lado, combínalos para formar $\text{H}_2\text{O}$.</li>
+                <li><strong>Cancelar $\text{H}_2\text{O}$ comunes:</strong> Cancela las moléculas de agua que aparezcan en ambos lados de la ecuación.</li>
+            </ol>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 1 Ión-Electrón (Medio Básico): Reacción de Hidróxido de Cromo(III) con Hipoclorito</strong></p>
+                <p>Balancea la siguiente reacción en medio básico:</p>
+                <div class="MathJax_Display">
+                    $$ \text{Cr}(\text{OH})_3(s) + \text{ClO}^-(aq) \rightarrow \text{CrO}_4^{2-}(aq) + \text{Cl}^-(aq) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear en medio ácido (pasos 1-6):</strong>
+                        <ul>
+                            <li><strong>Semirreacciones:</strong><br>
+                                Oxidación: $ \text{Cr}(\text{OH})_3 \rightarrow \text{CrO}_4^{2-} $ <br>
+                                Reducción: $ \text{ClO}^- \rightarrow \text{Cl}^- $</li>
+                            <li><strong>Balancear átomos (excepto O y H):</strong> Cr y Cl ya están balanceados.</li>
+                            <li><strong>Balancear O (en oxidación):</strong> Añadir $1\text{H}_2\text{O}$ a la izquierda ($4 \text{O}$ en productos, $3 \text{O}$ en reactivos).<br>
+                                $$ \text{H}_2\text{O} + \text{Cr}(\text{OH})_3 \rightarrow \text{CrO}_4^{2-} $$</li>
+                            <li><strong>Balancear H (en oxidación):</strong> $3\text{H}$ en $\text{Cr}(\text{OH})_3$ y $2\text{H}$ en $\text{H}_2\text{O}$ (total 5H). Necesitamos 5 $\text{H}^+$ en productos.<br>
+                                $$ \text{H}_2\text{O} + \text{Cr}(\text{OH})_3 \rightarrow \text{CrO}_4^{2-} + 5\text{H}^+ $$</li>
+                            <li><strong>Balancear carga (oxidación):</strong> Carga izquierda = 0. Carga derecha = $-2 + 5(+1) = +3$. Añadir 3 $\text{e}^-$ a la derecha.<br>
+                                $$ \text{H}_2\text{O} + \text{Cr}(\text{OH})_3 \rightarrow \text{CrO}_4^{2-} + 5\text{H}^+ + 3\text{e}^- $$</li>
+                            <li><strong>Balancear O (en reducción):</strong> Añadir $1\text{H}_2\text{O}$ a la derecha.<br>
+                                $$ \text{ClO}^- \rightarrow \text{Cl}^- + \text{H}_2\text{O} $$</li>
+                            <li><strong>Balancear H (en reducción):</strong> Añadir $2\text{H}^+$ a la izquierda.<br>
+                                $$ 2\text{H}^+ + \text{ClO}^- \rightarrow \text{Cl}^- + \text{H}_2\text{O} $$</li>
+                            <li><strong>Balancear carga (reducción):</strong> Carga izquierda = $2(+1) + (-1) = +1$. Carga derecha = $-1$. Añadir 2 $\text{e}^-$ a la izquierda.<br>
+                                $$ 2\text{e}^- + 2\text{H}^+ + \text{ClO}^- \rightarrow \text{Cl}^- + \text{H}_2\text{O} $$</li>
+                            <li><strong>Igualar electrones:</strong> LCM de 3 y 2 es 6. Multiplicar oxidación por 2, reducción por 3.<br>
+                                Oxidación: $ 2\text{H}_2\text{O} + 2\text{Cr}(\text{OH})_3 \rightarrow 2\text{CrO}_4^{2-} + 10\text{H}^+ + 6\text{e}^- $ <br>
+                                Reducción: $ 6\text{e}^- + 6\text{H}^+ + 3\text{ClO}^- \rightarrow 3\text{Cl}^- + 3\text{H}_2\text{O} $</li>
+                            <li><strong>Sumar y cancelar (en medio ácido temporal):</strong><br>
+                                $$ 2\text{H}_2\text{O} + 2\text{Cr}(\text{OH})_3 + 6\text{e}^- + 6\text{H}^+ + 3\text{ClO}^- \rightarrow 2\text{CrO}_4^{2-} + 10\text{H}^+ + 6\text{e}^- + 3\text{Cl}^- + 3\text{H}_2\text{O} $$
+                                Cancelando $6\text{e}^-$ y simplificando $\text{H}_2\text{O}$ y $\text{H}^+$:
+                                $$ 2\text{Cr}(\text{OH})_3 + 3\text{ClO}^- \rightarrow 2\text{CrO}_4^{2-} + 4\text{H}^+ + \text{H}_2\text{O} + 3\text{Cl}^- $$</li>
+                        </ul>
+                    <li><strong>Neutralizar $\text{H}^+$ (Medio Básico):</strong> Hay $4\text{H}^+$ en el lado de los productos. Añadir $4\text{OH}^-$ a ambos lados.<br>
+                        $$ 2\text{Cr}(\text{OH})_3 + 3\text{ClO}^- + 4\text{OH}^- \rightarrow 2\text{CrO}_4^{2-} + 4\text{H}^+ + 4\text{OH}^- + \text{H}_2\text{O} + 3\text{Cl}^- $$</li>
+                    <li><strong>Combinar $\text{H}^+$ y $\text{OH}^-$:</strong> Convertir $4\text{H}^+ + 4\text{OH}^-$ en $4\text{H}_2\text{O}$.<br>
+                        $$ 2\text{Cr}(\text{OH})_3 + 3\text{ClO}^- + 4\text{OH}^- \rightarrow 2\text{CrO}_4^{2-} + 4\text{H}_2\text{O} + \text{H}_2\text{O} + 3\text{Cl}^- $$
+                        $$ 2\text{Cr}(\text{OH})_3 + 3\text{ClO}^- + 4\text{OH}^- \rightarrow 2\text{CrO}_4^{2-} + 5\text{H}_2\text{O} + 3\text{Cl}^- $$</li>
+                    <li><strong>Cancelar $\text{H}_2\text{O}$ comunes:</strong> No hay $\text{H}_2\text{O}$ comunes en ambos lados en este punto.</li>
+                </ol>
+                <p>La ecuación balanceada final en medio básico es:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{Cr}(\text{OH})_3(s) + 3\text{ClO}^-(aq) + 4\text{OH}^-(aq) \rightarrow 2\text{CrO}_4^{2-}(aq) + 5\text{H}_2\text{O}(l) + 3\text{Cl}^-(aq) $$
+                </div>
+                <p>Verificación: Átomos y cargas balanceados. ¡Balanceada!</p>
+            </div>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo 2 Ión-Electrón (Medio Básico): Reacción de Sulfuro con Yodo</strong></p>
+                <p>Balancea la siguiente reacción en medio básico:</p>
+                <div class="MathJax_Display">
+                    $$ \text{S}^{2-}(aq) + \text{I}_2(s) \rightarrow \text{SO}_4^{2-}(aq) + \text{I}^-(aq) $$
+                </div>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Balancear en medio ácido (pasos 1-6):</strong>
+                        <ul>
+                            <li><strong>Semirreacciones:</strong><br>
+                                Oxidación: $ \text{S}^{2-} \rightarrow \text{SO}_4^{2-} $ <br>
+                                Reducción: $ \text{I}_2 \rightarrow \text{I}^- $</li>
+                            <li><strong>Balancear átomos (excepto O y H):</strong><br>
+                                Reducción: $ \text{I}_2 \rightarrow 2\text{I}^- $</li>
+                            <li><strong>Balancear O (en oxidación):</strong> Añadir $4\text{H}_2\text{O}$ a la izquierda.<br>
+                                $$ 4\text{H}_2\text{O} + \text{S}^{2-} \rightarrow \text{SO}_4^{2-} $$</li>
+                            <li><strong>Balancear H (en oxidación):</strong> Añadir $8\text{H}^+$ a la derecha.<br>
+                                $$ 4\text{H}_2\text{O} + \text{S}^{2-} \rightarrow \text{SO}_4^{2-} + 8\text{H}^+ $$</li>
+                            <li><strong>Balancear carga (oxidación):</strong> Carga izquierda = -2. Carga derecha = $-2 + 8(+1) = +6$. Añadir 8 $\text{e}^-$ a la derecha.<br>
+                                $$ 4\text{H}_2\text{O} + \text{S}^{2-} \rightarrow \text{SO}_4^{2-} + 8\text{H}^+ + 8\text{e}^- $$</li>
+                            <li><strong>Balancear carga (reducción):</strong> Carga izquierda = 0. Carga derecha = -2. Añadir 2 $\text{e}^-$ a la izquierda.<br>
+                                $$ 2\text{e}^- + \text{I}_2 \rightarrow 2\text{I}^- $$</li>
+                            <li><strong>Igualar electrones:</strong> LCM de 8 y 2 es 8. Multiplicar oxidación por 1, reducción por 4.<br>
+                                Oxidación: $ 4\text{H}_2\text{O} + \text{S}^{2-} \rightarrow \text{SO}_4^{2-} + 8\text{H}^+ + 8\text{e}^- $ <br>
+                                Reducción: $ 8\text{e}^- + 4\text{I}_2 \rightarrow 8\text{I}^- $</li>
+                            <li><strong>Sumar y cancelar (en medio ácido temporal):</strong><br>
+                                $$ 4\text{H}_2\text{O} + \text{S}^{2-} + 8\text{e}^- + 4\text{I}_2 \rightarrow \text{SO}_4^{2-} + 8\text{H}^+ + 8\text{e}^- + 8\text{I}^- $$
+                                Cancelando $8\text{e}^-$:
+                                $$ 4\text{H}_2\text{O} + \text{S}^{2-} + 4\text{I}_2 \rightarrow \text{SO}_4^{2-} + 8\text{H}^+ + 8\text{I}^- $$</li>
+                        </ul>
+                    <li><strong>Neutralizar $\text{H}^+$ (Medio Básico):</strong> Hay $8\text{H}^+$ en el lado de los productos. Añadir $8\text{OH}^-$ a ambos lados.<br>
+                        $$ 4\text{H}_2\text{O} + \text{S}^{2-} + 4\text{I}_2 + 8\text{OH}^- \rightarrow \text{SO}_4^{2-} + 8\text{H}^+ + 8\text{OH}^- + 8\text{I}^- $$</li>
+                    <li><strong>Combinar $\text{H}^+$ y $\text{OH}^-$:</strong> Convertir $8\text{H}^+ + 8\text{OH}^-$ en $8\text{H}_2\text{O}$.<br>
+                        $$ 4\text{H}_2\text{O} + \text{S}^{2-} + 4\text{I}_2 + 8\text{OH}^- \rightarrow \text{SO}_4^{2-} + 8\text{H}_2\text{O} + 8\text{I}^- $$</li>
+                    <li><strong>Cancelar $\text{H}_2\text{O}$ comunes:</strong> Cancelar $4\text{H}_2\text{O}$ de ambos lados (quedan $4\text{H}_2\text{O}$ en productos).<br>
+                        $$ \text{S}^{2-}(aq) + 4\text{I}_2(s) + 8\text{OH}^-(aq) \rightarrow \text{SO}_4^{2-}(aq) + 4\text{H}_2\text{O}(l) + 8\text{I}^-(aq) $$</li>
+                </ol>
+                <p>La ecuación balanceada final en medio básico es:</p>
+                <div class="MathJax_Display">
+                    $$ \text{S}^{2-}(aq) + 4\text{I}_2(s) + 8\text{OH}^-(aq) \rightarrow \text{SO}_4^{2-}(aq) + 4\text{H}_2\text{O}(l) + 8\text{I}^-(aq) $$
+                </div>
+                <p>Verificación: Átomos y cargas balanceados. ¡Balanceada!</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const mainNav = document.getElementById('main-nav');
+
+            // Toggle menu visibility on hamburger icon click
+            hamburgerIcon.addEventListener('click', () => {
+                mainNav.classList.toggle('open');
+            });
+
+            // Close menu when a navigation link is clicked (for mobile usability)
+            mainNav.querySelectorAll('a').forEach(anchor => {
+                anchor.addEventListener('click', () => {
+                    // Only close if the menu is currently open (i.e., on mobile)
+                    if (mainNav.classList.contains('open')) {
+                        mainNav.classList.remove('open');
+                    }
+                });
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav ul li a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            window.location.href = targetId;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

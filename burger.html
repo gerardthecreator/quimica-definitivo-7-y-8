@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Fondo gris claro */
+        }
+        /* Asegura que el visor de Spline ocupe todo el ancho y tenga una altura razonable */
+        spline-viewer {
+            width: 100%;
+            height: 400px; /* Altura predeterminada para escritorio */
+            display: block; /* Importante para el diseño */
+            /* Añade una sombra para separación visual */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem; /* Espacio debajo del visor de Spline */
+            border-radius: 1.5rem; /* Bordes redondeados para que coincida con el contenedor */
+        }
+
+        /* Altura responsiva para dispositivos móviles para el visor de Spline */
+        @media (max-width: 768px) {
+            spline-viewer {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Sección de Encabezado -->
+    <header class="bg-blue-700 text-white p-4 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold rounded-lg p-2">Material de Estudio (Tercer Parcial)</h1>
+        </div>
+    </header>
+
+    <!-- Sección de Contenido Principal - Enlaces del Menú y Visor de Spline -->
+    <main class="flex-grow container mx-auto p-4 md:p-8">
+        <!-- Contenedor principal para el visor de Spline y las categorías -->
+        <section class="bg-white p-6 rounded-3xl shadow-xl mb-8 flex flex-col items-center">
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-6 text-center">XD</h2>
+
+            <!-- Visor de Spline (ahora dentro del contenedor principal) -->
+            <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.18/build/spline-viewer.js"></script>
+            <spline-viewer url="https://prod.spline.design/PYtF3PZxdL7pZH9n/scene.splinecode"></spline-viewer>
+
+            <p class="text-lg text-gray-600 mb-8 text-center max-w-2xl">
+                Toca la sección del contenido que deseas ver
+            </p>
+
+            <!-- Parte Uno de Categorías -->
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 mt-8">Tema 7. Relaciones de masa en las reacciones químicas</h3>
+            <nav class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-8">
+                <!--
+                    IMPORTANTE: Ahora los enlaces (href) apuntan a archivos HTML locales.
+                    Asegúrate de crear estos archivos (ej. "hamburguesas.html", "pizzas.html", etc.)
+                    en el mismo directorio que este archivo "index.html" en tu repositorio.
+                -->
+                <!-- Tarjeta de Enlace de Menú 1 -->
+                <a href="Parte I y II.html" class="block bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2"> I.Fundamentos de la masa a nivel atómico y moleculares</h3>
+                    <p class="text-blue-100">Parte I y II.</p>
+                </a>
+
+                <!-- Tarjeta de Enlace de Menú 2 -->
+                <a href="Parte III.html" class="block bg-green-500 hover:bg-green-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">II.Reacciones y ecuaciones químicas</h3>
+                    <p class="text-green-100">Reacciones Químicas: 
+
+Ecuaciones Químicas: 
+
+</p>
+                </a>
+
+                <!-- Tarjeta de Enlace de Menú 3 -->
+                <a href="Parte IV.html" class="block bg-purple-500 hover:bg-purple-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">III.Balanceo de ecuaciones</h3>
+                    <p class="text-purple-100">Balanceo de Ecuaciones: 
+
+Métodos de Balanceo:</p>
+                </a>
+            
+
+             <!-- Tarjeta de Enlace de Menú 4 -->
+                <a href="Parte V.html" class="block bg-yellow-500 hover:bg-purple-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">IV.Reacciones de Oxidación-Reducción (Redox)</h3>
+                    <p class="text-purple-100">Conceptos básicos de Oxidación y Reducción: 
+
+Agente Oxidante y Agente Reductor: </p>
+                </a>
+            
+
+              <!-- Tarjeta de Enlace de Menú 4 -->
+                <a href="Parte VI.html" class="block bg-gray-500 hover:bg-purple-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">V.Estequiometría: Cálculos de reactivos y productos</h3>
+                    <p class="text-purple-100">Conceptos básicos de Oxidación y Reducción: Agente Oxidante y Agente Reductor: </p>
+                </a>
+            </nav>
+
+
+            <!-- Parte Uno de Categorías -->
+            <h3 class="text-2xl font-bold text-gray-700 mb-4 mt-8">Tema 8. Reacciones en disolución acuosa</h3>
+            <nav class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-8">
+
+                <!-- Tarjeta de Enlace de Menú 4 -->
+                <a href="Tema 8.html" class="block bg-purple-500 hover:bg-yellow-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">I. Conceptos básicos de mezclas y disoluciones</h3>
+                    <p class="text-yellow-100"></p>
+                </a>
+
+                <!-- Tarjeta de Enlace de Menú 5 -->
+                <a href="Parte 8u1.html" class="block bg-red-500 hover:bg-red-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">II. Preparación y manipulación de disoluciones</h3>
+                    <p class="text-red-100">Preparación experimental de disoluciones y diluciones: Pasos prácticos.</p>
+                </a>
+
+                <!-- Tarjeta de Enlace de Menú 6 -->
+                <a href="Parte 8u2.html" class="block bg-indigo-500 hover:bg-indigo-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                    <h3 class="text-2xl font-semibold mb-2">III. Unidades de concentración y su interconversión</h3>
+                    <p class="text-indigo-100"></p>
+                </a>
+
+                <!-- Tarjeta de Enlace de Menú 5 -->
+                <a href="Parte 8u3.html" class="block bg-green-500 hover:bg-red-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+                 <h3 class="text-2xl font-semibold mb-2">IV. Tipos de reacciones en disolución acuosa</h3>
+                <p class="text-red-100">Ejemplos de reacciones de metátesis: Intercambio de iones.  Reacciones de precipitación: Formación de un sólido insoluble.</p>
+                </a>
+
+            
+
+<!-- Tarjeta de Enlace de Menú 5 -->
+<a href="Parte 8u4.html" class="block bg-yellow-500 hover:bg-red-600 text-white p-6 rounded-2xl shadow-md transition-all duration-300 transform hover:scale-105 text-center">
+    <h3 class="text-2xl font-semibold mb-2">V. Estequiometría de disoluciones</h3>
+    <p class="text-red-100">Disoluciones con estequiometría: Aplicación de los principios estequiométricos a reacciones en disolución acuosa (cálculos de volumen, concentración, etc.).
+        </p>
+    </a>
+            
+
+        </section>
+    </main>
+
+    <!-- Sección de Pie de Página -->
+    <footer class="bg-gray-800 text-white p-6 mt-8 rounded-t-3xl shadow-inner">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 Gerardo XD. Todos los derechos reservados.</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="hover:text-gray-400 transition-colors duration-300">Aviso Legal</a>
+                <a href="#" class="hover:text-gray-400 transition-colors duration-300">Política de Cookies</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

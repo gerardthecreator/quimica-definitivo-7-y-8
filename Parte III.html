@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Fascinante Mundo de las Reacciones Químicas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fjalla+One&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        // Configuración de MathJax para el renderizado de ecuaciones LaTeX
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemáticas en línea
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // Delimitadores para matemáticas en bloque
+                processEscapes: true, // Permite escapar los delimitadores de MathJax
+                processEnvironments: true // Procesa entornos LaTeX como \begin{align}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', // Clases HTML a ignorar por MathJax
+                processHtmlClass: 'tex2jax_process' // Clases HTML a procesar por MathJax
+            },
+            startup: {
+                pageReady: function() {
+                    // Espera a que el DOM esté completamente cargado para procesar MathJax
+                    document.addEventListener('DOMContentLoaded', () => {
+                        MathJax.typeset(); // Inicia el renderizado de MathJax
+                    });
+                }
+            }
+        };
+    </script>
+    <!-- Script de MathJax desde CDN -->
+    <script id="mathjax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.js"></script>
+
+    <style>
+        /* --- Reset General y Estilos de Cuerpo --- */
+        body, h1, h2, h3, h4, p, ul, li, section, div { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Merriweather', serif;
+            font-size: 1.18em; /* Aumentar el tamaño de fuente base para mejor legibilidad */
+            line-height: 1.8; /* Aumentar la altura de línea para más espacio entre líneas */
+            color: #333;
+            background-color: #f0f8ff; /* Un azul muy claro para el fondo */
+            /* AUMENTADO: Espacio para el header fijo, asegurando que el contenido no se oculte */
+            padding-top: 180px; /* Ajustado para dar más espacio al encabezado */
+        }
+
+        /* --- Header Fijo --- */
+        header {
+            background-color: #0056b3; /* Azul más oscuro y vibrante */
+            color: #ffffff; /* Blanco puro */
+            padding: 20px 0;
+            text-align: center;
+            position: static; /* Hace que el header se quede fijo */
+            width: 100%; /* Ocupa todo el ancho */
+            top: 0; /* Lo fija en la parte superior */
+            left: 0;
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+        }
+
+        header h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 3em; /* Más grande para el título principal */
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        nav ul li {
+            margin: 0 25px; /* Más espacio entre elementos de navegación */
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.3em; /* Más grande */
+            padding: 10px 20px; /* Más padding */
+            border-radius: 8px; /* Bordes más redondeados */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #004085; /* Azul aún más oscuro al pasar el mouse */
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+        }
+
+        /* --- Estilos de Contenido General --- */
+        .container {
+            width: 90%; /* Más ancho para aprovechar el espacio */
+            max-width: 1400px; /* Ancho máximo aumentado */
+            margin: 40px auto; /* Más margen */
+            background-color: #ffffff;
+            padding: 50px; /* Más padding */
+            border-radius: 12px; /* Bordes más redondeados */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra más suave y extendida */
+        }
+
+        section {
+            margin-bottom: 60px; /* Más espacio entre secciones */
+            padding-bottom: 40px; /* Más padding inferior */
+            border-bottom: 1px dashed #c0c0c0; /* Línea divisoria más sutil */
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Fjalla One', sans-serif;
+            color: #0056b3; /* Azul principal */
+            margin-bottom: 30px; /* Más espacio */
+            font-size: 2.5em; /* Más grande */
+            border-left: 8px solid #007bff; /* Borde más grueso y vibrante */
+            padding-left: 20px; /* Más padding */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 40px; /* Más espacio */
+            margin-bottom: 25px; /* Más espacio */
+            font-size: 1.9em; /* Más grande */
+            border-bottom: 2px solid #e0e0e0; /* Línea sutil bajo los subtítulos */
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            font-family: 'Merriweather', serif;
+            color: #34495e; /* Azul grisáceo */
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em; /* Tamaño para sub-subtítulos */
+        }
+
+        p {
+            margin-bottom: 25px; /* Más espacio entre párrafos */
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 35px; /* Más margen */
+            margin-bottom: 25px; /* Más margen */
+        }
+
+        li {
+            margin-bottom: 12px; /* Más espacio entre elementos de lista */
+        }
+
+        /* --- Estilos específicos para MathJax --- */
+        .MathJax_Display {
+            margin: 2em 0 !important; /* Mucho más espacio para ecuaciones en bloque */
+            padding: 1em 1.2em; /* Más padding */
+            background-color: #e6f2ff; /* Fondo más claro para ecuaciones */
+            border-left: 6px solid #007bff; /* Borde más grueso y azul */
+            border-radius: 6px;
+            overflow-x: auto; /* Para ecuaciones largas */
+            font-size: 1.1em; /* Asegurar que las ecuaciones también sean grandes */
+        }
+
+        .MathJax_SVG_Display {
+            margin: 2em 0 !important; /* Asegura el espaciado para ecuaciones en bloque */
+        }
+
+        /* --- Estilos para ejemplos y notas --- */
+        .ejemplo-destacado {
+            background-color: #f0faff; /* Un azul muy claro para el fondo del ejemplo */
+            border: 1px solid #a0d8ff; /* Borde azul claro */
+            border-left: 8px solid #007bff; /* Borde azul vibrante distintivo */
+            padding: 25px;
+            margin-top: 35px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .ejemplo-destacado p {
+            font-weight: bold;
+            color: #0056b3; /* Color azul para el título del ejemplo */
+            margin-bottom: 15px;
+        }
+
+        .ejemplo-destacado ol, .ejemplo-destacado ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .ejemplo-destacado li {
+            margin-bottom: 10px;
+        }
+
+        /* --- Animación de Reacción Química (SVG y CSS) --- */
+        .reaction-animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px; /* Altura del contenedor de la animación */
+            margin: 40px auto;
+            background-color: #e6f7ff; /* Fondo claro para la animación */
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden; /* Asegura que la animación no se desborde */
+            position: relative;
+        }
+
+        .molecule {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Fjalla One', sans-serif;
+            font-size: 1.5em;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .molecule-A {
+            background-color: #e74c3c; /* Rojo */
+            left: 10%;
+            animation: reactA 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-B {
+            background-color: #2ecc71; /* Verde */
+            left: 30%;
+            animation: reactB 4s ease-in-out infinite alternate;
+        }
+
+        .molecule-C {
+            background-color: #3498db; /* Azul */
+            left: 70%;
+            opacity: 0;
+            animation: formC 4s ease-in-out infinite alternate;
+        }
+
+        .arrow {
+            position: absolute;
+            font-size: 3em;
+            color: #555;
+            left: 48%; /* Centrar la flecha */
+            top: 50%;
+            transform: translateY(-50%);
+            animation: fadeArrow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes reactA {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(150px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(150px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes reactB {
+            0% { transform: translateX(0); }
+            40% { transform: translateX(-50px); } /* Se mueven hacia el centro */
+            50% { transform: translateX(-50px); opacity: 0; } /* Desaparecen en la reacción */
+            100% { transform: translateX(0); opacity: 0; }
+        }
+
+        @keyframes formC {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0; }
+            60% { opacity: 1; transform: scale(1.1); } /* Aparece y se agranda */
+            70% { transform: scale(1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeArrow {
+            0% { opacity: 1; }
+            45% { opacity: 1; }
+            55% { opacity: 0; } /* Desaparece durante la formación del producto */
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química Dinámica</h1>
+        <nav>
+            <ul>
+                <li><a href="#reacciones">Reacciones Químicas</a></li>
+                <li><a href="#ecuaciones">Ecuaciones Químicas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="reacciones">
+            <h2>Reacciones Químicas: La Transformación de la Materia</h2>
+            <p>Una <strong>reacción química</strong> es un proceso en el cual una o más sustancias, llamadas <strong>reactivos</strong>, se transforman en una o más sustancias nuevas y diferentes, llamadas <strong>productos</strong>. Esencialmente, es una reorganización de átomos: los enlaces químicos se rompen en los reactivos y se forman nuevos enlaces en los productos. Este proceso es fundamental para la vida, la industria y la naturaleza que nos rodea.</p>
+
+            <h3>Características Clave de las Reacciones Químicas:</h3>
+            <ul>
+                <li><strong>Cambio de Identidad:</strong> Los productos tienen propiedades químicas y físicas distintas a las de los reactivos. Por ejemplo, el hidrógeno ($\text{H}_2$) y el oxígeno ($\text{O}_2$) son gases incoloros, pero cuando reaccionan, forman agua ($\text{H}_2\text{O}$), un líquido con propiedades completamente diferentes.</li>
+                <li><strong>Conservación de la Masa:</strong> Según la Ley de Conservación de la Masa (postulada por Antoine Lavoisier), la masa total de los reactivos que participan en una reacción química es siempre igual a la masa total de los productos formados. Esto significa que los átomos no se crean ni se destruyen, solo se reorganizan en nuevas combinaciones.</li>
+                <li><strong>Cambios Energéticos:</strong> Las reacciones químicas siempre implican un cambio en la energía del sistema.
+                    <ul>
+                        <li><strong>Reacciones Exotérmicas:</strong> Liberan energía al entorno, generalmente en forma de calor o luz. Un ejemplo común es la combustión, como la quema de madera o gas natural.</li>
+                        <li><strong>Reacciones Endotérmicas:</strong> Absorben energía del entorno, lo que a menudo resulta en una disminución de la temperatura del sistema. Un ejemplo es la fotosíntesis, donde las plantas absorben energía solar para producir glucosa.</li>
+                    </ul>
+                </li>
+                <li><strong>Evidencias Visuales:</strong> Aunque no todas las reacciones químicas son visibles a simple vista, muchas presentan cambios observables que nos indican que una transformación ha ocurrido:
+                    <ul>
+                        <li><strong>Formación de un Gas:</strong> Aparición de burbujas (ej. $ \text{Na}_2\text{CO}_3(s) + 2\text{HCl}(aq) \rightarrow 2\text{NaCl}(aq) + \text{H}_2\text{O}(l) + \text{CO}_2(g) $).</li>
+                        <li><strong>Formación de un Precipitado:</strong> Aparición de un sólido insoluble en una disolución (ej. $ \text{Pb}(\text{NO}_3)_2(aq) + 2\text{KI}(aq) \rightarrow \text{PbI}_2(s) + 2\text{KNO}_3(aq) $ donde el $ \text{PbI}_2 $ es un sólido amarillo).</li>
+                        <li><strong>Cambio de Color:</strong> La alteración del color de la mezcla (ej. $ \text{Cu}(s) + 2\text{AgNO}_3(aq) \rightarrow \text{Cu}(\text{NO}_3)_2(aq) + 2\text{Ag}(s) $, donde el cobre sólido reacciona con una disolución incolora de nitrato de plata para formar plata sólida y una disolución azul de nitrato de cobre(II)).</li>
+                        <li><strong>Cambio de Temperatura:</strong> Calentamiento o enfriamiento del recipiente.</li>
+                        <li><strong>Emisión de Luz:</strong> Como en las reacciones de combustión o quimioluminiscencia.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo Visual de Reacción: Transformación Molecular</strong></p>
+                <p>Imagina que tienes dos tipos de "piezas" (átomos o moléculas) separadas. Una reacción química es como si estas piezas se desarmaran y luego se volvieran a ensamblar de una manera completamente nueva, formando algo diferente.</p>
+                <p>Aquí, dos moléculas (A y B) se combinan para formar una nueva molécula (C). Observa cómo las moléculas originales desaparecen y aparece el nuevo producto.</p>
+                <div class="reaction-animation-container">
+                    <div class="molecule molecule-A">A</div>
+                    <div class="molecule molecule-B">B</div>
+                    <div class="arrow">→</div>
+                    <div class="molecule molecule-C">C</div>
+                </div>
+                <p style="font-style: italic; text-align: center; margin-top: 15px;">Esta animación simplificada ilustra cómo los reactivos se transforman en productos.</p>
+            </div>
+
+            <h4>Tipos Comunes de Reacciones Químicas:</h4>
+            <ul>
+                <li><strong>Reacciones de Síntesis (o Combinación):</strong> Dos o más sustancias simples se combinan para formar una sustancia más compleja.
+                    <div class="MathJax_Display">
+                        $$ \text{A} + \text{B} \rightarrow \text{AB} $$
+                        Ejemplo: $ \text{N}_2(g) + 3\text{H}_2(g) \rightarrow 2\text{NH}_3(g) $ (Síntesis de amoníaco)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Descomposición:</strong> Una sustancia compleja se divide en dos o más sustancias más simples. Requieren energía (calor, luz, electricidad).
+                    <div class="MathJax_Display">
+                        $$ \text{AB} \rightarrow \text{A} + \text{B} $$
+                        Ejemplo: $ 2\text{H}_2\text{O}(l) \xrightarrow{\text{electricidad}} 2\text{H}_2(g) + \text{O}_2(g) $ (Electrólisis del agua)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Sustitución Simple (o Desplazamiento):</strong> Un elemento reemplaza a otro elemento en un compuesto.
+                    <div class="MathJax_Display">
+                        $$ \text{A} + \text{BC} \rightarrow \text{AC} + \text{B} $$
+                        Ejemplo: $ \text{Zn}(s) + 2\text{HCl}(aq) \rightarrow \text{ZnCl}_2(aq) + \text{H}_2(g) $ (El zinc desplaza al hidrógeno)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Sustitución Doble (o Metátesis):</strong> Los iones de dos compuestos diferentes intercambian lugares, formando dos nuevos compuestos. A menudo resultan en la formación de un precipitado, un gas o agua.
+                    <div class="MathJax_Display">
+                        $$ \text{AB} + \text{CD} \rightarrow \text{AD} + \text{CB} $$
+                        Ejemplo: $ \text{AgNO}_3(aq) + \text{NaCl}(aq) \rightarrow \text{AgCl}(s) + \text{NaNO}_3(aq) $ (Formación de cloruro de plata sólido)
+                    </div>
+                </li>
+                <li><strong>Reacciones de Combustión:</strong> Una sustancia reacciona rápidamente con el oxígeno, produciendo calor y luz. Si el combustible es un hidrocarburo, los productos suelen ser dióxido de carbono y agua.
+                    <div class="MathJax_Display">
+                        $$ \text{Combustible} + \text{O}_2 \rightarrow \text{Productos} + \text{Energía} $$
+                        Ejemplo: $ \text{CH}_4(g) + 2\text{O}_2(g) \rightarrow \text{CO}_2(g) + 2\text{H}_2\text{O}(l) $ (Combustión del metano)
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section id="ecuaciones">
+            <h2>Ecuaciones Químicas: El Lenguaje de la Transformación</h2>
+            <p>Una <strong>ecuación química</strong> es una representación simbólica concisa de una reacción química. Utiliza fórmulas químicas para los reactivos y productos, y símbolos para indicar el estado físico de las sustancias y las condiciones de la reacción. Son el "idioma" universal de la química, permitiendo a los científicos comunicar reacciones de manera clara y precisa.</p>
+
+            <h3>Componentes Clave de una Ecuación Química:</h3>
+            <ul>
+                <li><strong>Fórmulas Químicas:</strong> Son los símbolos y números que representan las moléculas o unidades de fórmula de los reactivos (a la izquierda de la flecha) y los productos (a la derecha de la flecha). Por ejemplo, $\text{H}_2\text{SO}_4$ para el ácido sulfúrico.</li>
+                <li><strong>Coeficientes Estequiométricos:</strong> Son los números enteros grandes que se colocan delante de las fórmulas químicas. Indican la proporción molar (o la cantidad relativa de moléculas/unidades de fórmula) en la que las sustancias reaccionan o se forman. Son esenciales para balancear la ecuación y asegurar la conservación de la masa. Por ejemplo, en $2\text{H}_2$, el '2' es el coeficiente.</li>
+                <li><strong>Subíndices:</strong> Los números pequeños que aparecen dentro de una fórmula química. Indican la cantidad de átomos de cada elemento dentro de una molécula o unidad de fórmula. Por ejemplo, en $\text{O}_2$, el '2' es un subíndice que indica dos átomos de oxígeno. <strong>¡Es crucial recordar que los subíndices nunca se cambian al balancear una ecuación, ya que cambiarían la identidad de la sustancia!</strong></li>
+                <li><strong>Flecha de Reacción ($\rightarrow$):</strong> Es el símbolo central que separa los reactivos de los productos e indica la dirección en la que procede la reacción. En algunos casos, se usan flechas dobles ($\rightleftharpoons$) para reacciones reversibles.</li>
+                <li><strong>Símbolos de Estado Físico:</strong> Se colocan entre paréntesis después de cada fórmula química para indicar el estado de la sustancia en las condiciones de la reacción:
+                    <ul>
+                        <li>$(s)$ para sólido (del latín <em>solidus</em>)</li>
+                        <li>$(l)$ para líquido (del latín <em>liquidus</em>)</li>
+                        <li>$(g)$ para gas (del inglés <em>gas</em>)</li>
+                        <li>$(aq)$ para disolución acuosa (del latín <em>aqua</em>, disuelto en agua)</li>
+                    </ul>
+                </li>
+                <li><strong>Condiciones de Reacción:</strong> A menudo se indican sobre o debajo de la flecha de reacción para especificar las condiciones necesarias para que la reacción ocurra. Ejemplos incluyen:
+                    <ul>
+                        <li>$\Delta$ (delta): Indica que se aplica calor.</li>
+                        <li>Presión: Se puede indicar un valor numérico (ej., 10 atm).</li>
+                        <li>Catalizador: La fórmula del catalizador (ej., $\text{Pt}$ para platino).</li>
+                        <li>Luz: $h\nu$ o "luz".</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejemplo Desglosado de Ecuación Química: La Formación de Agua</strong></p>
+                <p>Consideremos la reacción de formación de agua a partir de hidrógeno y oxígeno, una de las reacciones más fundamentales:</p>
+                <div class="MathJax_Display">
+                    $$ 2\text{H}_2(g) + \text{O}_2(g) \rightarrow 2\text{H}_2\text{O}(l) $$
+                </div>
+                <ul>
+                    <li>$\text{H}_2(g)$ y $\text{O}_2(g)$ son los <strong>reactivos</strong>. Ambos están en estado gaseoso $(g)$.</li>
+                    <li>$\text{H}_2\text{O}(l)$ es el <strong>producto</strong>, en estado líquido $(l)$.</li>
+                    <li>Los '2' grandes delante de $\text{H}_2$ y $\text{H}_2\text{O}$ son <strong>coeficientes estequiométricos</strong>. Nos dicen que dos moléculas de hidrógeno reaccionan con una molécula de oxígeno (el '1' se omite) para producir dos moléculas de agua.</li>
+                    <li>Los '2' pequeños en $\text{H}_2$ y $\text{O}_2$ son <strong>subíndices</strong>. Indican que cada molécula de hidrógeno tiene 2 átomos de H, y cada molécula de oxígeno tiene 2 átomos de O. En $\text{H}_2\text{O}$, el '2' es un subíndice que indica 2 átomos de H y el '1' implícito para O indica 1 átomo de O.</li>
+                    <li>La flecha $\rightarrow$ indica que la reacción procede de izquierda a derecha.</li>
+                </ul>
+                <p>Esta ecuación nos dice que por cada dos moléculas de hidrógeno gaseoso y una molécula de oxígeno gaseoso que reaccionan, se forman dos moléculas de agua líquida. Lo más importante es que esta representación asegura que el número de átomos de cada elemento se conserva antes y después de la reacción.</p>
+            </div>
+
+            <h3>Balanceo de Ecuaciones Químicas: La Ley de Conservación en Acción</h3>
+            <p>Balancear una ecuación química es un paso crítico para asegurar que se cumple la Ley de Conservación de la Masa. Significa ajustar los <strong>coeficientes estequiométricos</strong> (¡nunca los subíndices!) para que el número de átomos de cada elemento sea exactamente el mismo en ambos lados de la ecuación (en los reactivos y en los productos).</p>
+            <p>Un método común para balancear es el método de tanteo, donde se ajustan los coeficientes de forma iterativa hasta que los átomos de cada elemento estén balanceados. Generalmente, es útil balancear primero los elementos metálicos, luego los no metálicos (excluyendo H y O), luego H y finalmente O.</p>
+
+            <div class="ejemplo-destacado">
+                <p><strong>Ejercicio de Experto: Balanceo de Ecuaciones Complejas</strong></p>
+                <p>Balancea las siguientes ecuaciones químicas, mostrando tus pasos y razonamiento:</p>
+                <ol>
+                    <li>Combustión del propano: $ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow \text{CO}_2(g) + \text{H}_2\text{O}(l) $</li>
+                    <li>Reacción de óxido de hierro(III) con monóxido de carbono: $ \text{Fe}_2\text{O}_3(s) + \text{CO}(g) \rightarrow \text{Fe}(s) + \text{CO}_2(g) $</li>
+                    <li>Reacción de aluminio con ácido sulfúrico: $ \text{Al}(s) + \text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $</li>
+                </ol>
+                <p><em>Solución:</em></p>
+                <ol>
+                    <li><strong>Combustión del propano: $ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow \text{CO}_2(g) + \text{H}_2\text{O}(l) $</strong><br>
+                        <p>Para balancear, seguimos un orden común: Carbono (C), Hidrógeno (H), Oxígeno (O).</p>
+                        <ul>
+                            <li><strong>Balancear C:</strong> Hay 3 átomos de C en los reactivos ($\text{C}_3\text{H}_8$). Necesitamos 3 moléculas de $\text{CO}_2$ en los productos.<br>
+                                $$ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow 3\text{CO}_2(g) + \text{H}_2\text{O}(l) $$</li>
+                            <li><strong>Balancear H:</strong> Hay 8 átomos de H en los reactivos ($\text{C}_3\text{H}_8$). En los productos, $\text{H}_2\text{O}$ tiene 2 átomos de H. Necesitamos 4 moléculas de $\text{H}_2\text{O}$ ($4 \times 2 = 8$).<br>
+                                $$ \text{C}_3\text{H}_8(g) + \text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$</li>
+                            <li><strong>Balancear O:</strong> Ahora contamos el oxígeno en los productos: $3 \times 2 (\text{en CO}_2) + 4 \times 1 (\text{en H}_2\text{O}) = 6 + 4 = 10$ átomos de O. En los reactivos, $\text{O}_2$ tiene 2 átomos de O. Necesitamos 5 moléculas de $\text{O}_2$ ($5 \times 2 = 10$).<br>
+                                $$ \text{C}_3\text{H}_8(g) + 5\text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$</li>
+                        </ul>
+                        <p>La ecuación balanceada final es:</p>
+                        <div class="MathJax_Display">
+                            $$ \text{C}_3\text{H}_8(g) + 5\text{O}_2(g) \rightarrow 3\text{CO}_2(g) + 4\text{H}_2\text{O}(l) $$
+                        </div>
+                        <p>Verificación: C: 3 en reactivos, 3 en productos. H: 8 en reactivos, 8 en productos. O: 10 en reactivos, 10 en productos. ¡Balanceada!</p>
+                    </li>
+                    <br>
+                    <li><strong>Reacción de óxido de hierro(III) con monóxido de carbono: $ \text{Fe}_2\text{O}_3(s) + \text{CO}(g) \rightarrow \text{Fe}(s) + \text{CO}_2(g) $</strong>
+                        <ul>
+                            <li><strong>Balancear Fe:</strong> Hay 2 átomos de Fe en los reactivos ($\text{Fe}_2\text{O}_3$). Necesitamos 2 átomos de Fe en los productos.<br>
+                                $$ \text{Fe}_2\text{O}_3(s) + \text{CO}(g) \rightarrow 2\text{Fe}(s) + \text{CO}_2(g) $$</li>
+                            <li><strong>Balancear C:</strong> Hay 1 átomo de C en reactivos y 1 en productos. Por ahora, C está balanceado.</li>
+                            <li><strong>Balancear O:</strong> Contamos O en reactivos: 3 (de $\text{Fe}_2\text{O}_3$) + 1 (de $\text{CO}$) = 4 átomos de O. En productos: 2 (de $\text{CO}_2$). Necesitamos más O en productos. Si ponemos un 3 delante de $\text{CO}$ y $\text{CO}_2$:<br>
+                                $$ \text{Fe}_2\text{O}_3(s) + 3\text{CO}(g) \rightarrow 2\text{Fe}(s) + 3\text{CO}_2(g) $$
+                                Ahora, O en reactivos: 3 + 3 = 6. O en productos: $3 \times 2 = 6$. ¡O balanceado! Y C también se balanceó automáticamente.</li>
+                        </ul>
+                        <p>La ecuación balanceada final es:</p>
+                        <div class="MathJax_Display">
+                            $$ \text{Fe}_2\text{O}_3(s) + 3\text{CO}(g) \rightarrow 2\text{Fe}(s) + 3\text{CO}_2(g) $$
+                        </div>
+                        <p>Verificación: Fe: 2 en reactivos, 2 en productos. C: 3 en reactivos, 3 en productos. O: 6 en reactivos, 6 en productos. ¡Balanceada!</p>
+                    </li>
+                    <br>
+                    <li><strong>Reacción de aluminio con ácido sulfúrico: $ \text{Al}(s) + \text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $</strong>
+                        <ul>
+                            <li><strong>Balancear Al:</strong> Hay 1 átomo de Al en reactivos y 2 en productos ($\text{Al}_2(\text{SO}_4)_3$). Necesitamos 2 átomos de Al en reactivos.<br>
+                                $$ 2\text{Al}(s) + \text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $$</li>
+                            <li><strong>Balancear el grupo poliatómico ($\text{SO}_4$):</strong> Hay 1 grupo $\text{SO}_4$ en reactivos y 3 en productos. Necesitamos 3 grupos $\text{SO}_4$ en reactivos.<br>
+                                $$ 2\text{Al}(s) + 3\text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + \text{H}_2(g) $$</li>
+                            <li><strong>Balancear H:</strong> Ahora hay $3 \times 2 = 6$ átomos de H en reactivos. En productos, $\text{H}_2$ tiene 2 átomos de H. Necesitamos 3 moléculas de $\text{H}_2$ ($3 \times 2 = 6$).<br>
+                                $$ 2\text{Al}(s) + 3\text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + 3\text{H}_2(g) $$</li>
+                            <li><strong>Balancear O:</strong> El oxígeno está balanceado dentro del grupo $\text{SO}_4$. $3 \times 4 = 12$ en reactivos, $3 \times 4 = 12$ en productos.</li>
+                        </ul>
+                        <p>La ecuación balanceada final es:</p>
+                        <div class="MathJax_Display">
+                            $$ 2\text{Al}(s) + 3\text{H}_2\text{SO}_4(aq) \rightarrow \text{Al}_2(\text{SO}_4)_3(aq) + 3\text{H}_2(g) $$
+                        </div>
+                        <p>Verificación: Al: 2 en reactivos, 2 en productos. H: 6 en reactivos, 6 en productos. S: 3 en reactivos, 3 en productos. O: 12 en reactivos, 12 en productos. ¡Balanceada!</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- Smooth scrolling para la navegación ---
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('nav ul li a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            window.location.href = targetId;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
